@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import TodoTextInput from './TodoTextInput';
 
 import mui, {AppBar, Styles} from 'material-ui';
 import MyRawTheme from '../src/material_ui_raw_theme_file';
@@ -34,7 +33,6 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  addTodo: PropTypes.func.isRequired
 };
 
 export default Header;
