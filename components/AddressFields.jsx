@@ -18,7 +18,7 @@ class AddressFields extends Component {
         const nextDisabled = (!(this.props.fieldValues.street1 && this.props.fieldValues.street2 && this.props.fieldValues.city && this.props.fieldValues.state && this.props.fieldValues.zipCode));
 
         return (
-            <Paper style={defaultStyle}>
+            <Paper style={this.props.defaultStyle}>
 
                 <TextField floatingLabelText="Street address" onChange={this.handleChange.bind(this, "street1")}/>
                 <br />

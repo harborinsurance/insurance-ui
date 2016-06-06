@@ -22,7 +22,7 @@ class PersonalFields extends Component {
     render() {
         const nextDisabled = (!(this.props.fieldValues.firstName && this.props.fieldValues.lastName && this.props.fieldValues.birthDate));
         return (
-            <Paper style={defaultStyle}>
+            <Paper style={this.props.defaultStyle}>
 
                 <TextField ref="firstName" floatingLabelText="First name" onChange={this.handleChange.bind(this, "firstName")}/>
                 <br />

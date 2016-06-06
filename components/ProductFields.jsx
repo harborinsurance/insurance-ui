@@ -35,7 +35,7 @@ class ProductFields extends Component {
         const zipCodeEnabled = (!!this.props.fieldValues.product);
         const nextDisabled = (!this.props.fieldValues.zipCode);
         return (
-            <Paper style={defaultStyle} >
+            <Paper style={this.props.defaultStyle} >
 
                 <SelectField ref="product" onChange={this.handleChange.bind(this, "product")} value={this.props.fieldValues.product} floatingLabelText="Product">
                     <MenuItem value={"autos"} disabled={true} primaryText="Autos"/>

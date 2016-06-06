@@ -6,6 +6,7 @@ import mui, {
     Paper
 } from 'material-ui';
 
+
 class CoverageFields extends Component {
     handleChange(source, e, payload) {
         let updateValues = [];
@@ -17,7 +18,7 @@ class CoverageFields extends Component {
     render () {
         const ssnEnabled = this.props.fieldValues.coverage && this.props.fieldValues.coverage >= 100000;
         return (
-            <Paper style={defaultStyle}>
+            <Paper style={this.props.defaultStyle}>
                 <TextField floatingLabelText="Coverage amount" type="number" onChange={this.handleChange.bind(this, "coverage")}/>
                 {ssnEnabled ? <TextField floatingLabelText="Social security" type="number" onChange={this.handleChange.bind(this, "ssn")}/> : null}
             </Paper>
