@@ -10,6 +10,7 @@ let express = require("express"),
     bodyParser = require("body-parser"),
     stripe = require("stripe")(process.env.STRIPE_API_KEY),
     Twilio = require("twilio"),
+    async = require("async"),
     twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_TOKEN);
 
 const webpack = require('webpack');
