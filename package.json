@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-server": "nodemon server.js --watch server",
+    "dev-app": "webpack-dev-server --hot --inline --progress --colors",
     "start": "nodemon server.js --watch server & webpack-dev-server --hot --inline --progress --colors",
     "build": "webpack --progress --colors",
     "prod": "NODE_ENV=production node server.js",
