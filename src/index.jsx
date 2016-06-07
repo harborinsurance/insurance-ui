@@ -4,6 +4,7 @@ import injectTapEventPlugin from "react-tap-event-plugin";
 import { Router, Route, hashHistory } from 'react-router';
 
 import App from '../components/App';
+import Admin from '../components/Admin';
 import ApplicationList from '../components/ApplicationList';
 import ApplicationView from '../components/ApplicationView';
 import ApplicationForm from '../components/ApplicationForm';
@@ -21,11 +22,10 @@ injectTapEventPlugin();
 
 ReactDOM.render(
     <Router history={hashHistory}>
-        <Route path="/" component={App} >
-            <Route path="applications" component={ApplicationList}>
-                <Route path="/applications/:id" component={ApplicationView}/>
-            </Route>
+        <Route path="/" component={App}>
+            <Route path="/admin" component={Admin}/>
             <Route path="/apply" component={ApplicationForm}/>
+            <Route path="/applications/:id" component={ApplicationView} />
         </Route>
     </Router>,
   document.getElementById("root")

@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import {Link} from 'react-router';
-import faker from 'faker';
 import _ from 'lodash';
 import numeral from 'numeral';
 
@@ -19,78 +18,48 @@ import mui, {
     TableRowColumn
 } from 'material-ui';
 
-const   APPROVED = "approved",
-        PENDING = "pending",
-        REJECTED = "rejected",
-        APPLICATION_STATES = [APPROVED, PENDING, REJECTED];
-
-
-let makeFakeApplications = (count) => {
-    let applications = [];
-    for (let i = 0 ; i < count ; i++) {
-        let application = {
-            key: faker.random.uuid(),
-            status: _.sample(APPLICATION_STATES),
-            firstName: faker.name.firstName(),
-            lastName: faker.name.lastName(),
-            dateOfBirth: faker.date.past(),
-            email: faker.internet.email(),
-            phone: faker.phone.phoneNumber(),
-            streetAddress: faker.address.streetAddress(),
-            streetAddressCont: "",
-            city: faker.address.city(),
-            state: faker.address.stateAbbr(),
-            zipCode: faker.address.zipCode(),
-            coverage: faker.random.number(200000),
-            socialSecurityNumber: faker.random.number(),
-            submittedAt: faker.date.recent()
-        };
-
-        applications.push(application);
-    }
-    return applications;
-};
+import { makeFakeApplications } from '../src/helpers';
 
 class ApplicationList extends Component {
 
     constructor(props, context){
         super(props, context);
-        let applications = makeFakeApplications(20);
         this.state = {
-            applications: applications,
             filter: "",
             sort: "lastName"
         };
     }
 
-    test() {
-        alert("TEST");
+    rowSelected(id) {
+        console.log("row selected")
+        this.props.selectApplication(id);
     }
 
+
+
     render() {
-        let applicationRows = this.state.applications.map((application) => {
-            return <ApplicationListItem {...application} />;
+        let applicationRows = this.props.applications.map((application) => {
+            return <ApplicationListItem {...application} selectApplication={this.props.selectApplication}/>;
         });
 
         return(
-            <Paper style={{margin:20, padding:20}}>
+            <div>
                 <h2>Applications</h2>
                 <Divider/>
-                <Table>
+                <Table selectable={true} >
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
                             <TableHeaderColumn>Name</TableHeaderColumn>
                             <TableHeaderColumn>Status</TableHeaderColumn>
                             <TableHeaderColumn>Coverage Amount</TableHeaderColumn>
                             <TableHeaderColumn>Submitted At</TableHeaderColumn>
-                            <TableHeaderColumn></TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {applicationRows}
                     </TableBody>
                 </Table>
-            </Paper>
+            </div>
         );
     }
 }
@@ -98,12 +67,11 @@ class ApplicationList extends Component {
 class ApplicationListItem extends Component {
     render() {
         return (
-            <TableRow hoverable={true}>
+            <TableRow hoverable={true} onMouseUp={() => { this.props.selectApplication(this.props.id); }}>
                 <TableRowColumn>{this.props.lastName}, {this.props.firstName}</TableRowColumn>
                 <TableRowColumn><div className={"status-"+this.props.status}>{this.props.status}</div></TableRowColumn>
                 <TableRowColumn>{numeral(this.props.coverage).format('$0,0.00')}</TableRowColumn>
                 <TableRowColumn>{this.props.submittedAt.toDateString()}</TableRowColumn>
-                <TableRowColumn><Link to="/applications/{this.props.key}">View</Link></TableRowColumn>
             </TableRow>
         );
     }
