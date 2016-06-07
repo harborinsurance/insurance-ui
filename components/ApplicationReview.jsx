@@ -18,7 +18,7 @@ import _ from 'lodash';
 import {humanizeFieldName} from '../src/helpers';
 
 
-class ApplicationView extends Component {
+class ApplicationReview extends Component {
     constructor (props, context) {
         super(props, context);
     }
@@ -64,14 +64,26 @@ class ApplicationView extends Component {
                 }
             }
 
+            let approveOptions;
+            if (this.props.application.status !== "approved") {
+                approveOptions = (
+                    <div>
+                        <RaisedButton primary={true} value="Reject" />
+                        <RaisedButton secondary={true} value="Approve" />
+                        <Divider/>
+                    </div>
+                );
+            }
+
             content = (
                 <div>
                     <h2>Application for {this.props.application.firstName} {this.props.application.lastName}</h2>
                     <Divider/>
+                    {approveOptions}
 
                     <Table>
                         <TableBody displayRowCheckbox={false}>
-                        {rows}
+                            {rows}
                         </TableBody>
                     </Table>
                 </div>
@@ -86,4 +98,4 @@ class ApplicationView extends Component {
     }
 }
 
-export default ApplicationView;
+export default ApplicationReview;

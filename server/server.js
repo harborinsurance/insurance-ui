@@ -37,7 +37,7 @@ app.get("/api/applications", function (request, response) {
             //remove nested object
             var applications = [];
             _.each(body.rows, function(application) {
-                applications.push(addID(application.value)); 
+                applications.push(addID(application.value));
             });
             response.json(applications);
         }

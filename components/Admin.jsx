@@ -1,10 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import mui, {DatePicker, TextField, RaisedButton, Paper} from 'material-ui';
 import _ from 'lodash';
-import $ from 'jquery'; 
+import $ from 'jquery';
 
 import ApplicationList from './ApplicationList';
-import ApplicationView from './ApplicationView';
+import ApplicationReview from './ApplicationReview';
 import { makeFakeApplications } from '../src/helpers';
 
 
@@ -78,7 +78,7 @@ class Admin extends Component {
                     <ApplicationList applications={this.state.applications} selectApplication={this.selectApplication.bind(this)} />
                 </Paper>
                 <Paper style={styles.rightPaper}>
-                    <ApplicationView application={this.state.selectedApplication} updateApplication={this.updateApplication.bind(this)}/>
+                    <ApplicationReview application={this.state.selectedApplication} updateApplication={this.updateApplication.bind(this)}/>
                 </Paper>
             </div>
         );
