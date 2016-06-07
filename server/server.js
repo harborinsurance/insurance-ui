@@ -59,6 +59,10 @@ app.get("/api/applications/:id", function (request, response) {
 });
 
 app.post("/api/applications", function (request, response) {
+    //set initial application state
+    request.body.status = "pending";
+    request.body.submittedAt = new Date().toDateString();
+    
     db.insert(request.body, function (error, result) {
         if (error) {
             response.send(error);

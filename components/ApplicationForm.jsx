@@ -65,10 +65,6 @@ class ApplicationForm extends Component {
     }
 
     submit() {
-        let fieldValues = this.state.fieldValues;
-        fieldValues.status = "pending";
-        fieldValues.submittedAt = new Date().toDateString();
-        this.setState({fieldValues: fieldValues});
         axios.post('/api/applications', this.state.fieldValues).then((res) =>{
             // transition to "You're done!"
             this.setState({step:5});
