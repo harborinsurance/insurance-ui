@@ -90,7 +90,7 @@ app.post("/api/charge", function (request, response) {
     let charge = stripe.charges.create({
         amount: 1000, // amount in cents, again
         currency: "usd",
-        source: stripeToken,
+        source: '',
         description: "Example charge"
     }, function(err, charge) {
         if (err && err.type === 'StripeCardError') {
