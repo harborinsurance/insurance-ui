@@ -1,4 +1,4 @@
-var express = require("express"),
+let express = require("express"),
     app = express(),
     dotenv = require("dotenv"),
     cfenv = require("cfenv"),
@@ -8,7 +8,7 @@ var express = require("express"),
     stripe = require("stripe")(process.env.STRIPE_API_KEY),
     Twilio = require("twilio"),
     twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_TOKEN);
-    
+
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -16,12 +16,12 @@ const config = require('../webpack.config.js');
 
 dotenv.load();
 
-var appEnv = cfenv.getAppEnv();
-var isProduction = process.env.NODE_ENV === "production";
+let appEnv = cfenv.getAppEnv();
+let isProduction = process.env.NODE_ENV === "production";
 
 app.use(bodyParser.json());
 
-var cloudantCreds = appEnv.getServiceCreds("cloudant"),
+let cloudantCreds = appEnv.getServiceCreds("cloudant"),
     dbName = "applications";
 
 app.get("/api/applications", function (request, response) {
@@ -74,8 +74,8 @@ app.put("/api/applications/:id", function (request, response) {
     });
 });
 
-app.post("/api/charge", function (request, response) { 
-    var charge = stripe.charges.create({
+app.post("/api/charge", function (request, response) {
+    let charge = stripe.charges.create({
         amount: 1000, // amount in cents, again
         currency: "usd",
         source: stripeToken,
@@ -119,10 +119,10 @@ if (!isProduction) {
 }
 
 
-var port = process.env.PORT || 8080;
+let port = process.env.PORT || 8080;
 app.listen(port, function() {
   console.log("server started on port " + port);
-  var dbCreated = false;
+  let dbCreated = false;
   Cloudant({account:cloudantCreds.username, password:cloudantCreds.password}, function(er, dbInstance) {
       cloudant = dbInstance;
       if (er) {
@@ -162,23 +162,23 @@ app.listen(port, function() {
 
 function sendText(status, phoneNumber) {
     //remove spaces and dashes and other stuff
-    phoneNumber = phoneNumber.replace(/\s/g, "").replace("-", "").replace(")", "").replace("(", "");;
-    
+    phoneNumber = phoneNumber.replace(/\s/g, "").replace("-", "").replace(")", "").replace("(", "");
+
     //ensure it has the country code on it
     //TODO this is on USA phone numbers
     if (phoneNumber.startsWith("+1")) {
         phoneNumber = "+1" + phoneNumber;
     }
-    
-    var message = "";
-    
+
+    let message = "";
+
     if (status === "pending") {
-        message = "Thanks for submitting your application, we will get back to you soon!"
+        message = "Thanks for submitting your application, we will get back to you soon!";
     }
-    else if (status == "approved") {
+    else if (status === "approved") {
         message = "Congrats!  Your application is approved!  We will be billing your credit card that you submitted with your application.";
     }
-    else if (status = "rejected") {
+    else if (status === "rejected") {
         message = "Your application has been rejected.  Please contact customer service for more information";
     }
 
@@ -198,12 +198,12 @@ function seedDB(callback) {
 
   async.waterfall([
     function (next) {
-      var designDocs = [
+      let designDocs = [
           {
             _id: '_design/applications',
             views: {
               all: {
-                map: function (doc) { emit(doc._id, doc) }
+                map: function (doc) { emit(doc._id, doc); }
               }
             }
           }
@@ -215,5 +215,5 @@ function seedDB(callback) {
       console.log("Created DB", dbName, "and populated it with initial purchases");
       next();
     }
-  ], callback)
+], callback);
 }
