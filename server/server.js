@@ -65,8 +65,8 @@ app.post("/api/applications", function (request, response) {
         }
         else {
             response.json(result);
-            if (request.body.status, request.body.mobile) {
-                sendText(request.body.status, request.body.mobile);
+            if (request.body.status, request.body.phone) {
+                sendText(request.body.status, request.body.phone);
             }
         }
     });
@@ -79,8 +79,8 @@ app.put("/api/applications/:id", function (request, response) {
         }
         else {
             response.json(result);
-            if (request.body.status && request.body.mobile) {
-                sendText(request.body.status,request.body.mobile);
+            if (request.body.status && request.body.phone) {
+                sendText(request.body.status,request.body.phone);
             }
         }
     });
