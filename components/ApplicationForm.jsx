@@ -9,6 +9,7 @@ import mui, {
     Paper,
     LinearProgress
 } from 'material-ui';
+import axios from 'axios';
 import ProductFields from '../components/ProductFields';
 import PersonalFields from '../components/PersonalFields';
 import AddressFields from '../components/AddressFields';
@@ -63,7 +64,9 @@ class ApplicationForm extends Component {
     }
 
     submit() {
-        // make request / kick off action with fieldValues
+        axios.post('/api/applications', this.state.fieldValues).then((res) =>{
+            // transition to "You're done!"
+        });
     }
 
     render () {
