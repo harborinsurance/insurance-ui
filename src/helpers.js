@@ -9,7 +9,6 @@ export function makeFakeApplications (count) {
     let applications = [];
     for (let i = 0 ; i < count ; i++) {
         let application = {
-            id: faker.random.uuid(),
             status: _.sample(APPLICATION_STATES),
             firstName: faker.name.firstName(),
             lastName: faker.name.lastName(),
@@ -20,7 +19,7 @@ export function makeFakeApplications (count) {
             streetAddressCont: "",
             city: faker.address.city(),
             state: faker.address.stateAbbr(),
-            zipCode: faker.address.zipCode(),
+            zipCode: parseInt(faker.address.zipCode()),
             coverage: faker.random.number(200000),
             socialSecurityNumber: faker.random.number(),
             submittedAt: faker.date.recent(),
@@ -30,6 +29,7 @@ export function makeFakeApplications (count) {
 
         applications.push(application);
     }
+    console.log(JSON.stringify(applications));
     return applications;
 }
 

@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import mui, {DatePicker, TextField, RaisedButton, Paper} from 'material-ui';
 import _ from 'lodash';
+import $ from 'jquery'; 
 
 import ApplicationList from './ApplicationList';
 import ApplicationView from './ApplicationView';
@@ -35,13 +36,18 @@ class Admin extends Component {
         };
     }
 
-    getApplications() {
-        return makeFakeApplications(40);
-    }
-
     componentDidMount() {
-        let applications = this.getApplications();
-        this.setState({ applications: applications });
+        $.ajax({
+            url: "/api/applications/",
+            dataType: "json",
+            cache: false,
+            success: function(applications) {
+                this.setState({applications: applications});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
     }
 
     selectApplication(id) {

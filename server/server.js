@@ -34,7 +34,12 @@ app.get("/api/applications", function (request, response) {
     // TODO db not defined
     db.view("applications", "all", function(error, body) {
         if (!error) {
-            response.json(body.rows);
+            //remove nested object
+            var applications = [];
+            _.each(body.rows, function(application) {
+                applications.push(application.value); 
+            });
+            response.json(applications);
         }
         else {
             response.send(error);

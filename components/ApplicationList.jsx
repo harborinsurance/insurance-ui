@@ -71,7 +71,7 @@ class ApplicationListItem extends Component {
                 <TableRowColumn>{this.props.lastName}, {this.props.firstName}</TableRowColumn>
                 <TableRowColumn><div className={"status-"+this.props.status}>{this.props.status}</div></TableRowColumn>
                 <TableRowColumn>{numeral(this.props.coverage).format('$0,0.00')}</TableRowColumn>
-                <TableRowColumn>{this.props.submittedAt.toDateString()}</TableRowColumn>
+                <TableRowColumn>{new Date(this.props.submittedAt).toDateString()}</TableRowColumn>
             </TableRow>
         );
     }
