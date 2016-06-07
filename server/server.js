@@ -11,7 +11,7 @@ let express = require("express"),
     stripe = require("stripe")(process.env.STRIPE_API_KEY),
     Twilio = require("twilio"),
     async = require("async"),
-    twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_TOKEN);
+    twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_SECRET);
 
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
