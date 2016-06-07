@@ -15,7 +15,7 @@ class AddressFields extends Component {
     }
 
     render() {
-        const nextDisabled = (!(this.props.fieldValues.street1 && this.props.fieldValues.street2 && this.props.fieldValues.city && this.props.fieldValues.state && this.props.fieldValues.zipCode));
+        const nextDisabled = (!(this.props.fieldValues.street1 && this.props.fieldValues.city && this.props.fieldValues.state && this.props.fieldValues.zipCode));
 
         return (
             <div style={this.props.containerStyle}>
