@@ -59,6 +59,17 @@ app.post("/api/applications", function (request, response) {
     });
 });
 
+app.put("/api/applications/:id", function (request, response) {
+    db.insert(request.body, function (error, result) {
+        if (error) {
+            response.error(error);
+        }
+        else {
+            response.json(result);
+        }
+    });
+});
+
 app.post("/api/charge", function (request, response) { 
     var charge = stripe.charges.create({
         amount: 1000, // amount in cents, again
