@@ -89,8 +89,8 @@ class ApplicationReview extends Component {
             if (this.props.application.status === "pending") {
                 reviewOptions = (
                     <div style={{display:"flex"}}>
-                        <RaisedButton primary={true} label="Reject" style={{flex:2}} onClick={this.rejectApplication.bind(this)}/>
-                        <RaisedButton secondary={true} label="Approve" style={{flex:2}} onClick={this.approveApplication.bind(this)}/>
+                        <RaisedButton primary={true} label="Reject" style={{flex:2, margin:20, marginRight:10}} onClick={this.rejectApplication.bind(this)}/>
+                        <RaisedButton secondary={true} label="Approve" style={{flex:2, margin: 20, marginLeft:10}} onClick={this.approveApplication.bind(this)}/>
                         <Divider/>
                     </div>
                 );
