@@ -4,7 +4,8 @@ var express = require("express"),
     cfenv = require("cfenv"),
     Cloudant = require("cloudant"),
     _ = require("underscore"),
-    bodyParser = require("body-parser");
+    bodyParser = require("body-parser"),
+    stripe = require("stripe")(process.env.STRIPE_API_KEY);
     
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
@@ -36,6 +37,17 @@ app.get("/api/applications", function (request, response) {
     });
 });
 
+app.get("/api/applications/:id", function (request, response) {
+    db.get(request.params.id, function(error, body) {
+        if (!error) {
+            response.json(body);
+        }
+        else {
+            response.error(error);
+        }
+    });
+});
+
 app.post("/api/applications", function (request, response) {
     db.insert(request.body, function (error, result) {
         if (error) {
@@ -47,9 +59,7 @@ app.post("/api/applications", function (request, response) {
     });
 });
 
-app.post("/api/charge", function (request, response) {
-    var stripe = require("stripe")(process.env.STRIPE_API_KEY);
-    
+app.post("/api/charge", function (request, response) { 
     var charge = stripe.charges.create({
         amount: 1000, // amount in cents, again
         currency: "usd",
