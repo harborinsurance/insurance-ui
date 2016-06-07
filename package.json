@@ -64,6 +64,7 @@
     "react-redux": "^4.4.5",
     "react-tap-event-plugin": "^0.2.2",
     "redux": "^3.5.0",
+    "stripe": "^4.7.0",
     "underscore": "^1.8.3"
   }
 }

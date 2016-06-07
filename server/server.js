@@ -47,6 +47,24 @@ app.post("/api/applications", function (request, response) {
     });
 });
 
+app.post("/api/charge", function (request, response) {
+    var stripe = require("stripe")(process.env.STRIPE_API_KEY);
+    
+    var charge = stripe.charges.create({
+        amount: 1000, // amount in cents, again
+        currency: "usd",
+        source: stripeToken,
+        description: "Example charge"
+    }, function(err, charge) {
+        if (err && err.type === 'StripeCardError') {
+            response.error(error);
+        }
+        else {
+            response.send(charge);
+        }
+    });
+});
+
 if (!isProduction) {
   const compiler = webpack(config);
   const middleware = webpackMiddleware(compiler, {

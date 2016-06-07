@@ -20,7 +20,7 @@ class PersonalFields extends Component {
     }
 
     render() {
-        const nextDisabled = (!(this.props.fieldValues.firstName && this.props.fieldValues.lastName && this.props.fieldValues.birthDate));
+        const nextDisabled = (!(this.props.fieldValues.firstName && this.props.fieldValues.lastName && this.props.fieldValues.birthDate && this.props.fieldValues.mobile));
         return (
             <Paper style={this.props.defaultStyle}>
 
@@ -28,9 +28,10 @@ class PersonalFields extends Component {
                 <br />
                 <TextField ref="lastName" floatingLabelText="Last name" onChange={this.handleChange.bind(this, "lastName")}/>
                 <br/>
+                <TextField ref="mobile" floatingLabelText="Mobile Phone Number" onChange={this.handleChange.bind(this, "mobile")}/>
+                <br/>
                 <DatePicker ref="birthDate" placeholder="Date of birth" mode="landscape" onChange={this.handleChange.bind(this, "birthDate")}/>
                 <br/>
-
                 <RaisedButton className="next" label="Next" secondary={true} onClick={this.props.nextStep} disabled={nextDisabled}/>
 
             </Paper>
