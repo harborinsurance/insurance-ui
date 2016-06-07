@@ -4,15 +4,19 @@ var express = require("express"),
     cfenv = require("cfenv"),
     Cloudant = require("cloudant"),
     _ = require("underscore");
+    
+const webpack = require('webpack');
+const webpackMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const config = require('../webpack.config.js');
 
 dotenv.load();
 
 var appEnv = cfenv.getAppEnv();
+var isProduction = process.env.NODE_ENV === "production";
 
 var cloudantCreds = appEnv.getServiceCreds("cloudant"),
     dbName = "applications";
-
-app.use(express.static(__dirname + "/static"));
 
 app.get("/api/currentTime", function (request, response) {
   response.send({ time: new Date() });
@@ -28,6 +32,35 @@ app.get("/api/applications", function (request, response) {
         }
     });
 });
+
+if (!isProduction) {
+  const compiler = webpack(config);
+  const middleware = webpackMiddleware(compiler, {
+    publicPath: config.output.publicPath,
+    contentBase: 'src',
+    stats: {
+      colors: true,
+      hash: false,
+      timings: true,
+      chunks: false,
+      chunkModules: false,
+      modules: false
+    }
+  });
+
+  app.use(middleware);
+  app.use(webpackHotMiddleware(compiler));
+  app.get('*', function response(req, res) {
+    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'static/index.html')));
+    res.end();
+  });
+} else {
+  app.use(express.static(__dirname + "/static"));
+  app.get('*', function response(req, res) {
+    res.sendFile(path.join(__dirname, 'static/index.html'));
+  });
+}
+
 
 var port = process.env.PORT || 8080;
 app.listen(port, function() {

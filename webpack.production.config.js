@@ -2,8 +2,8 @@ var Webpack = require("webpack");
 
 module.exports = {
   context: __dirname,
+  devtool: "source-map",
   entry: [
-    'webpack-hot-middleware/client?reload=true',
     "./src/index.jsx",
     "./src/main.css",
     "./src/index.html"
@@ -29,6 +29,5 @@ module.exports = {
   },
   eslint: {
     configFile: './.eslintrc'
-  },
-  plugins: [new Webpack.HotModuleReplacementPlugin()]
+  }
 };

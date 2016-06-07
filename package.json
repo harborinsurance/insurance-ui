@@ -2,15 +2,11 @@
   "name": "react-redux-material_ui-boilerplate",
   "version": "1.0.0",
   "description": "A boilerplate for React + Redux + Material UI + ES6 syntax application",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-server": "nodemon server.js --watch server",
-    "dev-app": "webpack-dev-server --hot --inline --progress --colors",
-    "start": "nodemon server.js --watch server & webpack-dev-server --hot --inline --progress --colors",
-    "build": "webpack --progress --colors",
-    "prod": "NODE_ENV=production node server.js",
-    "postinstall": "webpack -p"
+    "build": "NODE_ENV=production webpack --config ./webpack.production.config.js --progress --profile --colors",
+    "start": "node server/server.js"
   },
   "repository": {
     "type": "git",
@@ -46,8 +42,8 @@
     "nodemon": "^1.9.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.0",
-    "webpack-dev-server": "^1.14.1",
-    "webpack-hot-middleware": "^2.10.0"
+    "webpack-dev-middleware": "^1.2.0",
+    "webpack-hot-middleware": "^2.2.0"
   },
   "dependencies": {
     "cfenv": "^1.0.3",
