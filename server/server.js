@@ -1,4 +1,7 @@
+"use strict";
+
 let express = require("express"),
+    path = require("path"),
     app = express(),
     dotenv = require("dotenv"),
     cfenv = require("cfenv"),
@@ -25,6 +28,7 @@ let cloudantCreds = appEnv.getServiceCreds("cloudant"),
     dbName = "applications";
 
 app.get("/api/applications", function (request, response) {
+    // TODO db not defined
     db.view("applications", "all", function(error, body) {
         if (!error) {
             response.json(body.rows);
@@ -194,8 +198,10 @@ function sendText(status, phoneNumber) {
 }
 
 function seedDB(callback) {
+    // TODO :: define db
   db = cloudant.use(dbName);
 
+  // TODO :: define async
   async.waterfall([
     function (next) {
       let designDocs = [

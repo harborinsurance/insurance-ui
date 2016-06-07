@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "NODE_ENV=production webpack --config ./webpack.production.config.js --progress --profile --colors",
     "start": "node server/server.js",
+    "server": "node server/server.js",
     "watch": "webpack-dev-server --hot --inline --progress --colors"
   },
   "repository": {
