@@ -16,7 +16,7 @@ dotenv.load();
 var appEnv = cfenv.getAppEnv();
 var isProduction = process.env.NODE_ENV === "production";
 
-app.use(bodyParser.json(options));
+app.use(bodyParser.json());
 
 var cloudantCreds = appEnv.getServiceCreds("cloudant"),
     dbName = "applications";
