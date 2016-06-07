@@ -1,5 +1,5 @@
-# react-redux-material_ui-boilerplate
-A boilerplate for React + Redux + Material UI + ES6 syntax applications. This boilerplate includes following tools and frameworks.
+# Forrester Wave Demo
+This app uses React + Redux + Material UI + ES6 syntax applications. This boilerplate includes following tools and frameworks.
 
 * [React](https://facebook.github.io/react/)
 * [Redux](http://rackt.org/redux/index.html)
@@ -7,6 +7,10 @@ A boilerplate for React + Redux + Material UI + ES6 syntax applications. This bo
 * [webpack](https://webpack.github.io/)
 * [Babel](https://babeljs.io/)
 * [ESLint](http://eslint.org/)
+
+
+## Build Status
+[![Build Status](https://travis.innovate.ibm.com/Bluemix/forrester-wave-demo-ui.svg?token=K4fZzZF5xZgqn9xKsG9D&branch=master)](https://travis.innovate.ibm.com/Bluemix/forrester-wave-demo-ui)
 
 
 # Usage
