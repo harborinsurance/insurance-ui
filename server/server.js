@@ -5,7 +5,9 @@ var express = require("express"),
     Cloudant = require("cloudant"),
     _ = require("underscore"),
     bodyParser = require("body-parser"),
-    stripe = require("stripe")(process.env.STRIPE_API_KEY);
+    stripe = require("stripe")(process.env.STRIPE_API_KEY),
+    Twilio = require("twilio"),
+    twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_TOKEN);
     
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
@@ -22,17 +24,13 @@ app.use(bodyParser.json());
 var cloudantCreds = appEnv.getServiceCreds("cloudant"),
     dbName = "applications";
 
-app.get("/api/currentTime", function (request, response) {
-  response.send({ time: new Date() });
-});
-
 app.get("/api/applications", function (request, response) {
     db.view("applications", "all", function(error, body) {
         if (!error) {
             response.json(body.rows);
         }
         else {
-            response.error(error);
+            response.send(error);
         }
     });
 });
@@ -43,7 +41,7 @@ app.get("/api/applications/:id", function (request, response) {
             response.json(body);
         }
         else {
-            response.error(error);
+            response.send(error);
         }
     });
 });
@@ -51,10 +49,13 @@ app.get("/api/applications/:id", function (request, response) {
 app.post("/api/applications", function (request, response) {
     db.insert(request.body, function (error, result) {
         if (error) {
-            response.error(error);
+            response.send(error);
         }
         else {
             response.json(result);
+            if (request.body.status, request.body.mobile) {
+                sendText(request.body.status, request.body.mobile);
+            }
         }
     });
 });
@@ -62,10 +63,13 @@ app.post("/api/applications", function (request, response) {
 app.put("/api/applications/:id", function (request, response) {
     db.insert(request.body, function (error, result) {
         if (error) {
-            response.error(error);
+            response.send(error);
         }
         else {
             response.json(result);
+            if (request.body.status && request.body.mobile) {
+                sendText(request.body.status,request.body.mobile);
+            }
         }
     });
 });
@@ -78,7 +82,7 @@ app.post("/api/charge", function (request, response) {
         description: "Example charge"
     }, function(err, charge) {
         if (err && err.type === 'StripeCardError') {
-            response.error(error);
+            response.send(error);
         }
         else {
             response.send(charge);
@@ -155,6 +159,39 @@ app.listen(port, function() {
       });
   });
 });
+
+function sendText(status, phoneNumber) {
+    //remove spaces and dashes and other stuff
+    phoneNumber = phoneNumber.replace(/\s/g, "").replace("-", "").replace(")", "").replace("(", "");;
+    
+    //ensure it has the country code on it
+    //TODO this is on USA phone numbers
+    if (phoneNumber.startsWith("+1")) {
+        phoneNumber = "+1" + phoneNumber;
+    }
+    
+    var message = "";
+    
+    if (status === "pending") {
+        message = "Thanks for submitting your application, we will get back to you soon!"
+    }
+    else if (status == "approved") {
+        message = "Congrats!  Your application is approved!  We will be billing your credit card that you submitted with your application.";
+    }
+    else if (status = "rejected") {
+        message = "Your application has been rejected.  Please contact customer service for more information";
+    }
+
+    twilio.messages.create({
+        body: message,
+        to: phoneNumber,
+        from: process.env.TWILIO_PHONE_NUMBER
+    }, function(err, message) {
+        if(err) {
+            console.error(err.message);
+        }
+    });
+}
 
 function seedDB(callback) {
   db = cloudant.use(dbName);
