@@ -1,11 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import injectTapEventPlugin from "react-tap-event-plugin";
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
+import { Router, Route, hashHistory } from 'react-router';
 
-import App from '../containers/App';
-import configureStore from '../store/configureStore';
+import App from '../components/App';
+import ApplicationList from '../components/ApplicationList';
+import ApplicationView from '../components/ApplicationView';
+import ApplicationForm from '../components/ApplicationForm';
+
 
 //Needed for React Developer Tools
 window.React = React;
@@ -16,11 +18,15 @@ window.React = React;
 //https://github.com/zilverline/react-tap-event-plugin
 injectTapEventPlugin();
 
-const store = configureStore();
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+    <Router history={hashHistory}>
+        <Route path="/" component={App} >
+            <Route path="applications" component={ApplicationList}>
+                <Route path="/applications/:id" component={ApplicationView}/>
+            </Route>
+            <Route path="/apply" component={ApplicationForm}/>
+        </Route>
+    </Router>,
   document.getElementById("root")
 );

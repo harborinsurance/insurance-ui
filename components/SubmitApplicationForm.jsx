@@ -9,10 +9,11 @@ import mui, {
     Table,
     TableBody,
     TableRow,
-    TableRowColumn
+    TableRowColumn,
+    Divider
 } from 'material-ui';
 
-class SubmitRentersForm extends Component {
+class SubmitApplicationForm extends Component {
     constructor (props, context) {
         super(props, context);
     }
@@ -32,7 +33,7 @@ class SubmitRentersForm extends Component {
             "state",
             "zipCode",
             "coverage",
-            "ssn"
+            "socialSecurityNumber"
         ];
         let rows = [];
         for (let fieldName of fieldNames) {
@@ -50,8 +51,9 @@ class SubmitRentersForm extends Component {
         return (
             <div style={this.props.containerStyle}>
                 <Paper style={this.props.paperStyle}>
-                    <h3>Confirm application details</h3>
 
+                    <h3>Confirm application details</h3>
+                    <Divider/>
                     <Table>
                         <TableBody displayRowCheckbox={false}>
                             {rows}
@@ -87,4 +89,4 @@ function humanizeFieldName(camelCase) {
 }
 
 
-export default SubmitRentersForm;
+export default SubmitApplicationForm;
