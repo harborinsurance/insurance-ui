@@ -25,6 +25,13 @@ class ProductFields extends Component {
         let updateValues = [];
         if (source === "product") {
             updateValues[source] = "renters";
+        } else if (source === "zipCode") {
+            if (e.target.value.match(/^\d{5}$/)) {
+                this.setState({ errorText: '' });
+                updateValues[source] = e.target.value;
+            } else {
+                this.setState({ errorText: 'This must be a valid zip code.' })
+            }
         } else {
             updateValues[source] = e.target.value;
         }
@@ -47,7 +54,7 @@ class ProductFields extends Component {
                     <MenuItem value={"jewelry"} disabled={true} primaryText="Jewelry"/>
                     <MenuItem value={"rv"} disabled={true} primaryText="RV"/>
                 </SelectField>
-                { zipCodeEnabled ? <TextField ref="zipCode" onChange={this.handleChange.bind(this, "zipCode")} floatingLabelText="Zip code" type="number"/> : null}
+                { zipCodeEnabled ? <TextField ref="zipCode" onChange={this.handleChange.bind(this, "zipCode")} errorText= {this.state.errorText} floatingLabelText="Zip code" type="number"/> : null}
                 <br/>
                 <RaisedButton className="next" label="Next" secondary={true} onClick={this.props.nextStep} disabled={nextDisabled}/>
             </Paper>
