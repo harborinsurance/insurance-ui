@@ -1,3 +1,5 @@
+
+
 import React, { Component, PropTypes } from "react";
 import mui, {
     Divider,
@@ -14,28 +16,27 @@ import mui, {
     TableRowColumn
 } from 'material-ui';
 import _ from 'lodash';
+import axios from 'axios';
 
 import {humanizeFieldName} from '../src/helpers';
 
 
-class ApplicationView extends Component {
+class ApplicationStatus extends Component {
     constructor (props, context) {
         super(props, context);
+        this.state = {
+            application: {}
+        };
+    }
+
+    componentDidMount() {
+        axios.get(`/api/applications/${this.props.params.id}`).then((application) => {
+            this.setState({application});
+        });
     }
 
     render () {
-
-
-
         let content;
-        if (_.isEmpty(this.props.application)) {
-            content = (
-                <div>
-                <h2>No application selected</h2>
-                <Divider/>
-                </div>
-            );
-        } else {
             const fieldNames = [
                 "status",
                 "phone",
@@ -64,10 +65,23 @@ class ApplicationView extends Component {
                 }
             }
 
+            let approveOptions;
+            if (this.props.application.status !== "approved") {
+                approveOptions = (
+                    <div>
+                        <RaisedButton primary={true} value="Reject" />
+                        <RaisedButton secondary={true} value="Approve" />
+                        <Divider/>
+                    </div>
+
+                );
+            }
+
             content = (
                 <div>
                     <h2>Application for {this.props.application.firstName} {this.props.application.lastName}</h2>
                     <Divider/>
+                    {approveOptions}
 
                     <Table>
                         <TableBody displayRowCheckbox={false}>
@@ -76,7 +90,6 @@ class ApplicationView extends Component {
                     </Table>
                 </div>
             );
-        }
 
 
 
@@ -86,4 +99,4 @@ class ApplicationView extends Component {
     }
 }
 
-export default ApplicationView;
+export default ApplicationStatus;

@@ -34,9 +34,14 @@ app.get("/api/applications", function (request, response) {
     db.view("applications", "all", function(error, body) {
         if (!error) {
             //remove nested object
+<<<<<<< HEAD
             var applications = [];
             _.each(body.rows, function(application) {
                 applications.push(application.value); 
+=======
+            let applications = body.rows.map((row) =>{
+                return addID(row.value);
+>>>>>>> application-review
             });
             response.json(applications);
         }
@@ -61,10 +66,25 @@ app.post("/api/applications", function (request, response) {
     //set initial application state
     request.body.status = "pending";
     request.body.submittedAt = new Date().toDateString();
+<<<<<<< HEAD
     request.body.creditScore = getCreditScore();
     request.body.riskScore = getRiskScore();
     
     insertApplication(request.body, response);
+=======
+
+    db.insert(request.body, function (error, result) {
+        if (error) {
+            response.send(error);
+        }
+        else {
+            response.json(result);
+            if (request.body.status, request.body.phone) {
+                sendText(request.body.status, request.body.phone);
+            }
+        }
+    });
+>>>>>>> application-review
 });
 
 app.put("/api/applications/:id", function (request, response) {
@@ -83,7 +103,7 @@ app.post("/api/charge", function (request, response) {
         description: "Example charge"
     }, function(err, charge) {
         if (err && err.type === 'StripeCardError') {
-            response.send(error);
+            response.send(err);
         }
         else {
             response.send(charge);

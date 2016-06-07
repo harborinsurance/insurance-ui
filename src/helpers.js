@@ -9,6 +9,7 @@ export function makeFakeApplications (count) {
     let applications = [];
     for (let i = 0 ; i < count ; i++) {
         let application = {
+            _id: faker.random.uuid(),
             status: _.sample(APPLICATION_STATES),
             firstName: faker.name.firstName(),
             lastName: faker.name.lastName(),
@@ -29,7 +30,6 @@ export function makeFakeApplications (count) {
 
         applications.push(application);
     }
-    console.log(JSON.stringify(applications));
     return applications;
 }
 

@@ -30,16 +30,10 @@ class ApplicationList extends Component {
         };
     }
 
-    rowSelected(id) {
-        console.log("row selected")
-        this.props.selectApplication(id);
-    }
-
-
 
     render() {
         let applicationRows = this.props.applications.map((application) => {
-            return <ApplicationListItem {...application} selectApplication={this.props.selectApplication}/>;
+            return <ApplicationListItem {...application} key={application._id} selectApplication={this.props.selectApplication}/>;
         });
 
         return(
