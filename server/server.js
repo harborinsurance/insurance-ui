@@ -59,6 +59,10 @@ app.get("/api/applications/:id", function (request, response) {
 });
 
 app.post("/api/applications", function (request, response) {
+    //set initial application state
+    request.body.status = "pending";
+    request.body.submittedAt = new Date().toDateString();
+    
     db.insert(request.body, function (error, result) {
         if (error) {
             response.send(error);
@@ -90,7 +94,7 @@ app.post("/api/charge", function (request, response) {
     let charge = stripe.charges.create({
         amount: 1000, // amount in cents, again
         currency: "usd",
-        source: stripeToken,
+        source: '',
         description: "Example charge"
     }, function(err, charge) {
         if (err && err.type === 'StripeCardError') {
@@ -124,9 +128,9 @@ if (!isProduction) {
     res.end();
   });
 } else {
-  app.use(express.static(__dirname + "/static"));
-  app.get('*', function response(req, res) {
-    res.sendFile(path.join(__dirname, 'static/index.html'));
+  app.use(express.static(__dirname + "/../static"));
+  app.get("/", function response(req, res) {
+    res.sendFile(path.join(__dirname, '../static/index.html'));
   });
 }
 

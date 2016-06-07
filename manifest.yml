@@ -1,0 +1,13 @@
+---
+declared-services:
+  cloudant:
+    label: cloudantNoSQLDB
+    plan: Shared
+applications:
+- name: forrester-wave
+  command: npm start
+  path: .
+  instances: 3
+  memory: 1G
+  services:
+  - cloudant
