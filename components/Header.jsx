@@ -25,8 +25,8 @@ class Header extends Component {
   render() {
     return (
       <header className="header">
-          <AppBar title="Acme Insurance" />
-          <h1 style={defaultStyle}>Renters Application</h1>
+          <AppBar title="ACME Insurance" />
+          <h1 style={defaultStyle}>Application</h1>
       </header>
     );
   }

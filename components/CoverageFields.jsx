@@ -14,14 +14,18 @@ class CoverageFields extends Component {
         this.props.updateFields(updateValues);
     }
 
-
     render () {
         const ssnEnabled = this.props.fieldValues.coverage && this.props.fieldValues.coverage >= 100000;
+        const nextDisabled = (!(this.props.fieldValues.coverage && (ssnEnabled ? this.props.fieldValues.socialSecurityNumber : true)));
         return (
-            <Paper style={this.props.defaultStyle}>
-                <TextField floatingLabelText="Coverage amount" type="number" onChange={this.handleChange.bind(this, "coverage")}/>
-                {ssnEnabled ? <TextField floatingLabelText="Social security" type="number" onChange={this.handleChange.bind(this, "ssn")}/> : null}
-            </Paper>
+            <div style={this.props.containerStyle}>
+                <Paper style={this.props.paperStyle}>
+                    <TextField floatingLabelText="Coverage amount" type="number" value={this.props.fieldValues.coverage} onChange={this.handleChange.bind(this, "coverage")}/>
+                    {ssnEnabled ? <TextField floatingLabelText="Social security number" type="number" value={this.props.fieldValues.socialSecurityNumber} onChange={this.handleChange.bind(this, "socialSecurityNumber")}/> : null}
+                </Paper>
+                <RaisedButton className="prev" label="Back" secondary={true} onClick={this.props.prevStep} style={this.props.prevButtonStyle}/>
+                <RaisedButton className="next" label="Next" secondary={true} onClick={this.props.nextStep} disabled={nextDisabled} style={this.props.nextButtonStyle}/>
+            </div>
         );
     }
 }

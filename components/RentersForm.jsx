@@ -13,19 +13,33 @@ import ProductFields from '../components/ProductFields';
 import PersonalFields from '../components/PersonalFields';
 import AddressFields from '../components/AddressFields';
 import CoverageFields from '../components/CoverageFields';
+import SubmitRentersForm from '../components/SubmitRentersForm';
 
 
-const defaultStyle = {
+const containerStyle = {
+    maxWidth: 350
+};
+
+const paperStyle = {
     margin: 20,
-    padding: 20,
-    maxWidth: 300
+    padding: 20
+};
+
+const nextButtonStyle = {
+    float: "right",
+    marginRight: 20
+};
+
+const prevButtonStyle = {
+    float: "left",
+    marginLeft: 20
 };
 
 class RentersForm extends Component {
     constructor (props, context) {
         super(props, context);
         this.state = {
-            step: 1,
+            step: 0,
             fieldValues: {
             }
         };
@@ -38,36 +52,43 @@ class RentersForm extends Component {
     }
 
     nextStep() {
-        console.log(this);
+
         let newStep = Math.min(this.state.step + 1, 4);
         this.setState({step:newStep});
     }
 
     prevStep() {
-        let newStep = Math.max(this.state.step - 1, 1);
+        let newStep = Math.max(this.state.step - 1, 0);
         this.setState({step:newStep});
     }
 
+    submit() {
+        // make request / kick off action with fieldValues
+    }
+
     render () {
-        let fields;
+        let content;
         switch(this.state.step) {
+            case 0:
+                content = <ProductFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues}  nextStep={this.nextStep.bind(this)} updateFields={this.updateFields.bind(this)}/>;
+                break;
             case 1:
-                fields = <ProductFields defaultStyle={defaultStyle} fieldValues={this.state.fieldValues}  nextStep={this.nextStep.bind(this)} updateFields={this.updateFields.bind(this)}/>;
+                content = <PersonalFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)} updateFields={this.updateFields.bind(this)}/>;
                 break;
             case 2:
-                fields = <PersonalFields defaultStyle={defaultStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)} updateFields={this.updateFields.bind(this)}/>;
+                content = <AddressFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)} updateFields={this.updateFields.bind(this)}/>;
                 break;
             case 3:
-                fields = <AddressFields defaultStyle={defaultStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)} updateFields={this.updateFields.bind(this)}/>;
+                content = <CoverageFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)}  updateFields={this.updateFields.bind(this)}/>;
                 break;
             case 4:
-                fields = <CoverageFields defaultStyle={defaultStyle} fieldValues={this.state.fieldValues} prevStep={this.prevStep.bind(this)}  updateFields={this.updateFields.bind(this)}/>;
+                content = <SubmitRentersForm  paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} prevStep={this.prevStep.bind(this)}  submit={this.submit.bind(this)}/>;
                 break;
         }
         return (
             <div>
-                <LinearProgress mode="determinate" min={0} max={4} value={this.state.step - 1}/>
-                {fields}
+                <LinearProgress mode="determinate" min={0} max={4} value={this.state.step}/>
+                {content}
             </div>
         );
     }
