@@ -1,0 +1,12 @@
+---
+declared-services:
+  19192302266:
+    label: cloudantNoSQLDB
+    plan: Shared
+applications:
+- name: forrest-wave
+  command: npm start
+  path: .
+  memory: 1G
+  services:
+  - cloudant

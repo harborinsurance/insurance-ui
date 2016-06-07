@@ -8,7 +8,8 @@
     "build": "NODE_ENV=production webpack --config ./webpack.production.config.js --progress --profile --colors",
     "start": "node server/server.js",
     "server": "node server/server.js",
-    "watch": "webpack-dev-server --hot --inline --progress --colors"
+    "watch": "webpack-dev-server --hot --inline --progress --colors",
+    "postinstall": "NODE_ENV=production webpack --config ./webpack.production.config.js --progress --profile --colors"
   },
   "repository": {
     "type": "git",
