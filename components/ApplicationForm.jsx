@@ -15,6 +15,7 @@ import PersonalFields from '../components/PersonalFields';
 import AddressFields from '../components/AddressFields';
 import CoverageFields from '../components/CoverageFields';
 import SubmitApplicationForm from '../components/SubmitApplicationForm';
+import YourDone from '../components/YourDone';
 
 
 const containerStyle = {
@@ -66,6 +67,7 @@ class ApplicationForm extends Component {
     submit() {
         axios.post('/api/applications', this.state.fieldValues).then((res) =>{
             // transition to "You're done!"
+            this.setState({step:5});
         });
     }
 
@@ -86,6 +88,9 @@ class ApplicationForm extends Component {
                 break;
             case 4:
                 content = <SubmitApplicationForm  paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} prevStep={this.prevStep.bind(this)}  submit={this.submit.bind(this)}/>;
+                break;
+            case 5:
+                content = <YourDone  paperStyle={paperStyle} containerStyle={containerStyle} />;
                 break;
         }
         return (

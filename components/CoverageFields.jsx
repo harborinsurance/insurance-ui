@@ -20,7 +20,7 @@ class CoverageFields extends Component {
         return (
             <div style={this.props.containerStyle}>
                 <Paper style={this.props.paperStyle}>
-                    <TextField floatingLabelText="Coverage amount" type="number" value={this.props.fieldValues.coverage} onChange={this.handleChange.bind(this, "coverage")}/>
+                    <TextField floatingLabelText="Desired coverage amount" type="number" value={this.props.fieldValues.coverage} onChange={this.handleChange.bind(this, "coverage")}/>
                     {ssnEnabled ? <TextField floatingLabelText="Social security number" type="number" value={this.props.fieldValues.socialSecurityNumber} onChange={this.handleChange.bind(this, "socialSecurityNumber")}/> : null}
                 </Paper>
                 <RaisedButton className="prev" label="Back" secondary={true} onClick={this.props.prevStep} style={this.props.prevButtonStyle}/>
