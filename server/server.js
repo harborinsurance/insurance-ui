@@ -31,7 +31,6 @@ let cloudantCreds = appEnv.getServiceCreds("cloudant"),
     db;
 
 app.get("/api/applications", function (request, response) {
-    // TODO db not defined
     db.view("applications", "all", function(error, body) {
         if (!error) {
             //remove nested object
@@ -62,6 +61,8 @@ app.post("/api/applications", function (request, response) {
     //set initial application state
     request.body.status = "pending";
     request.body.submittedAt = new Date().toDateString();
+    request.body.creditScore = getCreditScore();
+    request.body.riskScore = getRiskScore();
     
     db.insert(request.body, function (error, result) {
         if (error) {
@@ -77,6 +78,10 @@ app.post("/api/applications", function (request, response) {
 });
 
 app.put("/api/applications/:id", function (request, response) {
+    if (request.body.status === "approved") {
+        request.body.approvedAt = new Date().toDateString();
+    }
+
     db.insert(removeID(request.body), function (error, result) {
         if (error) {
             response.send(error);
@@ -246,4 +251,16 @@ function removeID(obj) {
     obj._id = obj.id;
     delete obj.id;
     return obj;
+}
+
+function getCreditScore() {
+    return getRandomNumber(300, 850);
+}
+
+function getRiskScore() {
+    return getRandomNumber(0, 100);
+}
+
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }

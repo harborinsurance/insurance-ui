@@ -48,7 +48,7 @@ class ApplicationView extends Component {
                 "coverage",
                 "socialSecurityNumber",
                 "riskScore",
-                "credtiScore"
+                "creditScore"
             ];
             let rows = [];
             for (let fieldName of fieldNames) {
