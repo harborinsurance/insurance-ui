@@ -1,7 +1,7 @@
 {
-  "name": "react-redux-material_ui-boilerplate",
+  "name": "forrester-wave-ui",
   "version": "1.0.0",
-  "description": "A boilerplate for React + Redux + Material UI + ES6 syntax application",
+  "description": "IBM Demo",
   "main": "server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -22,11 +22,8 @@
     "Bable",
     "ES6"
   ],
-  "author": "https://github.com/takanabe",
+  "author": "https://github.com/Bluemix",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/takanabe/react-redux-material_ui-boilerplate/issues"
-  },
   "homepage": "",
   "devDependencies": {
     "nodemon": "^1.9.2"

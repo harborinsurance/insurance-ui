@@ -31,13 +31,11 @@ let cloudantCreds = appEnv.getServiceCreds("cloudant"),
     db;
 
 app.get("/api/applications", function (request, response) {
-    // TODO db not defined
     db.view("applications", "all", function(error, body) {
         if (!error) {
             //remove nested object
-            var applications = [];
-            _.each(body.rows, function(application) {
-                applications.push(addID(application.value));
+            let applications = body.rows.map((row) =>{
+                return addID(row.value);
             });
             response.json(applications);
         }
@@ -62,7 +60,7 @@ app.post("/api/applications", function (request, response) {
     //set initial application state
     request.body.status = "pending";
     request.body.submittedAt = new Date().toDateString();
-    
+
     db.insert(request.body, function (error, result) {
         if (error) {
             response.send(error);
@@ -98,7 +96,7 @@ app.post("/api/charge", function (request, response) {
         description: "Example charge"
     }, function(err, charge) {
         if (err && err.type === 'StripeCardError') {
-            response.send(error);
+            response.send(err);
         }
         else {
             response.send(charge);

@@ -37,38 +37,53 @@ class Admin extends Component {
     }
 
     componentDidMount() {
-        $.ajax({
-            url: "/api/applications/",
-            dataType: "json",
-            cache: false,
-            success: function(applications) {
-                this.setState({applications: applications});
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(this.props.url, status, err.toString());
-            }.bind(this)
+        this.setState({
+            applications: makeFakeApplications(40)
         });
+        // $.ajax({
+        //     url: "/api/applications/",
+        //     dataType: "json",
+        //     cache: false,
+        //     success: function(applications) {
+        //         this.setState({applications: applications});
+        //     }.bind(this),
+        //     error: function(xhr, status, err) {
+        //         console.error(this.props.url, status, err.toString());
+        //     }.bind(this)
+        // });
     }
 
     selectApplication(id) {
-        let selectedApplication = _.find(this.state.applications, (application) => { return application.id === id ;} );
+        let selectedApplication = _.find(this.state.applications, (application) => { return application._id === id ;} );
         console.log(selectedApplication);
         this.setState({selectedApplication: selectedApplication});
     }
 
-    updateApplication(id, fields) {
+    updateApplication(application) {
+
+        console.log(application);
+
+        // update application on server
+        // update state.applications
+
+
         let applications = this.state.applications;
-        for (let i = 0; i < applications; i++) {
-            let application = applications[i];
-            if (application.id !== id) {
+        for (let i = 0; i < applications.length; i++) {
+            let a = applications[i];
+            if (a._id !== application._id) {
                 continue;
             }
 
-            applications[i] = Object.assign({}, application, fields);
+            applications[i] = Object.assign({}, a, application);
             break;
         }
 
+        if (this.state.selectedApplication._id === application._id) {
+            this.setState({selectedApplication: application});
+        }
+
         this.setState({applications: applications});
+        console.log(this.state);
     }
 
     render () {

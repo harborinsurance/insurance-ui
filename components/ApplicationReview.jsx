@@ -21,6 +21,27 @@ import {humanizeFieldName} from '../src/helpers';
 class ApplicationReview extends Component {
     constructor (props, context) {
         super(props, context);
+
+        console.log("applicationReview constructor")
+    }
+
+    approveApplication() {
+        if (this.props.application.status !== "pending") {
+            return;
+        }
+
+        let approvedApplication = Object.assign({}, this.props.application, {status: "approved"});
+        approvedApplication
+        this.props.updateApplication(approvedApplication);
+    }
+
+    rejectApplication() {
+        if (this.props.application.status !== "pending") {
+            return;
+        }
+
+        let rejectedApplication = Object.assign({}, this.props.application, {status: "rejected"});
+        this.props.updateApplication(rejectedApplication);
     }
 
     render () {
@@ -64,12 +85,12 @@ class ApplicationReview extends Component {
                 }
             }
 
-            let approveOptions;
-            if (this.props.application.status !== "approved") {
-                approveOptions = (
-                    <div>
-                        <RaisedButton primary={true} value="Reject" />
-                        <RaisedButton secondary={true} value="Approve" />
+            let reviewOptions;
+            if (this.props.application.status === "pending") {
+                reviewOptions = (
+                    <div style={{display:"flex"}}>
+                        <RaisedButton primary={true} label="Reject" style={{flex:2}} onClick={this.rejectApplication.bind(this)}/>
+                        <RaisedButton secondary={true} label="Approve" style={{flex:2}} onClick={this.approveApplication.bind(this)}/>
                         <Divider/>
                     </div>
                 );
@@ -77,9 +98,9 @@ class ApplicationReview extends Component {
 
             content = (
                 <div>
-                    <h2>Application for {this.props.application.firstName} {this.props.application.lastName}</h2>
+                    <h2>{this.props.application.firstName} {this.props.application.lastName}</h2>
                     <Divider/>
-                    {approveOptions}
+                    {reviewOptions}
 
                     <Table>
                         <TableBody displayRowCheckbox={false}>
