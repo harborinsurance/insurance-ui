@@ -3,7 +3,8 @@ var express = require("express"),
     dotenv = require("dotenv"),
     cfenv = require("cfenv"),
     Cloudant = require("cloudant"),
-    _ = require("underscore");
+    _ = require("underscore"),
+    bodyParser = require("body-parser");
     
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
@@ -14,6 +15,8 @@ dotenv.load();
 
 var appEnv = cfenv.getAppEnv();
 var isProduction = process.env.NODE_ENV === "production";
+
+app.use(bodyParser.json(options));
 
 var cloudantCreds = appEnv.getServiceCreds("cloudant"),
     dbName = "applications";
@@ -29,6 +32,17 @@ app.get("/api/applications", function (request, response) {
         }
         else {
             response.error(error);
+        }
+    });
+});
+
+app.post("/api/applications", function (request, response) {
+    db.insert(request.body, function (error, result) {
+        if (error) {
+            response.error(error);
+        }
+        else {
+            response.json(result);
         }
     });
 });
