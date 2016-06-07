@@ -25,6 +25,13 @@ class ProductFields extends Component {
         let updateValues = [];
         if (source === "product") {
             updateValues[source] = "renters";
+        } else if (source === "zipCode") {
+            if (e.target.value.match(/^\d{5}$/)) {
+                this.setState({ errorText: '' });
+                updateValues[source] = e.target.value;
+            } else {
+                this.setState({ errorText: 'This must be a valid zip code.' })
+            }
         } else {
             updateValues[source] = e.target.value;
         }
