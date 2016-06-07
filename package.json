@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --hot --inline --progress --colors",
-    "build": "webpack --progress --colors"
+    "start": "nodemon server.js --watch server & webpack-dev-server --hot --inline --progress --colors",
+    "build": "webpack --progress --colors",
+    "prod": "NODE_ENV=production node server.js",
+    "postinstall": "webpack -p"
   },
   "repository": {
     "type": "git",
@@ -39,6 +41,7 @@
     "eslint-loader": "^1.3.0",
     "eslint-plugin-react": "^5.0.1",
     "file-loader": "^0.8.5",
+    "nodemon": "^1.9.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
@@ -46,6 +49,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.3",
+    "dotenv": "^2.0.0",
     "fbjs": "^0.8.1",
     "material-ui": "^0.14.4",
     "react": "^0.14.0",
