@@ -13,7 +13,7 @@ import ProductFields from '../components/ProductFields';
 import PersonalFields from '../components/PersonalFields';
 import AddressFields from '../components/AddressFields';
 import CoverageFields from '../components/CoverageFields';
-import SubmitRentersForm from '../components/SubmitRentersForm';
+import SubmitApplicationForm from '../components/SubmitApplicationForm';
 
 
 const containerStyle = {
@@ -35,7 +35,7 @@ const prevButtonStyle = {
     marginLeft: 20
 };
 
-class RentersForm extends Component {
+class ApplicationForm extends Component {
     constructor (props, context) {
         super(props, context);
         this.state = {
@@ -82,7 +82,7 @@ class RentersForm extends Component {
                 content = <CoverageFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)}  updateFields={this.updateFields.bind(this)}/>;
                 break;
             case 4:
-                content = <SubmitRentersForm  paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} prevStep={this.prevStep.bind(this)}  submit={this.submit.bind(this)}/>;
+                content = <SubmitApplicationForm  paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} prevStep={this.prevStep.bind(this)}  submit={this.submit.bind(this)}/>;
                 break;
         }
         return (
@@ -95,4 +95,4 @@ class RentersForm extends Component {
 
 }
 
-export default RentersForm;
+export default ApplicationForm;

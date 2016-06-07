@@ -9,10 +9,13 @@ import mui, {
     Table,
     TableBody,
     TableRow,
-    TableRowColumn
+    TableRowColumn,
+    Divider
 } from 'material-ui';
 
-class SubmitRentersForm extends Component {
+import { humanizeFieldName } from '../src/helpers';
+
+class SubmitApplicationForm extends Component {
     constructor (props, context) {
         super(props, context);
     }
@@ -32,7 +35,7 @@ class SubmitRentersForm extends Component {
             "state",
             "zipCode",
             "coverage",
-            "ssn"
+            "socialSecurityNumber"
         ];
         let rows = [];
         for (let fieldName of fieldNames) {
@@ -50,8 +53,9 @@ class SubmitRentersForm extends Component {
         return (
             <div style={this.props.containerStyle}>
                 <Paper style={this.props.paperStyle}>
-                    <h3>Confirm application details</h3>
 
+                    <h3>Confirm application details</h3>
+                    <Divider/>
                     <Table>
                         <TableBody displayRowCheckbox={false}>
                             {rows}
@@ -65,26 +69,7 @@ class SubmitRentersForm extends Component {
     }
 }
 
-function humanizeFieldName(camelCase) {
-    if (camelCase === null || camelCase === "") {
-        return camelCase;
-    }
-
-    camelCase = camelCase.trim();
-    let newText = "";
-    for (let i = 0; i < camelCase.length; i++) {
-        if (/[A-Z]/.test(camelCase[i]) && i !== 0 && /[a-z]/.test(camelCase[i - 1])) {
-            newText += " ";
-        }
-        if (i === 0 && /[a-z]/.test(camelCase[i])) {
-            newText += camelCase[i].toUpperCase();
-        } else {
-            newText += camelCase[i].toLowerCase();
-        }
-    }
-
-    return newText;
-}
 
 
-export default SubmitRentersForm;
+
+export default SubmitApplicationForm;

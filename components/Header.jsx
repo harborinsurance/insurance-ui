@@ -16,12 +16,6 @@ class Header extends Component {
     return {  muiTheme: Styles.ThemeManager.getMuiTheme(MyRawTheme)};
   }
 
-  handleSave(text) {
-    if (text.length !== 0) {
-      this.props.addTodo(text);
-    }
-  }
-
   render() {
     return (
       <header className="header">
