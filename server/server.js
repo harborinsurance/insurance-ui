@@ -25,7 +25,7 @@ app.get("/api/currentTime", function (request, response) {
   response.send({ time: new Date() });
 });
 
-app.get("/api/applications", function (request, response) {
+app.get("/api/application", function (request, response) {
     db.view("applications", "all", function(error, body) {
         if (!error) {
             response.json(body.rows);
@@ -36,7 +36,7 @@ app.get("/api/applications", function (request, response) {
     });
 });
 
-app.post("/api/applications", function (request, response) {
+app.post("/api/application", function (request, response) {
     db.insert(request.body, function (error, result) {
         if (error) {
             response.error(error);
