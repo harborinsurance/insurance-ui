@@ -1,0 +1,16 @@
+language: generic
+env:
+  global:
+  - CF_APP=forrester-wave
+  - CF_API=https://api.ng.bluemix.net
+  - CF_ORGANIZATION=Dev-Advocates
+  - secure: "C7Wwbf0Kgdx2OQ3ad8zcEoeEpeLoMkxh0mey2a+1qFft214/lrIkLXupoxPlAZkzjjrDcda69eKlsYqapVl75AAGlPrjS2tWMnHzMcn4ph3xJHBrfrOQvc/9dC2WwbUHrhPxdZ5jFwylt2wXHAjxOxQlJ/ATJxJ9Zs/4DYeAX2I="
+  - secure: "UYVH0MmAoYx81rROuYCU4J0dzT7CJJg3O53m0QwtDYxU14f87L0YaB+YkLc8gObUzsNnvtMG8Uiqb943r7+NVDbBf6d18q57XF9WE3r5sWsb2Oh+WikGydZ+3+PV6uxDzMGbqRky7MvaZTk0ZpcsWCdtj19tGNqA19CbOjPf63M="
+  - CF_SPACE=forrester-wave
+before_deploy: npm install -g cf-blue-green
+deploy:
+  provider: script
+  script: cf-blue-green-travis
+  on:
+    branch: master
+    repo: Bluemix/forrester-wave-demo-ui
