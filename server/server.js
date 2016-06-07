@@ -36,7 +36,7 @@ app.get("/api/applications", function (request, response) {
             //remove nested object
             var applications = [];
             _.each(body.rows, function(application) {
-                applications.push(addID(application.value)); 
+                applications.push(application.value); 
             });
             response.json(applications);
         }
@@ -49,7 +49,7 @@ app.get("/api/applications", function (request, response) {
 app.get("/api/applications/:id", function (request, response) {
     db.get(request.params.id, function(error, body) {
         if (!error) {
-            response.json(addID(body));
+            response.json(body);
         }
         else {
             response.send(error);
@@ -64,17 +64,7 @@ app.post("/api/applications", function (request, response) {
     request.body.creditScore = getCreditScore();
     request.body.riskScore = getRiskScore();
     
-    db.insert(request.body, function (error, result) {
-        if (error) {
-            response.send(error);
-        }
-        else {
-            response.json(result);
-            if (request.body.status, request.body.phone) {
-                sendText(request.body.status, request.body.phone);
-            }
-        }
-    });
+    insertApplication(request.body, response);
 });
 
 app.put("/api/applications/:id", function (request, response) {
@@ -82,17 +72,7 @@ app.put("/api/applications/:id", function (request, response) {
         request.body.approvedAt = new Date().toDateString();
     }
 
-    db.insert(removeID(request.body), function (error, result) {
-        if (error) {
-            response.send(error);
-        }
-        else {
-            response.json(result);
-            if (request.body.status && request.body.phone) {
-                sendText(request.body.status,request.body.phone);
-            }
-        }
-    });
+    insertApplication(request.body, response);
 });
 
 app.post("/api/charge", function (request, response) {
@@ -181,7 +161,7 @@ app.listen(port, function() {
   });
 });
 
-function sendText(status, phoneNumber) {
+function sendText(status, phoneNumber, callback) {
     //remove spaces and dashes and other stuff
     phoneNumber = phoneNumber.replace(/\s/g, "").replace("-", "").replace(")", "").replace("(", "");
 
@@ -207,18 +187,12 @@ function sendText(status, phoneNumber) {
         body: message,
         to: phoneNumber,
         from: process.env.TWILIO_PHONE_NUMBER
-    }, function(err, message) {
-        if(err) {
-            console.error(err.message);
-        }
-    });
+    }, callback);
 }
 
 function seedDB(callback) {
-    // TODO :: define db
   db = cloudant.use(dbName);
 
-  // TODO :: define async
   async.waterfall([
     function (next) {
       let designDocs = [
@@ -241,18 +215,6 @@ function seedDB(callback) {
 ], callback);
 }
 
-function addID(obj) {
-    obj.id = obj._id;
-    delete obj._id;
-    return obj;
-}
-
-function removeID(obj) {
-    obj._id = obj.id;
-    delete obj.id;
-    return obj;
-}
-
 function getCreditScore() {
     return getRandomNumber(300, 850);
 }
@@ -263,4 +225,37 @@ function getRiskScore() {
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function insertApplication(application, response) {
+    var result;
+    
+    async.waterfall([
+        function (next) {
+            db.insert(application, next);
+        },
+        function (body, headers, next) {
+            //this is actually id here, couch returns id on insert
+            db.get(body.id, next);
+        },
+        function (body, headers, next) {
+            result = body;
+
+            if (result.status, result.phone) {
+                sendText(result.status, result.phone, next);
+            }
+            else {
+                next(null, null);
+            }
+        }, function (message, next) {
+            next(null, result);
+        }
+    ], function(error) {
+        if (error) {
+            response.send(error);
+        }
+        else {
+            response.json(result);
+        }
+    })
 }

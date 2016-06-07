@@ -50,17 +50,17 @@ class Admin extends Component {
         });
     }
 
-    selectApplication(id) {
-        let selectedApplication = _.find(this.state.applications, (application) => { return application.id === id ;} );
+    selectApplication(_id) {
+        let selectedApplication = _.find(this.state.applications, (application) => { return application._id === _id ;} );
         console.log(selectedApplication);
         this.setState({selectedApplication: selectedApplication});
     }
 
-    updateApplication(id, fields) {
+    updateApplication(_id, fields) {
         let applications = this.state.applications;
         for (let i = 0; i < applications; i++) {
             let application = applications[i];
-            if (application.id !== id) {
+            if (application._id !== _id) {
                 continue;
             }
 
