@@ -25,7 +25,9 @@ let isProduction = process.env.NODE_ENV === "production";
 app.use(bodyParser.json());
 
 let cloudantCreds = appEnv.getServiceCreds("cloudant"),
-    dbName = "applications";
+    dbName = "applications",
+    cloudant,
+    db;
 
 app.get("/api/applications", function (request, response) {
     // TODO db not defined
