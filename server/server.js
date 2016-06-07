@@ -37,7 +37,7 @@ app.get("/api/applications", function (request, response) {
             //remove nested object
             var applications = [];
             _.each(body.rows, function(application) {
-                applications.push(application.value); 
+                applications.push(addID(application.value)); 
             });
             response.json(applications);
         }
@@ -50,7 +50,7 @@ app.get("/api/applications", function (request, response) {
 app.get("/api/applications/:id", function (request, response) {
     db.get(request.params.id, function(error, body) {
         if (!error) {
-            response.json(body);
+            response.json(addID(body));
         }
         else {
             response.send(error);
@@ -73,7 +73,7 @@ app.post("/api/applications", function (request, response) {
 });
 
 app.put("/api/applications/:id", function (request, response) {
-    db.insert(request.body, function (error, result) {
+    db.insert(removeID(request.body), function (error, result) {
         if (error) {
             response.send(error);
         }
@@ -230,4 +230,16 @@ function seedDB(callback) {
       next();
     }
 ], callback);
+}
+
+function addID(obj) {
+    obj.id = obj._id;
+    delete obj._id;
+    return obj;
+}
+
+function removeID(obj) {
+    obj._id = obj.id;
+    delete obj.id;
+    return obj;
 }
