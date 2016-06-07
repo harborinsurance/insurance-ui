@@ -15,14 +15,14 @@ class AddressFields extends Component {
     }
 
     render() {
-        const nextDisabled = (!(this.props.fieldValues.street1 && this.props.fieldValues.city && this.props.fieldValues.state && this.props.fieldValues.zipCode));
+        const nextDisabled = (!(this.props.fieldValues.streetAddress && this.props.fieldValues.city && this.props.fieldValues.state && this.props.fieldValues.zipCode));
 
         return (
             <div style={this.props.containerStyle}>
                 <Paper style={this.props.paperStyle}>
-                    <TextField floatingLabelText="Street address" onChange={this.handleChange.bind(this, "street1")} value={this.props.fieldValues.street1}/>
+                    <TextField floatingLabelText="Street address" onChange={this.handleChange.bind(this, "streetAddress")} value={this.props.fieldValues.streetAddress}/>
                     <br />
-                    <TextField floatingLabelText="Street address cont." onChange={this.handleChange.bind(this, "street2")} value={this.props.fieldValues.street2}/>
+                    <TextField floatingLabelText="Street address cont." onChange={this.handleChange.bind(this, "streetAddressCont")} value={this.props.fieldValues.streetAddressCont}/>
                     <br />
                     <TextField floatingLabelText="City" onChange={this.handleChange.bind(this, "city")} value={this.props.fieldValues.city}/>
                     <br />
