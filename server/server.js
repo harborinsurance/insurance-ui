@@ -21,12 +21,14 @@ dotenv.load();
 
 let twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_SECRET);
 
-let cncURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465419110688";
+let stripeURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465419110688/Stripe/charge",
+    creditScoreURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465419039433/Credit/score";
 
 let appEnv = cfenv.getAppEnv();
 let isProduction = process.env.NODE_ENV === "production";
 
 app.use(bodyParser.json());
+app.use(bodyParser.text());
 
 let cloudantCreds = appEnv.getServiceCreds("cloudant"),
     dbName = "applications",
@@ -61,25 +63,53 @@ app.get("/api/applications/:id", function (request, response) {
 });
 
 app.post("/api/applications", function (request, response) {
-    //set initial application state
-    request.body.status = "pending";
-    request.body.submittedAt = new Date().toDateString();
+    var json;
+    //dirty trick to force json parsing, dreamface only sends it as text
+    try
+    {
+        json = JSON.parse(request.body);
+    }
+    catch(e)
+    {
+        json = request.body;
+    }
     
-    restler.get("http://159.122.220.181").on("complete", function(data) {
-        console.log(data);
-        request.body.creditScore = data.creditScore;
-        request.body.riskScore = data.riskScore;
-
-        insertApplication(request.body, response);
+    //set initial application state
+    json.status = "pending";
+    json.submittedAt = new Date().toDateString();
+    
+    restler.get(creditScoreURL, {headers: {"X-IBM-CloudInt-ApiKey": process.env.CREDIT_API_KEY}}).on("complete", function(data) {
+        json.creditScore = data.creditScore;
+        json.riskScore = data.riskScore;
+        insertApplication(json, response);
     });
 });
 
 app.put("/api/applications/:id", function (request, response) {
-    if (request.body.status === "approved") {
-        request.body.approvedAt = new Date().toDateString();
+    var json;
+    //dirty trick to force json parsing, dreamface only sends it as text
+    try
+    {
+        json = JSON.parse(request.body);
     }
-
-    insertApplication(request.body, response);
+    catch(e)
+    {
+        json = request.body;
+    }
+    
+    if (json.status === "approved") {
+        json.approvedAt = new Date().toDateString();
+    }
+    db.get(request.params.id, function(error, body, headers) {
+        if (error) {
+            response.send(error);
+        }
+        else {
+            json["_id"] = body["_id"];
+            json["_rev"] = body["_rev"];
+            insertApplication(json, response);
+        }
+    });
 });
 
 app.post("/api/applications/:id/charge", function (request, response) {
@@ -88,7 +118,7 @@ app.post("/api/applications/:id/charge", function (request, response) {
 
     async.waterfall([
         function (next) {
-           restler.post(cncURL + "/Stripe/charge", {data: request.body, headers: {"X-IBM-CloudInt-ApiKey": process.env.CNC_API_KEY}}).on("complete", function(data) {
+           restler.post(stripeURL, {data: request.body, headers: {"X-IBM-CloudInt-ApiKey": process.env.STRIPE_API_KEY}}).on("complete", function(data) {
                charge = data;
                next(null);
            });
