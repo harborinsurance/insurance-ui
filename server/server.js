@@ -187,8 +187,7 @@ function sendText(status, phoneNumber, callback) {
     phoneNumber = phoneNumber.replace(/\s/g, "").replace("-", "").replace(")", "").replace("(", "");
 
     //ensure it has the country code on it
-    //TODO this is on USA phone numbers
-    if (phoneNumber.startsWith("+1")) {
+    if (!phoneNumber.startsWith("+")) {
         phoneNumber = "+1" + phoneNumber;
     }
 
