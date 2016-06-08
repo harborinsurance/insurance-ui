@@ -9,7 +9,8 @@ let express = require("express"),
     _ = require("underscore"),
     bodyParser = require("body-parser"),
     Twilio = require("twilio"),
-    async = require("async");
+    async = require("async"),
+    restler = require("restler");
     
 
 const webpack = require('webpack');
@@ -63,10 +64,14 @@ app.post("/api/applications", function (request, response) {
     //set initial application state
     request.body.status = "pending";
     request.body.submittedAt = new Date().toDateString();
-    request.body.creditScore = getCreditScore();
-    request.body.riskScore = getRiskScore();
     
-    insertApplication(request.body, response);
+    restler.get("http://159.122.220.181").on("complete", function(data) {
+        console.log(data);
+        request.body.creditScore = data.creditScore;
+        request.body.riskScore = data.riskScore;
+
+        insertApplication(request.body, response);
+    });
 });
 
 app.put("/api/applications/:id", function (request, response) {
@@ -233,18 +238,6 @@ function seedDB(callback) {
       next();
     }
 ], callback);
-}
-
-function getCreditScore() {
-    return getRandomNumber(300, 850);
-}
-
-function getRiskScore() {
-    return getRandomNumber(0, 100);
-}
-
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function insertApplication(application, response) {

@@ -4,7 +4,7 @@ declared-services:
     label: cloudantNoSQLDB
     plan: Shared
 applications:
-- name: forrester-wave
+- name: harborinsurance
   command: npm start
   path: .
   instances: 3
