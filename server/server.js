@@ -8,10 +8,9 @@ let express = require("express"),
     Cloudant = require("cloudant"),
     _ = require("underscore"),
     bodyParser = require("body-parser"),
-    stripe = require("stripe")(process.env.STRIPE_API_KEY),
     Twilio = require("twilio"),
-    async = require("async"),
-    twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_SECRET);
+    async = require("async");
+    
 
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
@@ -19,6 +18,9 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('../webpack.config.js');
 
 dotenv.load();
+
+let stripe = require("stripe")(process.env.STRIPE_API_KEY),
+    twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_SECRET);
 
 let appEnv = cfenv.getAppEnv();
 let isProduction = process.env.NODE_ENV === "production";
@@ -75,20 +77,39 @@ app.put("/api/applications/:id", function (request, response) {
     insertApplication(request.body, response);
 });
 
-app.post("/api/charge", function (request, response) {
-    let charge = stripe.charges.create({
-        amount: 1000, // amount in cents, again
-        currency: "usd",
-        source: '',
-        description: "Example charge"
-    }, function(err, charge) {
-        if (err && err.type === 'StripeCardError') {
+app.post("/api/applications/:id/charge", function (request, response) {
+    var charge,
+        application;
+
+    async.waterfall([
+        function (next) {
+            stripe.charges.create({
+                amount: 500,
+                currency: "usd",
+                source: request.body.stripeToken,
+                description: "Harbor Insurance Co. Insurance Policy"
+            }, next);
+        }, function (result, next) {
+            charge = result;
+            db.get(request.params.id, next);
+        }, function (body, headers, next) {
+            body.charge = charge;
+            db.insert(body,  next);
+        }, function (body, headers, next) {
+            db.get(request.params.id, next);
+        },
+        function (body, headers, next) {
+            application = body;
+            next(null);
+        }
+    ], function(error) {
+        if (error) {
             response.send(error);
         }
         else {
-            response.send(charge);
+            response.json(application);
         }
-    });
+    })
 });
 
 if (!isProduction) {
