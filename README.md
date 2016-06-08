@@ -1,4 +1,4 @@
-# Forrester Wave Demo
+# Harbor Insurance Co. Insurance UI
 This app uses React + Redux + Material UI + ES6 syntax applications. This boilerplate includes following tools and frameworks.
 
 * [React](https://facebook.github.io/react/)
