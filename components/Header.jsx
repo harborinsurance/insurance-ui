@@ -19,7 +19,7 @@ class Header extends Component {
   render() {
     return (
       <header className="header">
-          <AppBar title="Harbor Insurance Co." />
+          <AppBar showMenuIconButton={false} title="Harbor Insurance Co." />
           <h1 style={defaultStyle}>Application</h1>
       </header>
     );
