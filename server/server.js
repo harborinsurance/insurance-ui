@@ -11,7 +11,6 @@ let express = require("express"),
     Twilio = require("twilio"),
     async = require("async"),
     restler = require("restler");
-    
 
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
@@ -20,8 +19,9 @@ const config = require('../webpack.config.js');
 
 dotenv.load();
 
-let stripe = require("stripe")(process.env.STRIPE_API_KEY),
-    twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_SECRET);
+let twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_SECRET);
+
+let cncURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465419110688";
 
 let appEnv = cfenv.getAppEnv();
 let isProduction = process.env.NODE_ENV === "production";
@@ -88,14 +88,11 @@ app.post("/api/applications/:id/charge", function (request, response) {
 
     async.waterfall([
         function (next) {
-            stripe.charges.create({
-                amount: 500,
-                currency: "usd",
-                source: request.body.stripeToken,
-                description: "Harbor Insurance Co. Insurance Policy"
-            }, next);
-        }, function (result, next) {
-            charge = result;
+           restler.post(cncURL + "/Stripe/charge", {data: request.body, headers: {"X-IBM-CloudInt-ApiKey": process.env.CNC_API_KEY}}).on("complete", function(data) {
+               charge = data;
+               next(null);
+           });
+        }, function (next) {
             db.get(request.params.id, next);
         }, function (body, headers, next) {
             body.charge = charge;
@@ -134,7 +131,7 @@ if (!isProduction) {
 
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
-  app.get('*', function response(req, res) {
+  app.get('/', function response(req, res) {
     res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'static/index.html')));
     res.end();
   });
