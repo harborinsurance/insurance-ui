@@ -58,7 +58,7 @@ class PolicyPaymentForm extends Component {
         let payload = {
             card: {
                 number: this.state.cardNumber,
-                exp_month: this.state.expirationDate.getMonth(),
+                exp_month: `0${this.state.expirationDate.getMonth()}`.slice(-2),
                 exp_year: this.state.expirationDate.getFullYear(),
                 cvc: this.secuirtyCode
             }
