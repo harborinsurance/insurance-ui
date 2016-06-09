@@ -8,11 +8,6 @@ This app uses React + Redux + Material UI + ES6 syntax applications. This boiler
 * [Babel](https://babeljs.io/)
 * [ESLint](http://eslint.org/)
 
-
-## Build Status
-[![Build Status](https://travis.innovate.ibm.com/Bluemix/forrester-wave-demo-ui.svg?token=K4fZzZF5xZgqn9xKsG9D&branch=master)](https://travis.innovate.ibm.com/Bluemix/forrester-wave-demo-ui)
-
-
 # Usage
 
 ## Package installation
