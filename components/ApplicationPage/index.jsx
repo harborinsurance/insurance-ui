@@ -10,8 +10,8 @@ import Paper from 'material-ui/Paper';
 
 const ApplicationPage = (props) => {
   return (
-    <div >
-      <Paper className="paper">
+    <div className="applicationForm">
+      <div>
         <SelectField  floatingLabelText="Product">
           <MenuItem value={"autos"} disabled={true} primaryText="Autos"/>
           <MenuItem value={"boat"} disabled={true} primaryText="Boat"/>
@@ -32,7 +32,7 @@ const ApplicationPage = (props) => {
           <DatePicker hintText="Date of birth (mm/dd/yyyy)" defaultDate={new Date("2000")} />
 
           <TextField floatingLabelText="Phone" type="tel"/>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <br />
           <TextField floatingLabelText="Email" type="email"/>
           <br />
           <TextField floatingLabelText="Street address" />
@@ -44,8 +44,7 @@ const ApplicationPage = (props) => {
           <TextField floatingLabelText="State" />
           <br />
           <TextField floatingLabelText="Zip code" />
-      </Paper>
-
+        </div>
     </div>
   )
 };
