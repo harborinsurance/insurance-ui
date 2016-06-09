@@ -1,20 +1,15 @@
 
 
 import React, { Component, PropTypes } from "react";
-import mui, {
-    Divider,
-    TextField,
-    SelectField,
-    RaisedButton,
-    MenuItem,
-    Paper,
-    Table,
-    TableHeader,
-    TableHeaderColumn,
-    TableBody,
-    TableRow,
-    TableRowColumn
-} from 'material-ui';
+
+import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
+import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+
 import _ from 'lodash';
 import axios from 'axios';
 

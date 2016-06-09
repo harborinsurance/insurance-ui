@@ -1,12 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 
-import mui, {
-    TextField,
-    SelectField,
-    RaisedButton,
-    MenuItem,
-    Paper
-} from 'material-ui';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 class ProductFields extends Component {
 
@@ -21,19 +19,19 @@ class ProductFields extends Component {
         });
     }
 
-    handleChange(source, e, payload) {
+    handleChange = (evt, index, value) => {
         let updateValues = {};
-        if (source === "product") {
-            updateValues[source] = "renters";
-        } else if (source === "zipCode") {
-            if (e.target.value.match(/^\d{5}$/)) {
+        if (value === "product") {
+            updateValues[value] = "renters";
+        } else if (value === "zipCode") {
+            if (evt.target.value.match(/^\d{5}$/)) {
                 this.setState({ errorText: '' });
-                updateValues[source] = e.target.value;
+                updateValues[value] = evt.target.value;
             } else {
                 this.setState({ errorText: 'This must be a valid zip code.' })
             }
         } else {
-            updateValues[source] = e.target.value;
+            updateValues[value] = evt.target.value;
         }
         this.props.updateFields(updateValues);
     }
@@ -45,7 +43,7 @@ class ProductFields extends Component {
             <div style={this.props.containerStyle}>
                 <Paper style={this.props.paperStyle} >
                     <h3>Product Information</h3>
-                    <SelectField ref="product" onChange={this.handleChange.bind(this, "product")} value={this.props.fieldValues.product} floatingLabelText="Product">
+                    <SelectField ref="product" onChange={this.handleChange} value={this.props.fieldValues.product} floatingLabelText="Product">
                         <MenuItem value={"autos"} disabled={true} primaryText="Autos"/>
                         <MenuItem value={"boat"} disabled={true} primaryText="Boat"/>
                         <MenuItem value={"renters"} disabled={false} primaryText="Renters"/>

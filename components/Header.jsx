@@ -1,20 +1,14 @@
 import React, { PropTypes, Component } from 'react';
 
-import mui, {AppBar, Styles, IconButton} from 'material-ui';
-import MyRawTheme from '../src/material_ui_raw_theme_file';
+
+
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+
 import Logos from "../elements/Logos";
 
-let NavigationClose = require('material-ui/lib/svg-icons/navigation/close');
 
 class Header extends Component {
-  static get childContextTypes() {
-    return { muiTheme: React.PropTypes.object };
-  }
-
-  getChildContext(){
-    return {  muiTheme: Styles.ThemeManager.getMuiTheme(MyRawTheme)};
-  }
-
   render() {
     return (
       <header className="header">
@@ -23,8 +17,5 @@ class Header extends Component {
     );
   }
 }
-
-Header.propTypes = {
-};
 
 export default Header;

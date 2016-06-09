@@ -3,20 +3,14 @@ import {Link} from 'react-router';
 import _ from 'lodash';
 import numeral from 'numeral';
 
-import mui, {
-    Divider,
-    TextField,
-    SelectField,
-    RaisedButton,
-    MenuItem,
-    Paper,
-    Table,
-    TableHeader,
-    TableHeaderColumn,
-    TableBody,
-    TableRow,
-    TableRowColumn
-} from 'material-ui';
+import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
+import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+
 
 import { makeFakeApplications } from '../src/helpers';
 
