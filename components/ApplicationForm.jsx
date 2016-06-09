@@ -8,109 +8,115 @@ import Divider from 'material-ui/Divider';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
 import LinearProgress from 'material-ui/LinearProgress';
-
+import {
+  Step,
+  Stepper,
+  StepLabel
+} from 'material-ui/Stepper';
+import FlatButton from 'material-ui/FlatButton';
 
 import axios from 'axios';
-import ProductFields from '../components/ProductFields';
-import PersonalFields from '../components/PersonalFields';
-import AddressFields from '../components/AddressFields';
-import CoverageFields from '../components/CoverageFields';
-import SubmitApplicationForm from '../components/SubmitApplicationForm';
-import YourDone from '../components/YourDone';
-
-
-const containerStyle = {
-    maxWidth: 350
-};
-
-const defaultStyle = {
-  marginLeft: 20
-};
 
 const paperStyle = {
     margin: 20,
     padding: 20
 };
 
-const nextButtonStyle = {
-    float: "right",
-    marginRight: 20
-};
-
-const prevButtonStyle = {
-    float: "left",
-    marginLeft: 20
-};
-
 class ApplicationForm extends Component {
-    constructor (props, context) {
-        super(props, context);
-        this.state = {
-            step: 0,
-            fieldValues: {
-            }
-        };
+    constructor(props, context) {
+      super(props, context);
+      this.state = {
+        step: 0,
+        finished: false,
+        fieldValues: {}
+      };
     }
 
-    updateFields(values) {
-        console.log(values);
-        let newFieldValues = Object.assign({}, this.state.fieldValues, values);
-        let newState = Object.assign({}, this.state, {fieldValues: newFieldValues});
-        this.setState(newState);
+    updateFields = (values) => {
+      let newFieldValues = Object.assign({}, this.state.fieldValues, values);
+      let newState = Object.assign({}, this.state, {fieldValues: newFieldValues});
+      this.setState({newState});
     }
 
-    nextStep() {
+    handleNext = () => {
+      // if not the final step, progress stepping
+      // otherwise, submit the form
+      const { step } = this.state;
 
-        let newStep = Math.min(this.state.step + 1, 4);
-        this.setState({step:newStep});
+      if (step === 0) {
+        this.context.router.push('/apply/coverage');
+      } else if (step === 1) {
+        this.context.router.push('/apply/summary');
+      } else if (step === 2) {
+        // axios.post('/api/applications', this.state.fieldValues).then((res) =>{
+        //   // Finished state
+        //   this.context.router.push('/apply/confirmation');
+        // }).catch(err => {
+        //   console.error(err);
+        // });
+        this.context.router.push('/confirmation');
+        return;
+      }
+
+      this.setState({
+        step: step + 1,
+        finished: step >= 2
+      });
     }
 
-    prevStep() {
-        let newStep = Math.max(this.state.step - 1, 0);
-        this.setState({step:newStep});
-    }
+    handlePrev = () => {
+      const { step } = this.state;
 
-    submit() {
-        axios.post('/api/applications', this.state.fieldValues).then((res) =>{
-            // transition to "You're done!"
-            this.setState({step:5});
-        }).catch((e) => {
-            console.error(e);
+      if (step > 0) {
+        this.setState({
+          step: step - 1
         });
+      }
     }
 
     render () {
-        let content;
-        switch(this.state.step) {
-            case 0:
-                content = <ProductFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues}  nextStep={this.nextStep.bind(this)} updateFields={this.updateFields.bind(this)}/>;
-                break;
-            case 1:
-                content = <PersonalFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)} updateFields={this.updateFields.bind(this)}/>;
-                break;
-            case 2:
-                content = <AddressFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)} updateFields={this.updateFields.bind(this)}/>;
-                break;
-            case 3:
-                content = <CoverageFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)}  updateFields={this.updateFields.bind(this)}/>;
-                break;
-            case 4:
-                content = <SubmitApplicationForm  paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} prevStep={this.prevStep.bind(this)}  submit={this.submit.bind(this)}/>;
-                break;
-            case 5:
-                content = <YourDone  paperStyle={paperStyle} containerStyle={containerStyle} />;
-                break;
-        }
-        return (
-            <div>
-                <h1 style={defaultStyle}>Application</h1>
-                <LinearProgress mode="determinate" min={0} max={4} value={this.state.step}/>
-                {this.props.children}
-                {content}
+      const { step } = this.state;
+
+      return (
+        <Paper style={paperStyle}>
+          <div>
+            <Stepper activeStep={step}>
+              <Step>
+                <StepLabel>Application</StepLabel>
+              </Step>
+              <Step>
+                <StepLabel>Coverage</StepLabel>
+              </Step>
+              <Step>
+                <StepLabel>Summary</StepLabel>
+              </Step>
+            </Stepper>
+            {this.props.children}
+
+            <div className="stepper-nav">
+              <FlatButton
+                label="Back"
+                disabled={step === 0}
+                onTouchTap={this.handlePrev}
+                className="stepper-nav__btn"
+              />
+
+              <RaisedButton
+                label={step === 2 ? 'Submit' : 'Next'}
+                primary
+                onTouchTap={this.handleNext}
+                className="stepper-nav__btn"
+              />
             </div>
-        );
+          </div>
+        </Paper>
+      );
     }
 
 }
+
+ApplicationForm.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
 
 export default ApplicationForm;
