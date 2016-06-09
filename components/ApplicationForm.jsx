@@ -1,14 +1,15 @@
 import React, {Component, PropTypes} from 'react';
-import mui, {
-    DatePicker,
-    TextField,
-    SelectField,
-    RaisedButton,
-    Divider,
-    MenuItem,
-    Paper,
-    LinearProgress
-} from 'material-ui';
+
+import DatePicker from 'material-ui/DatePicker';
+import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
+import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
+import LinearProgress from 'material-ui/LinearProgress';
+
+
 import axios from 'axios';
 import ProductFields from '../components/ProductFields';
 import PersonalFields from '../components/PersonalFields';
@@ -52,6 +53,7 @@ class ApplicationForm extends Component {
     }
 
     updateFields(values) {
+        console.log(values);
         let newFieldValues = Object.assign({}, this.state.fieldValues, values);
         let newState = Object.assign({}, this.state, {fieldValues: newFieldValues});
         this.setState(newState);
@@ -69,7 +71,6 @@ class ApplicationForm extends Component {
     }
 
     submit() {
-        console.log(this.state.fieldValues);
         axios.post('/api/applications', this.state.fieldValues).then((res) =>{
             // transition to "You're done!"
             this.setState({step:5});

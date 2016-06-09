@@ -1,17 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 
-import mui, {
-    TextField,
-    SelectField,
-    RaisedButton,
-    MenuItem,
-    Paper,
-    Table,
-    TableBody,
-    TableRow,
-    TableRowColumn,
-    Divider
-} from 'material-ui';
+import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
+import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 import { humanizeFieldName } from '../src/helpers';
 
