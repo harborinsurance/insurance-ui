@@ -11,7 +11,7 @@ module.exports = {
 
   output: {
     path: __dirname + "/static",
-    filename: "bundle.js",
+    filename: "bundle.js"
   },
   module: {
     preLoaders: [
