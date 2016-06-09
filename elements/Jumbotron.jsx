@@ -1,14 +1,41 @@
 import React from "react";
+import { Link } from 'react-router';
+
+import mui, {RaisedButton} from 'material-ui';
 
 export default class Jumbotron extends React.Component {
+	
+	normal() {
+		let url = require('./images/Storm_JumboTron.jpg');
+    return {
+      backgroundImage: "url('" + url + "')"
+    }
+  }
+	
+	goto (source, e, payload) {
+		browserHistory.push(source);
+	}
+	
+	
+	
   render() {
-	  let divStyle = {
-	backgroundImage: 'url(' + './images/Storm_JumboTron.jpg' + ')'
-};
+		let styles = this.normal();
+		const buttonStyle = {
+				marginRight: 20
+		};
+		let admin = "/admin",
+			apply = "apply";
+
     return (
-		<div style={divStyle}>
-			... Your Content ...
-	  </div>
-    );
+      <div className="home" style={styles}>
+				<div className="text-vcenter">
+					<div className="floating-text">
+						<h1>Peace of Mind</h1>
+						<Link to={apply}><RaisedButton label="Apply" secondary={true} style={buttonStyle}/></Link>
+						<Link to={admin}><RaisedButton label="Admin" secondary={true} style={buttonStyle}/></Link>
+					</div>
+				</div>
+      </div>
+    )
   }
 }
