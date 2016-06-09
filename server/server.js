@@ -148,6 +148,37 @@ app.post("/api/applications/:id/charge", function (request, response) {
     });
 });
 
+app.post("/api/applications/:id/issuePolicy", function (request, response) {
+    var charge,
+        application;
+
+    async.waterfall([
+        function (next) {
+           restler.post(stripeURL, {data: request.body, headers: {username: process.env.BPM_USERNAME, password: process.env.BPM_PASSWORD}}).on("complete", function() {
+               next(null);
+           });
+        }, function (next) {
+            db.get(request.params.id, next);
+        }, function (body, headers, next) {
+            body.issued = true;
+            db.insert(body,  next);
+        }, function (body, headers, next) {
+            db.get(request.params.id, next);
+        },
+        function (body, headers, next) {
+            application = body;
+            next(null);
+        }
+    ], function(error) {
+        if (error) {
+            response.send(error);
+        }
+        else {
+            response.json(application);
+        }
+    });
+});
+
 if (!isProduction) {
   const compiler = webpack(config);
   const middleware = webpackMiddleware(compiler, {
