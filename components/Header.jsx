@@ -23,7 +23,6 @@ class Header extends Component {
     return (
       <header className="header">
           <AppBar title="" iconElementLeft={<IconButton><Logos type="150" /></IconButton>}/>
-          <h1 style={defaultStyle}>Application</h1>
       </header>
     );
   }
