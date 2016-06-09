@@ -50,6 +50,14 @@ class ApplicationForm extends Component {
       window.removeEventListener('resize', this.updateDimensions);
     }
 
+    handleChange = (evt, value) => {
+      this.setState({
+        fieldValues: {
+          [evt.target.name]: value
+        }
+      });
+    }
+
     updateFields = (values) => {
       let newFieldValues = Object.assign({}, this.state.fieldValues, values);
       let newState = Object.assign({}, this.state, {fieldValues: newFieldValues});
@@ -63,13 +71,19 @@ class ApplicationForm extends Component {
       const { step } = this.state;
 
       if (step === 2) {
-        this.context.router.push('/confirmation');
+        axios.post('/api/applications', this.state.fieldValues)
+          .then(res => {
+            this.context.router.push('/confirmation');
+          })
+          .catch(err => console.log(err));
       }
 
-      this.setState({
-        step: step + 1,
-        finished: step >= 2
-      });
+      if (step < 3) {
+        this.setState({
+          step: step + 1,
+          finished: step >= 2
+        });
+      }
     }
 
     handlePrev = () => {
@@ -95,11 +109,11 @@ class ApplicationForm extends Component {
       let stepContent;
 
       if (step === 0) {
-        stepContent = (<ApplicationPage />);
+        stepContent = (<ApplicationPage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />);
       } else if (step === 1) {
-        stepContent = (<CoveragePage />);
+        stepContent = (<CoveragePage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />);
       } else if (step === 2) {
-        stepContent = (<SummaryPage />);
+        stepContent = (<SummaryPage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />);
       }
 
       let content = (this.state.width > 500) ? (
@@ -140,18 +154,18 @@ class ApplicationForm extends Component {
             <Step>
               <StepLabel>Application</StepLabel>
               <StepContent>
-                <ApplicationPage />
+                <ApplicationPage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />
               </StepContent>
             </Step>
             <Step>
               <StepLabel>Coverage</StepLabel>
               <StepContent>
-                <CoveragePage />
+                <CoveragePage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />
               </StepContent>
             </Step>
             <Step>
               <StepLabel>
-                <SummaryPage />
+                <SummaryPage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />
               </StepLabel>
             </Step>
           </Stepper>
