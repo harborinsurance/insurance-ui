@@ -46,6 +46,7 @@ class Admin extends Component {
             dataType: "json",
             cache: false,
             success: function(applications) {
+                console.log(applications)
                 applications = _.sortBy(applications, (application) => { return application.submittedAt ; }).reverse();
                 this.setState({applications: applications});
             }.bind(this),
@@ -84,7 +85,7 @@ class Admin extends Component {
             this.setState({applications: applications});
         }).catch((e) => {
             console.error(e);
-        })
+        });
 
 
     }

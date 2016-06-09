@@ -59,7 +59,7 @@ class ApplicationReview extends Component {
         } else {
             const fieldNames = [
                 "status",
-                "phone",
+                "phoneNumber",
                 "email",
                 "streetAddress",
                 "streetAddressCont",

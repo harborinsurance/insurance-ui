@@ -77,7 +77,7 @@ app.post("/api/applications", function (request, response) {
 
     //set initial application state
     json.status = "pending";
-    json.submittedAt = new Date().toDateString();
+    json.submittedAt = new Date();
 
     restler.get(creditScoreURL, {headers: {"X-IBM-CloudInt-ApiKey": process.env.CREDIT_API_KEY}}).on("complete", function(data) {
         json.creditScore = data.creditScore;
@@ -217,7 +217,6 @@ app.listen(port, function() {
 });
 
 function sendText(application, callback) {
-    console.log(application)
     //remove spaces and dashes and other stuff
     let phoneNumber = application.phoneNumber,
         status = application.phoneNumber,
@@ -235,7 +234,7 @@ function sendText(application, callback) {
         message = "Thanks for submitting your application, we will get back to you soon!";
     }
     else if (status === "approved") {
-        message =  `Congrats!  Your application is approved!  Pleas review your policy and submit payment here: %{}`;
+        message = `Congrats!  Your application is approved!  Please review your policy and submit payment here: http://harborinsurance.mybluemix.net/#/applications/${application._id}`;
     }
     else if (status === "rejected") {
         message = "Your application has been rejected.  Please contact customer service for more information";
