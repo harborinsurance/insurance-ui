@@ -50,6 +50,10 @@ class ApplicationForm extends Component {
       window.removeEventListener('resize', this.updateDimensions);
     }
 
+    handleChange = (evt) => {
+      console.log(evt);
+    }
+
     updateFields = (values) => {
       let newFieldValues = Object.assign({}, this.state.fieldValues, values);
       let newState = Object.assign({}, this.state, {fieldValues: newFieldValues});
@@ -95,11 +99,11 @@ class ApplicationForm extends Component {
       let stepContent;
 
       if (step === 0) {
-        stepContent = (<ApplicationPage />);
+        stepContent = (<ApplicationPage onChange={this.handleChange} />);
       } else if (step === 1) {
-        stepContent = (<CoveragePage />);
+        stepContent = (<CoveragePage onChange={this.handleChange} />);
       } else if (step === 2) {
-        stepContent = (<SummaryPage />);
+        stepContent = (<SummaryPage onChange={this.handleChange} />);
       }
 
       let content = (this.state.width > 500) ? (
@@ -140,18 +144,18 @@ class ApplicationForm extends Component {
             <Step>
               <StepLabel>Application</StepLabel>
               <StepContent>
-                <ApplicationPage />
+                <ApplicationPage onChange={this.handleChange} />
               </StepContent>
             </Step>
             <Step>
               <StepLabel>Coverage</StepLabel>
               <StepContent>
-                <CoveragePage />
+                <CoveragePage onChange={this.handleChange} />
               </StepContent>
             </Step>
             <Step>
               <StepLabel>
-                <SummaryPage />
+                <SummaryPage onChange={this.handleChange} />
               </StepLabel>
             </Step>
           </Stepper>
