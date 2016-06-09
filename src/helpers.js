@@ -15,7 +15,7 @@ export function makeFakeApplications (count) {
             lastName: faker.name.lastName(),
             dateOfBirth: faker.date.past(),
             email: faker.internet.email(),
-            phone: faker.phone.phoneNumber(),
+            phone: faker.phone.phone(),
             streetAddress: faker.address.streetAddress(),
             streetAddressCont: "",
             city: faker.address.city(),

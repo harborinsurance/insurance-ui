@@ -34,10 +34,7 @@ app.get("/api/applications", function (request, response) {
     db.view("applications", "all", function(error, body) {
         if (!error) {
             //remove nested object
-            let applications = body.rows.map((row) =>{
-                return addID(row.value);
-            });
-            response.json(applications);
+            response.json(body.rows);
         }
         else {
             response.send(error);
@@ -48,7 +45,7 @@ app.get("/api/applications", function (request, response) {
 app.get("/api/applications/:id", function (request, response) {
     db.get(request.params.id, function(error, body) {
         if (!error) {
-            response.json(addID(body));
+            response.json(body);
         }
         else {
             response.send(error);
@@ -75,7 +72,7 @@ app.post("/api/applications", function (request, response) {
 });
 
 app.put("/api/applications/:id", function (request, response) {
-    db.insert(removeID(request.body), function (error, result) {
+    db.insert(request.body, function (error, result) {
         if (error) {
             response.send(error);
         }
@@ -127,7 +124,7 @@ if (!isProduction) {
   });
 } else {
   app.use(express.static(__dirname + "/../static"));
-  app.get("/", function response(req, res) {
+  app.get("*", function response(req, res) {
     res.sendFile(path.join(__dirname, '../static/index.html'));
   });
 }
@@ -174,14 +171,14 @@ app.listen(port, function() {
   });
 });
 
-function sendText(status, phoneNumber) {
+function sendText(status, phone) {
     //remove spaces and dashes and other stuff
-    phoneNumber = phoneNumber.replace(/\s/g, "").replace("-", "").replace(")", "").replace("(", "");
+    phone = phone.replace(/\s/g, "").replace("-", "").replace(")", "").replace("(", "");
 
     //ensure it has the country code on it
     //TODO this is on USA phone numbers
-    if (phoneNumber.startsWith("+1")) {
-        phoneNumber = "+1" + phoneNumber;
+    if (phone.startsWith("+1")) {
+        phone = "+1" + phone;
     }
 
     let message = "";
@@ -198,7 +195,7 @@ function sendText(status, phoneNumber) {
 
     twilio.messages.create({
         body: message,
-        to: phoneNumber,
+        to: phone,
         from: process.env.TWILIO_PHONE_NUMBER
     }, function(err, message) {
         if(err) {
@@ -233,15 +230,54 @@ function seedDB(callback) {
     }
 ], callback);
 }
+function insertApplication(application, response) {
+    var result,
+        noText = false;
 
-function addID(obj) {
-    obj.id = obj._id;
-    delete obj._id;
-    return obj;
-}
-
-function removeID(obj) {
-    obj._id = obj.id;
-    delete obj.id;
-    return obj;
+    async.waterfall([
+        function (next) {
+            if (application.status === "pending" && application["_id"] === undefined) {
+                restler.post(leadsURL, {data: application, headers: {"X-IBM-CloudInt-ApiKey": process.env.LEADS_API_KEY}}).on("complete", function(data) {
+                    next(null, data);
+                });
+            }
+            else if (application.lead === undefined || application.lead === null) {
+                next(null, null);
+            }
+            else {
+                restler.put(leadsURL + application.lead.LEAD_ID, {data: application, headers: {"X-IBM-CloudInt-ApiKey": process.env.LEADS_API_KEY}}).on("complete", function(data) {
+                    if (application.status === "pending") {
+                        noText = true;
+                    }
+                    next(null, data);
+                });
+            }
+        },
+        function (lead, next) {
+            application.lead = lead;
+            db.insert(application, next);
+        },
+        function (body, headers, next) {
+            //this is actually id here, couch returns id on insert
+            db.get(body.id, next);
+        },
+        function (body, headers, next) {
+            result = body;
+            if (result.status && result.phone && noText === false) {
+                sendText(result.status, result.phone, next);
+            }
+            else {
+                next(null, null);
+            }
+        }, function (message, next) {
+            next(null, result);
+        }
+    ], function(error) {
+        if (error) {
+            response.send(error);
+        }
+        else {
+            response.json(result);
+        }
+    })
 }

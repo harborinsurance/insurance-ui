@@ -22,6 +22,10 @@ const containerStyle = {
     maxWidth: 350
 };
 
+const defaultStyle = {
+  marginLeft: 20
+};
+
 const paperStyle = {
     margin: 20,
     padding: 20
@@ -95,6 +99,7 @@ class ApplicationForm extends Component {
         }
         return (
             <div>
+                <h1 style={defaultStyle}>Application</h1>
                 <LinearProgress mode="determinate" min={0} max={4} value={this.state.step}/>
                 {content}
             </div>
