@@ -52,3 +52,6 @@ body {
     font-weight: 700;
     padding: 0;
 }
+.text-vcenter h3 {
+    text-shadow: none;
+}

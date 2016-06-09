@@ -31,6 +31,7 @@ export default class Jumbotron extends React.Component {
 				<div className="text-vcenter">
 					<div className="floating-text">
 						<h1>Peace of Mind</h1>
+						<h3>Protect your assets with comprehensive coverage to help you weather life's storms.</h3>
 						<Link to={apply}><RaisedButton label="Apply" secondary={true} style={buttonStyle}/></Link>
 						<Link to={admin}><RaisedButton label="Admin" secondary={true} style={buttonStyle}/></Link>
 					</div>
