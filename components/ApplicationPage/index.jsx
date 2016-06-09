@@ -12,7 +12,7 @@ const ApplicationPage = (props) => {
   return (
     <div className="applicationForm">
       <div>
-        <SelectField  floatingLabelText="Product">
+        <SelectField floatingLabelText="Product">
           <MenuItem value={"autos"} disabled={true} primaryText="Autos"/>
           <MenuItem value={"boat"} disabled={true} primaryText="Boat"/>
           <MenuItem value={"renters"} disabled={false} primaryText="Renters"/>
@@ -29,7 +29,7 @@ const ApplicationPage = (props) => {
           <TextField floatingLabelText="Last name" />
           <br />
           <br />
-          <DatePicker hintText="Date of birth (mm/dd/yyyy)" defaultDate={new Date("2000")} />
+          <DatePicker hintText="Date of birth (mm/dd/yyyy)" value="enter birthday" defaultDate={new Date("2000")} />
 
           <TextField floatingLabelText="Phone" type="tel"/>
           <br />
