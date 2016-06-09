@@ -105,6 +105,7 @@ class ApplicationForm extends Component {
             <div>
                 <h1 style={defaultStyle}>Application</h1>
                 <LinearProgress mode="determinate" min={0} max={4} value={this.state.step}/>
+                {this.props.children}
                 {content}
             </div>
         );
