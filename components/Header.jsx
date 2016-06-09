@@ -20,7 +20,6 @@ class Header extends Component {
     return (
       <header className="header">
           <AppBar title="Harbor Insurance Co." />
-          <h1 style={defaultStyle}>Application</h1>
       </header>
     );
   }

@@ -18,7 +18,8 @@ import mui, {
 import _ from 'lodash';
 import axios from 'axios';
 
-import {humanizeFieldName} from '../src/helpers';
+import Policy from './Policy';
+import {makeFakeApplications} from '../src/helpers';
 
 
 class ApplicationStatus extends Component {
@@ -30,71 +31,37 @@ class ApplicationStatus extends Component {
     }
 
     componentDidMount() {
-        axios.get(`/api/applications/${this.props.params.id}`).then((application) => {
-            this.setState({application});
-        });
+        // axios.get(`/api/applications/${this.props.params.id}`).then((application) => {
+        //     this.setState({application: application});
+        // }).catch((e) => {
+        //     console.error(e);
+            let application = makeFakeApplications(1)[0];
+            application.status = "approved";
+            this.setState({application:application});
+        // });
     }
 
     render () {
         let content;
-            const fieldNames = [
-                "status",
-                "phone",
-                "email",
-                "streetAddress",
-                "streetAddressCont",
-                "city",
-                "state",
-                "zipCode",
-                "coverage",
-                "socialSecurityNumber",
-                "riskScore",
-                "creditScore"
-            ];
-            let rows = [];
-            for (let fieldName of fieldNames) {
-                let fieldTitle = humanizeFieldName(fieldName);
-                let fieldValue = this.props.application[fieldName];
-                if (!!fieldValue) {
-                    rows.push(
-                        <TableRow>
-                            <TableRowColumn>{fieldTitle}</TableRowColumn>
-                            <TableRowColumn>{fieldValue}</TableRowColumn>
-                        </TableRow>
-                    );
-                }
-            }
 
-            let approveOptions;
-            if (this.props.application.status !== "approved") {
-                approveOptions = (
-                    <div>
-                        <RaisedButton primary={true} value="Reject" />
-                        <RaisedButton secondary={true} value="Approve" />
-                        <Divider/>
-                    </div>
-
-                );
-            }
-
-            content = (
-                <div>
-                    <h2>Application for {this.props.application.firstName} {this.props.application.lastName}</h2>
-                    <Divider/>
-                    {approveOptions}
-
-                    <Table>
-                        <TableBody displayRowCheckbox={false}>
-                        {rows}
-                        </TableBody>
-                    </Table>
-                </div>
-            );
-
-
+        switch(this.state.application.status) {
+            case "approved":
+                content = <Policy {...this.state.application.policy} applicationID={this.props.params.id}/>;
+                break;
+            case "pending":
+                content = <h3>Your application is pending review.  You will be notified via text message when its status is updated.</h3>;
+                break;
+            case "rejected":
+                content = <h3>Your application has been rejected.  Please re-apply.</h3>;
+                break;
+        }
 
         return (
-            <div>{content}</div>
+            <Paper style={{margin:20, padding:20}}>
+                <h2>Application Status for {this.state.application.firstName} {this.state.application.lastName}</h2>
+                <Divider/>
+                {content}
+            </Paper>
         );
     }
 }

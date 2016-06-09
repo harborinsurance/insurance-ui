@@ -5,7 +5,7 @@ import mui, {DatePicker, TextField, RaisedButton, Paper} from 'material-ui';
 class PersonalFields extends Component {
 
     handleChange (source, e, payload) {
-        let updateValues = [];
+        let updateValues = {};
         if (source === "dateOfBirth") {
             updateValues[source] = payload;
         } else {
