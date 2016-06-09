@@ -5,6 +5,7 @@ import React, { Component, PropTypes } from "react";
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import RaisedButton from 'material-ui/RaisedButton';
+import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
@@ -26,14 +27,14 @@ class ApplicationStatus extends Component {
     }
 
     componentDidMount() {
-        axios.get(`/api/applications/${this.props.params.id}`).then((application) => {
-            this.setState({application: application.data});
-        }).catch((e) => {
-            console.error(e);
+        // axios.get(`/api/applications/${this.props.params.id}`).then((application) => {
+        //     this.setState({application: application.data});
+        // }).catch((e) => {
+        //     console.error(e);
             let application = makeFakeApplications(1)[0];
             application.status = "approved";
             this.setState({application:application});
-        });
+        // });
     }
 
     render () {
@@ -52,11 +53,12 @@ class ApplicationStatus extends Component {
         }
 
         return (
-            <Paper style={{margin:20, padding:20}}>
-                <h2>Application Status for {this.state.application.firstName} {this.state.application.lastName}</h2>
-                <Divider/>
+            <div style={{disply:"flex", justifyContent:"space-around"}}>
+            <Paper style={{margin:"auto", marginTop: 40, width:450}}>
+                <AppBar title={`Application for ${this.state.application.firstName} ${this.state.application.lastName}`} showMenuIconButton={false}/>
                 {content}
             </Paper>
+            </div>
         );
     }
 }

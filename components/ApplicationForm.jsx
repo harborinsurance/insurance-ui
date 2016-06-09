@@ -189,7 +189,7 @@ class ApplicationForm extends Component {
       );
 
       return (
-        <Paper style={paperStyle}>
+        <Paper style={paperStyle} className="paper-override">
           {content}
         </Paper>
       );
