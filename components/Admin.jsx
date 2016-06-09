@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import mui, {DatePicker, TextField, RaisedButton, Paper} from 'material-ui';
 import _ from 'lodash';
 import $ from 'jquery';
+import axios from 'axios';
 
 import ApplicationList from './ApplicationList';
 import ApplicationReview from './ApplicationReview';
@@ -63,23 +64,29 @@ class Admin extends Component {
 
     updateApplication(application) {
 
-        let applications = this.state.applications;
-        for (let i = 0; i < applications.length; i++) {
-            let a = applications[i];
-            if (a._id !== application._id) {
-                continue;
+        axios.put(`/api/applications/${application._id}`, application).then((res) => {
+            console.log(res);
+
+            let applications = this.state.applications;
+            for (let i = 0; i < applications.length; i++) {
+                let a = applications[i];
+                if (a._id !== application._id) {
+                    continue;
+                }
+
+                applications[i] = Object.assign({}, a, application);
+                break;
+            }
+            if (this.state.selectedApplication._id === application._id) {
+                this.setState({selectedApplication: application});
             }
 
-            applications[i] = Object.assign({}, a, application);
-            break;
-        }
+            this.setState({applications: applications});
+        }).catch((e) => {
+            console.error(e);
+        })
 
-        if (this.state.selectedApplication._id === application._id) {
-            this.setState({selectedApplication: application});
-        }
 
-        this.setState({applications: applications});
-        console.log(this.state);
     }
 
     render () {

@@ -32,7 +32,7 @@ class ApplicationStatus extends Component {
 
     componentDidMount() {
         axios.get(`/api/applications/${this.props.params.id}`).then((application) => {
-            this.setState({application: application});
+            this.setState({application: application.data});
         }).catch((e) => {
             console.error(e);
             let application = makeFakeApplications(1)[0];

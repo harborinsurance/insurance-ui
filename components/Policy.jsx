@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 import _ from 'lodash';
 import numeral from 'numeral';
 import faker from 'faker';
-import axius from 'axios';
+import axios from 'axios';
 
 import mui, {
     Divider,
@@ -38,7 +38,7 @@ class Policy extends Component {
                 <h2>Policy: {this.props.name}</h2>
                 <p>{this.props.description}</p>
                 <p><b>Cost:</b> ${this.props.cost}/month</p>
-                {this.props.paid ? null : <PolicyPaymentForm applicationID={this.props.applicaitonID} /> }
+                {this.props.paid ? null : <PolicyPaymentForm applicationID={this.props.applicationID} /> }
             </Paper>
         );
     }
@@ -54,24 +54,28 @@ class PolicyPaymentForm extends Component {
     }
 
     submitPayment() {
+
         let payload = {
             card: {
                 number: this.state.cardNumber,
-                exp_month: this.expirationDate.getMonth(),
-                exp_year: this.expirationDate.getYear(),
+                exp_month: this.state.expirationDate.getMonth(),
+                exp_year: this.state.expirationDate.getYear(),
                 cvc: this.secuirtyCode
             }
         };
 
-        axios.post(`/api/applications/${this.props.applicationID}/payment`, payload).then((res) => {
+        axios.post(`/api/applications/${this.props.applicationID}/charge`, payload).then((res) => {
             this.setState({submitted: true});
+        }).catch((e) => {
+            console.log(e);
+            this.setState({error: e});
         });
     }
 
     handleChange (source, e, payload) {
         let updateValues = {};
         if (source === "expirationDate") {
-            updateValues[source] = payload;
+            updateValues[source] = new Date(payload);
         } else {
             updateValues[source] = e.target.value;
         }
