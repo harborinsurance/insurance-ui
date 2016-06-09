@@ -2,7 +2,6 @@ import React from "react";
 
 export default class Logos extends React.Component {
 	render() {
-		console.log("fdf");
 		let { type } = this.props;
 		let url = {
 			"150": require("./images/Harbor_Mark_150.png"),

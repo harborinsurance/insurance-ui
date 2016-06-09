@@ -9,3 +9,8 @@ body {
   color: #223A50;
   background-color: #F0F1F2;
 }
+
+.bg {
+  width: 100%;
+  z-index: 0;
+}
