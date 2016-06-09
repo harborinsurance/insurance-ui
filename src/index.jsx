@@ -11,8 +11,10 @@ import ApplicationForm from '../components/ApplicationForm';
 
 import ApplicationPage from '../components/ApplicationPage';
 import ConfirmationPage from '../components/ConfirmationPage';
-import CoveragePage from '../components/CoveragePage';
 import SummaryPage from '../components/SummaryPage';
+
+import CoveragePage from '../components/CoveragePage';
+
 import Home from '../components/Home';
 
 //Needed for React Developer Tools
@@ -28,11 +30,7 @@ ReactDOM.render(
           <IndexRedirect to="/home"/>
           <Route path="home" component={Home} />
           <Route path="/admin" component={Admin}/>
-          <Route path="/apply" component={ApplicationForm}>
-            <IndexRoute component={ApplicationPage} />
-            <Route path="coverage" component={CoveragePage} />
-            <Route path="summary" component={SummaryPage} />
-          </Route>
+          <Route path="/apply" component={ApplicationForm} />
           <Route path="/confirmation" component={ConfirmationPage} />
           <Route path="/applications/:id" component={ApplicationStatus} />
       </Route>

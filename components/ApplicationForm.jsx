@@ -11,9 +11,15 @@ import LinearProgress from 'material-ui/LinearProgress';
 import {
   Step,
   Stepper,
+  StepContent,
   StepLabel
 } from 'material-ui/Stepper';
 import FlatButton from 'material-ui/FlatButton';
+
+import ApplicationPage from '../components/ApplicationPage';
+import CoveragePage from '../components/CoveragePage';
+import SummaryPage from '../components/SummaryPage';
+
 
 import axios from 'axios';
 
@@ -32,6 +38,18 @@ class ApplicationForm extends Component {
       };
     }
 
+    componentWillMount = () => {
+      this.updateDimensions();
+    }
+
+    componentDidMount = () => {
+      window.addEventListener('resize', this.updateDimensions);
+    }
+
+    componentWillUnmount = () => {
+      window.removeEventListener('resize', this.updateDimensions);
+    }
+
     updateFields = (values) => {
       let newFieldValues = Object.assign({}, this.state.fieldValues, values);
       let newState = Object.assign({}, this.state, {fieldValues: newFieldValues});
@@ -41,21 +59,11 @@ class ApplicationForm extends Component {
     handleNext = () => {
       // if not the final step, progress stepping
       // otherwise, submit the form
+
       const { step } = this.state;
 
-      if (step === 0) {
-        this.context.router.push('/apply/coverage');
-      } else if (step === 1) {
-        this.context.router.push('/apply/summary');
-      } else if (step === 2) {
-        // axios.post('/api/applications', this.state.fieldValues).then((res) =>{
-        //   // Finished state
-        //   this.context.router.push('/apply/confirmation');
-        // }).catch(err => {
-        //   console.error(err);
-        // });
+      if (step === 2) {
         this.context.router.push('/confirmation');
-        return;
       }
 
       this.setState({
@@ -74,41 +82,101 @@ class ApplicationForm extends Component {
       }
     }
 
+    updateDimensions = () => {
+      const width = window.innerWidth;
+
+      this.setState({
+        width: width
+      });
+    }
+
     render () {
       const { step } = this.state;
+      let stepContent;
+
+      if (step === 0) {
+        stepContent = (<ApplicationPage />);
+      } else if (step === 1) {
+        stepContent = (<CoveragePage />);
+      } else if (step === 2) {
+        stepContent = (<SummaryPage />);
+      }
+
+      let content = (this.state.width > 500) ? (
+      <div>
+        <Stepper key="verticalStep" activeStep={step}>
+          <Step>
+            <StepLabel>Application</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Coverage</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Summary</StepLabel>
+          </Step>
+        </Stepper>
+
+        {stepContent}
+
+        <div className="stepper-nav">
+          <FlatButton
+            label="Back"
+            disabled={step === 0}
+            onTouchTap={this.handlePrev}
+            className="stepper-nav__btn"
+          />
+
+          <RaisedButton
+            label={step === 2 ? 'Submit' : 'Next'}
+            primary
+            onTouchTap={this.handleNext}
+            className="stepper-nav__btn"
+          />
+        </div>
+      </div>
+      ): (
+        <div>
+          <Stepper key="horizontalStep" activeStep={step} orientation="vertical">
+            <Step>
+              <StepLabel>Application</StepLabel>
+              <StepContent>
+                <ApplicationPage />
+              </StepContent>
+            </Step>
+            <Step>
+              <StepLabel>Coverage</StepLabel>
+              <StepContent>
+                <CoveragePage />
+              </StepContent>
+            </Step>
+            <Step>
+              <StepLabel>
+                <SummaryPage />
+              </StepLabel>
+            </Step>
+          </Stepper>
+
+          <div className="stepper-nav">
+            <FlatButton
+              label="Back"
+              disabled={step === 0}
+              onTouchTap={this.handlePrev}
+              className="stepper-nav__btn"
+            />
+
+            <RaisedButton
+              label={step === 2 ? 'Submit' : 'Next'}
+              primary
+              onTouchTap={this.handleNext}
+              className="stepper-nav__btn"
+            />
+          </div>
+        </div>
+      );
 
       return (
         <Paper style={paperStyle}>
-          <div>
-            <Stepper activeStep={step}>
-              <Step>
-                <StepLabel>Application</StepLabel>
-              </Step>
-              <Step>
-                <StepLabel>Coverage</StepLabel>
-              </Step>
-              <Step>
-                <StepLabel>Summary</StepLabel>
-              </Step>
-            </Stepper>
-            {this.props.children}
-
-            <div className="stepper-nav">
-              <FlatButton
-                label="Back"
-                disabled={step === 0}
-                onTouchTap={this.handlePrev}
-                className="stepper-nav__btn"
-              />
-
-              <RaisedButton
-                label={step === 2 ? 'Submit' : 'Next'}
-                primary
-                onTouchTap={this.handleNext}
-                className="stepper-nav__btn"
-              />
-            </div>
-          </div>
+          {content}
         </Paper>
       );
     }
