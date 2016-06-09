@@ -3,7 +3,6 @@ import React, { PropTypes, Component } from 'react';
 import mui, {AppBar, Styles, IconButton} from 'material-ui';
 import MyRawTheme from '../src/material_ui_raw_theme_file';
 import Logos from "../elements/Logos";
-import Jumbotron from "../elements/Jumbotron";
 
 let NavigationClose = require('material-ui/lib/svg-icons/navigation/close');
 

@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from "react";
-import Header from '../components/Header';
-import ApplicationForm from '../components/ApplicationForm';
+import Header from './Header';
+import Jumbotron from "../elements/Jumbotron";
 
-class App extends Component {
+class Home extends Component {
   render() {
     const { actions } = this.props;
     return (
       <div>
-        <Header/>
         <Jumbotron class="bg" type="JumboTron"> </Jumbotron>
       </div>
     );
@@ -15,8 +14,8 @@ class App extends Component {
 }
 
 
-App.propTypes = {
+Home.propTypes = {
 
 };
 
-export default App;
+export default Home;
