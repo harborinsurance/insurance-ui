@@ -21,7 +21,7 @@ dotenv.load();
 
 let twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_SECRET);
 
-let stripeURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465419110688/Stripe/charge",
+const stripeURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465419110688/Stripe/charge",
     creditScoreURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465419039433/Credit/score",
     leadsURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465431459552/CRM/leads/";
 
@@ -143,7 +143,7 @@ app.post("/api/applications/:id/charge", function (request, response) {
         else {
             response.json(application);
         }
-    })
+    });
 });
 
 if (!isProduction) {
@@ -216,8 +216,12 @@ app.listen(port, function() {
   });
 });
 
-function sendText(status, phoneNumber, callback) {
+function sendText(application, callback) {
+    console.log(application)
     //remove spaces and dashes and other stuff
+    let phoneNumber = application.phoneNumber,
+        status = application.phoneNumber,
+        id = application._id;
     phoneNumber = phoneNumber.replace(/\s/g, "").replace("-", "").replace(")", "").replace("(", "");
 
     //ensure it has the country code on it
@@ -231,7 +235,7 @@ function sendText(status, phoneNumber, callback) {
         message = "Thanks for submitting your application, we will get back to you soon!";
     }
     else if (status === "approved") {
-        message = "Congrats!  Your application is approved!  We will be billing your credit card that you submitted with your application.";
+        message =  `Congrats!  Your application is approved!  Pleas review your policy and submit payment here: %{}`;
     }
     else if (status === "rejected") {
         message = "Your application has been rejected.  Please contact customer service for more information";
@@ -300,8 +304,8 @@ function insertApplication(application, response) {
         function (body, headers, next) {
             result = body;
 
-            if (result.status && result.phone && noText === false) {
-                sendText(result.status, result.phone, next);
+            if (result.status && result.phoneNumber && noText === false) {
+                sendText(result, next);
             }
             else {
                 next(null, null);
@@ -316,5 +320,5 @@ function insertApplication(application, response) {
         else {
             response.json(result);
         }
-    })
+    });
 }
