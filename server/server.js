@@ -11,7 +11,6 @@ let express = require("express"),
     Twilio = require("twilio"),
     async = require("async"),
     restler = require("restler");
-    
 
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
@@ -20,13 +19,17 @@ const config = require('../webpack.config.js');
 
 dotenv.load();
 
-let stripe = require("stripe")(process.env.STRIPE_API_KEY),
-    twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_SECRET);
+let twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_SECRET);
+
+const stripeURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465419110688/Stripe/charge",
+    creditScoreURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465419039433/Credit/score",
+    leadsURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465431459552/CRM/leads/";
 
 let appEnv = cfenv.getAppEnv();
 let isProduction = process.env.NODE_ENV === "production";
 
 app.use(bodyParser.json());
+app.use(bodyParser.text());
 
 let cloudantCreds = appEnv.getServiceCreds("cloudant"),
     dbName = "applications",
@@ -37,9 +40,10 @@ app.get("/api/applications", function (request, response) {
     db.view("applications", "all", function(error, body) {
         if (!error) {
             //remove nested object
+
             var applications = [];
             _.each(body.rows, function(application) {
-                applications.push(application.value); 
+                applications.push(application.value);
             });
             response.json(applications);
         }
@@ -61,25 +65,54 @@ app.get("/api/applications/:id", function (request, response) {
 });
 
 app.post("/api/applications", function (request, response) {
-    //set initial application state
-    request.body.status = "pending";
-    request.body.submittedAt = new Date().toDateString();
-    
-    restler.get("http://159.122.220.181").on("complete", function(data) {
-        console.log(data);
-        request.body.creditScore = data.creditScore;
-        request.body.riskScore = data.riskScore;
+    var json;
+    //dirty trick to force json parsing, dreamface only sends it as text
+    try
+    {
+        json = JSON.parse(request.body);
+    }
+    catch(e)
+    {
+        json = request.body;
+    }
 
-        insertApplication(request.body, response);
+    //set initial application state
+    json.status = "pending";
+    json.submittedAt = new Date();
+
+    restler.get(creditScoreURL, {headers: {"X-IBM-CloudInt-ApiKey": process.env.CREDIT_API_KEY}}).on("complete", function(data) {
+        json.creditScore = data.creditScore;
+        json.riskScore = data.riskScore;
+        insertApplication(json, response);
     });
 });
 
 app.put("/api/applications/:id", function (request, response) {
-    if (request.body.status === "approved") {
-        request.body.approvedAt = new Date().toDateString();
+
+    var json;
+    //dirty trick to force json parsing, dreamface only sends it as text
+    try
+    {
+        json = JSON.parse(request.body);
+    }
+    catch(e)
+    {
+        json = request.body;
     }
 
-    insertApplication(request.body, response);
+    if (json.status === "approved") {
+        json.approvedAt = new Date().toDateString();
+    }
+    db.get(request.params.id, function(error, body, headers) {
+        if (error) {
+            response.send(error);
+        }
+        else {
+            json["_id"] = body["_id"];
+            json["_rev"] = body["_rev"];
+            insertApplication(json, response);
+        }
+    });
 });
 
 app.post("/api/applications/:id/charge", function (request, response) {
@@ -88,17 +121,15 @@ app.post("/api/applications/:id/charge", function (request, response) {
 
     async.waterfall([
         function (next) {
-            stripe.charges.create({
-                amount: 500,
-                currency: "usd",
-                source: request.body.stripeToken,
-                description: "Harbor Insurance Co. Insurance Policy"
-            }, next);
-        }, function (result, next) {
-            charge = result;
+           restler.post(stripeURL, {data: request.body, headers: {"X-IBM-CloudInt-ApiKey": process.env.STRIPE_API_KEY}}).on("complete", function(data) {
+               charge = data;
+               next(null);
+           });
+        }, function (next) {
             db.get(request.params.id, next);
         }, function (body, headers, next) {
             body.charge = charge;
+            body.paid = true;
             db.insert(body,  next);
         }, function (body, headers, next) {
             db.get(request.params.id, next);
@@ -114,7 +145,7 @@ app.post("/api/applications/:id/charge", function (request, response) {
         else {
             response.json(application);
         }
-    })
+    });
 });
 
 if (!isProduction) {
@@ -140,7 +171,7 @@ if (!isProduction) {
   });
 } else {
   app.use(express.static(__dirname + "/../static"));
-  app.get("/", function response(req, res) {
+  app.get("*", function response(req, res) {
     res.sendFile(path.join(__dirname, '../static/index.html'));
   });
 }
@@ -187,8 +218,12 @@ app.listen(port, function() {
   });
 });
 
-function sendText(status, phoneNumber, callback) {
+
+function sendText(application, callback) {
     //remove spaces and dashes and other stuff
+    let phoneNumber = application.phone,
+        status = application.status,
+        id = application._id;
     phoneNumber = phoneNumber.replace(/\s/g, "").replace("-", "").replace(")", "").replace("(", "");
 
     //ensure it has the country code on it
@@ -199,10 +234,10 @@ function sendText(status, phoneNumber, callback) {
     let message = "";
 
     if (status === "pending") {
-        message = "Thanks for submitting your application, we will get back to you soon!";
+        message = `Thanks for submitting your application, you can check the status here http://harborinsurance.mybluemix.net/#/applications/${application._id}`;
     }
     else if (status === "approved") {
-        message = "Congrats!  Your application is approved!  We will be billing your credit card that you submitted with your application.";
+        message = `Congrats!  Your application is approved!  Please review your policy and submit payment here: http://harborinsurance.mybluemix.net/#/applications/${application._id}`;
     }
     else if (status === "rejected") {
         message = "Your application has been rejected.  Please contact customer service for more information";
@@ -241,10 +276,30 @@ function seedDB(callback) {
 }
 
 function insertApplication(application, response) {
-    var result;
-    
+    var result,
+        noText = false;
+
     async.waterfall([
         function (next) {
+            if (application.status === "pending" && application["_id"] === undefined) {
+                restler.post(leadsURL, {data: application, headers: {"X-IBM-CloudInt-ApiKey": process.env.LEADS_API_KEY}}).on("complete", function(data) {
+                    next(null, data);
+                });
+            }
+            else if (application.lead === undefined || application.lead === null) {
+                next(null, null);
+            }
+            else {
+                restler.put(leadsURL + application.lead.LEAD_ID, {data: application, headers: {"X-IBM-CloudInt-ApiKey": process.env.LEADS_API_KEY}}).on("complete", function(data) {
+                    if (application.status === "pending") {
+                        noText = true;
+                    }
+                    next(null, data);
+                });
+            }
+        },
+        function (lead, next) {
+            application.lead = lead;
             db.insert(application, next);
         },
         function (body, headers, next) {
@@ -253,9 +308,8 @@ function insertApplication(application, response) {
         },
         function (body, headers, next) {
             result = body;
-
-            if (result.status, result.phone) {
-                sendText(result.status, result.phone, next);
+            if (result.status && result.phone && noText === false) {
+                sendText(result, next);
             }
             else {
                 next(null, null);
@@ -270,5 +324,5 @@ function insertApplication(application, response) {
         else {
             response.json(result);
         }
-    })
+    });
 }

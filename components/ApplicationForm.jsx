@@ -22,6 +22,10 @@ const containerStyle = {
     maxWidth: 350
 };
 
+const defaultStyle = {
+  marginLeft: 20
+};
+
 const paperStyle = {
     margin: 20,
     padding: 20
@@ -65,9 +69,12 @@ class ApplicationForm extends Component {
     }
 
     submit() {
+        console.log(this.state.fieldValues);
         axios.post('/api/applications', this.state.fieldValues).then((res) =>{
             // transition to "You're done!"
             this.setState({step:5});
+        }).catch((e) => {
+            console.error(e);
         });
     }
 
@@ -95,6 +102,7 @@ class ApplicationForm extends Component {
         }
         return (
             <div>
+                <h1 style={defaultStyle}>Application</h1>
                 <LinearProgress mode="determinate" min={0} max={4} value={this.state.step}/>
                 {content}
             </div>

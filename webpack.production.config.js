@@ -21,6 +21,7 @@ module.exports = {
     loaders: [
       { test: /\.html$/, loader: "file?name=[name].[ext]" },
       { test: /\.css$/, loader: "file?name=[name].[ext]" },
+      { test: /\.(jpe?g|png|gif|svg)$/i, loader:'file' },
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: ["react-hot","babel-loader"]},
     ],
   },

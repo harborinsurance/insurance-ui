@@ -1,11 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 
-import mui, {AppBar, Styles} from 'material-ui';
+import mui, {AppBar, Styles, IconButton} from 'material-ui';
 import MyRawTheme from '../src/material_ui_raw_theme_file';
+import Logos from "../elements/Logos";
 
-const defaultStyle = {
-  marginLeft: 20
-};
+let NavigationClose = require('material-ui/lib/svg-icons/navigation/close');
 
 class Header extends Component {
   static get childContextTypes() {
@@ -19,8 +18,7 @@ class Header extends Component {
   render() {
     return (
       <header className="header">
-          <AppBar showMenuIconButton={false} title="Harbor Insurance Co." />
-          <h1 style={defaultStyle}>Application</h1>
+          <AppBar title="" iconElementLeft={<IconButton><Logos type="150" /></IconButton>}/>
       </header>
     );
   }

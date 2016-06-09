@@ -9,3 +9,49 @@ body {
   color: #223A50;
   background-color: #F0F1F2;
 }
+
+.bg {
+  width: 100%;
+  z-index: 0;
+}
+
+.button {
+  margin: 15px;
+}
+
+.home {
+    display: table;
+    height: 750px;
+    position: relative;
+    width: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.text-vcenter {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+    text-shadow: 4px 4px 4px #000000;
+}
+
+.floating-text {
+    margin-left: auto;
+    margin-right: auto;
+    width: 600px;
+    max-width: 100%;
+    margin-bottom: 0px;
+    position: relative;
+}
+
+.text-vcenter h1 {
+    font-size: 4.5em;
+    font-weight: 700;
+    padding: 0;
+}
+.text-vcenter h3 {
+    text-shadow: none;
+}

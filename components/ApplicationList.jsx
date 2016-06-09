@@ -30,16 +30,10 @@ class ApplicationList extends Component {
         };
     }
 
-    rowSelected(id) {
-        console.log("row selected")
-        this.props.selectApplication(id);
-    }
-
-
 
     render() {
         let applicationRows = this.props.applications.map((application) => {
-            return <ApplicationListItem {...application} selectApplication={this.props.selectApplication}/>;
+            return <ApplicationListItem {...application} key={application._id} selectApplication={this.props.selectApplication}/>;
         });
 
         return(
@@ -67,7 +61,7 @@ class ApplicationList extends Component {
 class ApplicationListItem extends Component {
     render() {
         return (
-            <TableRow hoverable={true} onMouseUp={() => { this.props.selectApplication(this.props._id); }}>
+            <TableRow hoverable={true} onMouseUp={() => { this.props.selectApplication(this.props._id); console.log(this.props)}}>
                 <TableRowColumn>{this.props.lastName}, {this.props.firstName}</TableRowColumn>
                 <TableRowColumn><div className={"status-"+this.props.status}>{this.props.status}</div></TableRowColumn>
                 <TableRowColumn>{numeral(this.props.coverage).format('$0,0.00')}</TableRowColumn>

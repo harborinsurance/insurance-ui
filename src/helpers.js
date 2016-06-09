@@ -9,12 +9,13 @@ export function makeFakeApplications (count) {
     let applications = [];
     for (let i = 0 ; i < count ; i++) {
         let application = {
+            _id: faker.random.uuid(),
             status: _.sample(APPLICATION_STATES),
             firstName: faker.name.firstName(),
             lastName: faker.name.lastName(),
             dateOfBirth: faker.date.past(),
             email: faker.internet.email(),
-            phone: faker.phone.phoneNumber(),
+            phone: faker.phone.phone(),
             streetAddress: faker.address.streetAddress(),
             streetAddressCont: "",
             city: faker.address.city(),
@@ -27,9 +28,15 @@ export function makeFakeApplications (count) {
             creditScore: faker.random.number(400) + 400
         };
 
+        application.policy = {
+            paid: false,
+            name: `${faker.company.catchPhraseAdjective()} Renters Insurance`,
+            description: faker.lorem.paragraph(),
+            cost: faker.random.number(250) + 50
+        };
+
         applications.push(application);
     }
-    console.log(JSON.stringify(applications));
     return applications;
 }
 

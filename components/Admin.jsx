@@ -1,10 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import mui, {DatePicker, TextField, RaisedButton, Paper} from 'material-ui';
 import _ from 'lodash';
-import $ from 'jquery'; 
+import $ from 'jquery';
+import axios from 'axios';
 
 import ApplicationList from './ApplicationList';
-import ApplicationView from './ApplicationView';
+import ApplicationReview from './ApplicationReview';
 import { makeFakeApplications } from '../src/helpers';
 
 
@@ -37,11 +38,16 @@ class Admin extends Component {
     }
 
     componentDidMount() {
+        // this.setState({
+        //     applications: makeFakeApplications(40)
+        // });
         $.ajax({
             url: "/api/applications/",
             dataType: "json",
             cache: false,
             success: function(applications) {
+                console.log(applications)
+                applications = _.sortBy(applications, (application) => { return application.submittedAt ; }).reverse();
                 this.setState({applications: applications});
             }.bind(this),
             error: function(xhr, status, err) {
@@ -50,25 +56,38 @@ class Admin extends Component {
         });
     }
 
-    selectApplication(_id) {
-        let selectedApplication = _.find(this.state.applications, (application) => { return application._id === _id ;} );
+
+    selectApplication(id) {
+        let selectedApplication = _.find(this.state.applications, (application) => { return application._id === id ;} );
         console.log(selectedApplication);
         this.setState({selectedApplication: selectedApplication});
     }
 
-    updateApplication(_id, fields) {
-        let applications = this.state.applications;
-        for (let i = 0; i < applications; i++) {
-            let application = applications[i];
-            if (application._id !== _id) {
-                continue;
+    updateApplication(application) {
+
+        axios.put(`/api/applications/${application._id}`, application).then((res) => {
+            console.log(res);
+
+            let applications = this.state.applications;
+            for (let i = 0; i < applications.length; i++) {
+                let a = applications[i];
+                if (a._id !== application._id) {
+                    continue;
+                }
+
+                applications[i] = Object.assign({}, a, application);
+                break;
+            }
+            if (this.state.selectedApplication._id === application._id) {
+                this.setState({selectedApplication: application});
             }
 
-            applications[i] = Object.assign({}, application, fields);
-            break;
-        }
+            this.setState({applications: applications});
+        }).catch((e) => {
+            console.error(e);
+        });
 
-        this.setState({applications: applications});
+
     }
 
     render () {
@@ -78,7 +97,7 @@ class Admin extends Component {
                     <ApplicationList applications={this.state.applications} selectApplication={this.selectApplication.bind(this)} />
                 </Paper>
                 <Paper style={styles.rightPaper}>
-                    <ApplicationView application={this.state.selectedApplication} updateApplication={this.updateApplication.bind(this)}/>
+                    <ApplicationReview application={this.state.selectedApplication} updateApplication={this.updateApplication.bind(this)}/>
                 </Paper>
             </div>
         );

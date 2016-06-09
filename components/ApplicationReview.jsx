@@ -18,9 +18,30 @@ import _ from 'lodash';
 import {humanizeFieldName} from '../src/helpers';
 
 
-class ApplicationView extends Component {
+class ApplicationReview extends Component {
     constructor (props, context) {
         super(props, context);
+
+        console.log("applicationReview constructor")
+    }
+
+    approveApplication() {
+        if (this.props.application.status !== "pending") {
+            return;
+        }
+
+        let approvedApplication = Object.assign({}, this.props.application, {status: "approved"});
+        approvedApplication
+        this.props.updateApplication(approvedApplication);
+    }
+
+    rejectApplication() {
+        if (this.props.application.status !== "pending") {
+            return;
+        }
+
+        let rejectedApplication = Object.assign({}, this.props.application, {status: "rejected"});
+        this.props.updateApplication(rejectedApplication);
     }
 
     render () {
@@ -64,14 +85,26 @@ class ApplicationView extends Component {
                 }
             }
 
+            let reviewOptions;
+            if (this.props.application.status === "pending") {
+                reviewOptions = (
+                    <div style={{display:"flex"}}>
+                        <RaisedButton primary={true} label="Reject" style={{flex:2, margin:20, marginRight:10}} onClick={this.rejectApplication.bind(this)}/>
+                        <RaisedButton secondary={true} label="Approve" style={{flex:2, margin: 20, marginLeft:10}} onClick={this.approveApplication.bind(this)}/>
+                        <Divider/>
+                    </div>
+                );
+            }
+
             content = (
                 <div>
-                    <h2>Application for {this.props.application.firstName} {this.props.application.lastName}</h2>
+                    <h2>{this.props.application.firstName} {this.props.application.lastName}</h2>
                     <Divider/>
+                    {reviewOptions}
 
                     <Table>
                         <TableBody displayRowCheckbox={false}>
-                        {rows}
+                            {rows}
                         </TableBody>
                     </Table>
                 </div>
@@ -86,4 +119,4 @@ class ApplicationView extends Component {
     }
 }
 
-export default ApplicationView;
+export default ApplicationReview;
