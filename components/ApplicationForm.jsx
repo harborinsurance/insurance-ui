@@ -24,8 +24,12 @@ import SummaryPage from '../components/SummaryPage';
 import axios from 'axios';
 
 const paperStyle = {
-    margin: 20,
-    padding: 20
+  margin: 20,
+  padding: 20,
+  borderRadius: '14px',
+  border: '1px #c8c8c8 solid',
+  boxShadow: 'none',
+  backgroundColor: 'white'
 };
 
 class ApplicationForm extends Component {
@@ -34,7 +38,19 @@ class ApplicationForm extends Component {
       this.state = {
         step: 0,
         finished: false,
-        fieldValues: {}
+        fieldValues: {
+          product: '',
+          zipCode: '',
+          firstName: '',
+          lastName: '',
+          phone: '',
+          email: '',
+          streetAddress: '',
+          streetAddressCont: '',
+          city: '',
+          state: '',
+          dateOfBirth: ''
+        }
       };
     }
 
@@ -51,10 +67,13 @@ class ApplicationForm extends Component {
     }
 
     handleChange = (evt, value) => {
+
+      const fieldValues = Object.assign(this.state.fieldValues, {
+        [evt.target.name]: value
+      })
+
       this.setState({
-        fieldValues: {
-          [evt.target.name]: value
-        }
+        fieldValues: fieldValues
       });
     }
 
@@ -106,10 +125,12 @@ class ApplicationForm extends Component {
 
     render () {
       const { step } = this.state;
+      const { fieldValues } = this.state;
+      console.log(fieldValues);
       let stepContent;
 
       if (step === 0) {
-        stepContent = (<ApplicationPage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />);
+        stepContent = (<ApplicationPage handleChange={this.handleChange} fieldValues={fieldValues} />);
       } else if (step === 1) {
         stepContent = (<CoveragePage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />);
       } else if (step === 2) {
@@ -154,7 +175,7 @@ class ApplicationForm extends Component {
             <Step>
               <StepLabel>Application</StepLabel>
               <StepContent>
-                <ApplicationPage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />
+                <ApplicationPage handleChange={this.handleChange} fieldValues={filedValues} />
               </StepContent>
             </Step>
             <Step>

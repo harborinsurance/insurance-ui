@@ -20,7 +20,7 @@ class ApplicationPage extends Component {
         <div className="form-row">
 
           <div className="form-row__item">
-            <SelectField name="product" onChange={this.props.handleChange} floatingLabelText="Product">
+            <SelectField name="product" value={this.props.fieldValues.product} onChange={this.props.handleChange} floatingLabelText="Product">
               <MenuItem value={"autos"} disabled={true} primaryText="Autos"/>
               <MenuItem value={"boat"} disabled={true} primaryText="Boat"/>
               <MenuItem value={"renters"} disabled={false} primaryText="Renters"/>
@@ -33,12 +33,20 @@ class ApplicationPage extends Component {
           </div>
 
           <div className="form-row__item">
-            <TextField name="zipCode" onChange={this.props.handleChange} floatingLabelText="Zip code" />
+            <TextField
+              name="zipCode"
+              onChange={this.props.handleChange}
+              floatingLabelText="Zip code"
+            />
           </div>
         </div>
         <div className="form-row">
           <div className="form-row__item">
-            <TextField name="firstName" onChange={this.props.handleChange} floatingLabelText="First name" />
+            <TextField
+              name="firstName"
+              onChange={this.props.handleChange}
+              floatingLabelText="First name"
+            />
           </div>
 
           <div className="form-row__item">
