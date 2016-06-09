@@ -7,7 +7,8 @@ class Home extends Component {
     const { actions } = this.props;
     return (
       <div>
-        <Jumbotron class="bg" type="JumboTron"> </Jumbotron>
+        <h1>Peace of Mind</h1>
+        <Jumbotron className="bg"> </Jumbotron>
       </div>
     );
   }

@@ -6,10 +6,6 @@ import Logos from "../elements/Logos";
 
 let NavigationClose = require('material-ui/lib/svg-icons/navigation/close');
 
-const defaultStyle = {
-  marginLeft: 20
-};
-
 class Header extends Component {
   static get childContextTypes() {
     return { muiTheme: React.PropTypes.object };
