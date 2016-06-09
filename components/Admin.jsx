@@ -1,5 +1,10 @@
 import React, {Component, PropTypes} from 'react';
-import mui, {DatePicker, TextField, RaisedButton, Paper} from 'material-ui';
+
+import DatePicker from 'material-ui/DatePicker';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
+
 import _ from 'lodash';
 import $ from 'jquery';
 import axios from 'axios';

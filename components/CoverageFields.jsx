@@ -1,11 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 
-import mui, {
-    TextField,
-    RaisedButton,
-    Paper
-} from 'material-ui';
-
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
 
 class CoverageFields extends Component {
     handleChange(source, e, payload) {
