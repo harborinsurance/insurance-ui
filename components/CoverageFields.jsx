@@ -21,7 +21,7 @@ class CoverageFields extends Component {
                     {ssnEnabled ? <TextField floatingLabelText="Social security number" type="number" value={this.props.fieldValues.socialSecurityNumber} onChange={this.handleChange.bind(this, "socialSecurityNumber")}/> : null}
                 </Paper>
                 <RaisedButton className="prev" label="Back" secondary={true} onClick={this.props.prevStep} style={this.props.prevButtonStyle}/>
-                <RaisedButton className="next" label="Next" secondary={true} onClick={this.props.nextStep} disabled={nextDisabled} style={this.props.nextButtonStyle}/>
+                <RaisedButton className="next" label="Next" primary={true} onClick={this.props.nextStep} disabled={nextDisabled} style={this.props.nextButtonStyle}/>
             </div>
         );
     }

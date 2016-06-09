@@ -33,7 +33,7 @@ class PersonalFields extends Component {
                     <TextField ref="email" floatingLabelText="Email" onChange={this.handleChange.bind(this, "email")} value={this.props.fieldValues.email} type="email"/>
                 </Paper>
                 <RaisedButton className="prev" label="Back" secondary={true} onClick={this.props.prevStep} style={this.props.prevButtonStyle}/>
-                <RaisedButton className="next" label="Next" secondary={true} onClick={this.props.nextStep} disabled={nextDisabled} style={this.props.nextButtonStyle}/>
+                <RaisedButton className="next" label="Next" primary={true} onClick={this.props.nextStep} disabled={nextDisabled} style={this.props.nextButtonStyle}/>
             </div>
         );
     }

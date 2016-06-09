@@ -19,20 +19,19 @@ class ProductFields extends Component {
         });
     }
 
-    handleChange = (evt, index, value) => {
-        console.log(this)
+    handleChange(source, e, payload) {
         let updateValues = {};
-        if (value === "product") {
-            updateValues[value] = "renters";
-        } else if (value === "zipCode") {
-            if (evt.target.value.match(/^\d{5}$/)) {
+        if (source === "product") {
+            updateValues[source] = "renters";
+        } else if (source === "zipCode") {
+            if (e.target.value.match(/^\d{5}$/)) {
                 this.setState({ errorText: '' });
-                updateValues[value] = evt.target.value;
+                updateValues[source] = e.target.value;
             } else {
-                this.setState({ errorText: 'This must be a valid zip code.' })
+                this.setState({ errorText: 'This must be a valid zip code.' });
             }
         } else {
-            updateValues[value] = evt.target.value;
+            updateValues[source] = e.target.value;
         }
         this.props.updateFields(updateValues);
     }
@@ -44,7 +43,7 @@ class ProductFields extends Component {
             <div style={this.props.containerStyle}>
                 <Paper style={this.props.paperStyle} >
                     <h3>Product Information</h3>
-                    <SelectField ref="product" onChange={this.handleChange} value={this.props.fieldValues.product} floatingLabelText="Product">
+                    <SelectField ref="product" onChange={this.handleChange.bind(this, "product")} value={this.props.fieldValues.product} floatingLabelText="Product">
                         <MenuItem value={"autos"} disabled={true} primaryText="Autos"/>
                         <MenuItem value={"boat"} disabled={true} primaryText="Boat"/>
                         <MenuItem value={"renters"} disabled={false} primaryText="Renters"/>
@@ -57,7 +56,7 @@ class ProductFields extends Component {
                     { zipCodeEnabled ? <TextField ref="zipCode" onChange={this.handleChange.bind(this, "zipCode")} value={this.props.fieldValues.zipCode} floatingLabelText="Zip code" type="number"/> : null}
                     <br/>
                 </Paper>
-                <RaisedButton className="next" label="Next" secondary={true} onClick={this.props.nextStep} disabled={nextDisabled} style={this.props.nextButtonStyle}/>
+                <RaisedButton className="next" label="Next" primary={true} onClick={this.props.nextStep} disabled={nextDisabled} style={this.props.nextButtonStyle}/>
             </div>
         );
     }

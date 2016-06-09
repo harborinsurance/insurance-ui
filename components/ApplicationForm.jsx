@@ -61,18 +61,17 @@ class ApplicationForm extends Component {
     updateFields(values) {
         let newFieldValues = Object.assign({}, this.state.fieldValues, values);
         let newState = Object.assign({}, this.state, {fieldValues: newFieldValues});
-        console.log(newState)
         this.setState(newState);
     }
 
     nextStep() {
 
-        let newStep = Math.min(this.state.step + 1, 4);
+        const newStep = Math.min(this.state.stepIndex + 1, 4);
         this.setState({stepIndex:newStep});
     }
 
     prevStep() {
-        let newStep = Math.max(this.state.step - 1, 0);
+        const newStep = Math.max(this.state.stepIndex - 1, 0);
         this.setState({stepIndex:newStep});
     }
 
@@ -93,7 +92,7 @@ class ApplicationForm extends Component {
 
         return (
             <div style={{display: "flex", justifyContent: "spaceAround"}}>
-                <Paper style={{margin: "auto", marginTop: 40}}>
+                <Paper style={{margin: "auto", marginTop: 40, paddingBottom: 40}}>
                     <AppBar title="Application" showMenuIconButton={false}/>
                     <Stepper activeStep={stepIndex} orientation="vertical">
                         <Step>
