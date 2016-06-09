@@ -1,4 +1,4 @@
-# Forrester Wave Demo
+# Harbor Insurance Co. Insurance UI
 This app uses React + Redux + Material UI + ES6 syntax applications. This boilerplate includes following tools and frameworks.
 
 * [React](https://facebook.github.io/react/)
@@ -7,11 +7,6 @@ This app uses React + Redux + Material UI + ES6 syntax applications. This boiler
 * [webpack](https://webpack.github.io/)
 * [Babel](https://babeljs.io/)
 * [ESLint](http://eslint.org/)
-
-
-## Build Status
-[![Build Status](https://travis.innovate.ibm.com/Bluemix/forrester-wave-demo-ui.svg?token=K4fZzZF5xZgqn9xKsG9D&branch=master)](https://travis.innovate.ibm.com/Bluemix/forrester-wave-demo-ui)
-
 
 # Usage
 

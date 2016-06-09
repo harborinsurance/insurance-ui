@@ -31,14 +31,14 @@ class ApplicationStatus extends Component {
     }
 
     componentDidMount() {
-        // axios.get(`/api/applications/${this.props.params.id}`).then((application) => {
-        //     this.setState({application: application});
-        // }).catch((e) => {
-        //     console.error(e);
+        axios.get(`/api/applications/${this.props.params.id}`).then((application) => {
+            this.setState({application: application});
+        }).catch((e) => {
+            console.error(e);
             let application = makeFakeApplications(1)[0];
             application.status = "approved";
             this.setState({application:application});
-        // });
+        });
     }
 
     render () {

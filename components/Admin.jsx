@@ -37,20 +37,21 @@ class Admin extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            applications: makeFakeApplications(40)
-        });
-        // $.ajax({
-        //     url: "/api/applications/",
-        //     dataType: "json",
-        //     cache: false,
-        //     success: function(applications) {
-        //         this.setState({applications: applications});
-        //     }.bind(this),
-        //     error: function(xhr, status, err) {
-        //         console.error(this.props.url, status, err.toString());
-        //     }.bind(this)
+        // this.setState({
+        //     applications: makeFakeApplications(40)
         // });
+        $.ajax({
+            url: "/api/applications/",
+            dataType: "json",
+            cache: false,
+            success: function(applications) {
+                applications = _.sortBy(applications, (application) => { return application.submittedAt ; }).reverse();
+                this.setState({applications: applications});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
     }
 
 

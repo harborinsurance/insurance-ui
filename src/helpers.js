@@ -29,7 +29,7 @@ export function makeFakeApplications (count) {
         };
 
         application.policy = {
-            paid:false,
+            paid: false,
             name: `${faker.company.catchPhraseAdjective()} Renters Insurance`,
             description: faker.lorem.paragraph(),
             cost: faker.random.number(250) + 50
