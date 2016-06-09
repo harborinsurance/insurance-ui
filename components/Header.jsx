@@ -25,7 +25,6 @@ class Header extends Component {
       <header className="header">
           <AppBar title="" iconElementLeft={<IconButton><Logos type="150" /></IconButton>}/>
           <h1 style={defaultStyle}>Application</h1>
-          <Jumbotron class="bg" type="JumboTron"> </Jumbotron>
       </header>
     );
   }

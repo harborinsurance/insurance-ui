@@ -8,7 +8,7 @@ class App extends Component {
     return (
       <div>
         <Header/>
-        {this.props.children}
+        <Jumbotron class="bg" type="JumboTron"> </Jumbotron>
       </div>
     );
   }
