@@ -234,7 +234,7 @@ function sendText(application, callback) {
     let message = "";
 
     if (status === "pending") {
-        message = "Thanks for submitting your application, we will get back to you soon!";
+        message = `Thanks for submitting your application, you can check the status here http://harborinsurance.mybluemix.net/#/applications/${application._id}`;
     }
     else if (status === "approved") {
         message = `Congrats!  Your application is approved!  Please review your policy and submit payment here: http://harborinsurance.mybluemix.net/#/applications/${application._id}`;
