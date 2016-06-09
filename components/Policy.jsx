@@ -23,7 +23,8 @@ class Policy extends Component {
         super(props, context);
 
         this.state = {
-            stepIndex: 0
+            stepIndex: 0,
+            submitted: false
         };
     }
 
@@ -79,7 +80,7 @@ class Policy extends Component {
      }
 
      submitPayment() {
-
+         this.setState({submitted:true});
          let payload = {
              card: {
                  number: this.state.cardNumber,
@@ -99,7 +100,7 @@ class Policy extends Component {
 
     render() {
         const {stepIndex} = this.state;
-        const disableSubmit = (!(this.state.cardNumber && this.state.securityCode && this.state.expMonth && this.state.expYear));
+        const disableSubmit = (!(this.state.cardNumber && this.state.securityCode && this.state.expMonth && this.state.expYear)) || this.state.submitted;
         return(
             <div>
                 <h2 style={{padding:20}}>Your application has been approved!</h2>
@@ -107,7 +108,7 @@ class Policy extends Component {
                     <Step>
                         <StepLabel>Review Policy</StepLabel>
                         <StepContent>
-                            <h3>{this.props.name}</h3>
+                            <h3>Policy: {this.props.name}</h3>
                             <p>{this.props.description}</p>
                             <p><b>Cost:</b> ${this.props.cost}.00 / month</p>
                             <RaisedButton className="next" label="Next" primary={true} onClick={this.handleNext.bind(this)} />
