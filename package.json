@@ -30,7 +30,11 @@
   "homepage": "",
   "devDependencies": {
     "babel-preset-stage-0": "^6.5.0",
-    "nodemon": "^1.9.2"
+    "css-loader": "^0.23.1",
+    "node-sass": "^3.7.0",
+    "nodemon": "^1.9.2",
+    "sass-loader": "^3.2.0",
+    "style-loader": "^0.13.1"
   },
   "dependencies": {
     "async": "^2.0.0-rc.5",
