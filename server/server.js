@@ -22,7 +22,8 @@ dotenv.load();
 let twilio = new Twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_ACCOUNT_SECRET);
 
 let stripeURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465419110688/Stripe/charge",
-    creditScoreURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465419039433/Credit/score";
+    creditScoreURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465419039433/Credit/score",
+    leadsURL = "https://cnc-us-prd-pxy-01.integration.ibmcloud.com/nr-cmwalker-devadvoc-harborin-1465431459552/CRM/leads/";
 
 let appEnv = cfenv.getAppEnv();
 let isProduction = process.env.NODE_ENV === "production";
@@ -268,10 +269,27 @@ function seedDB(callback) {
 }
 
 function insertApplication(application, response) {
-    var result;
+    var result,
+        noText = false;
     
     async.waterfall([
         function (next) {
+            if (application.status === "pending" && application["_id"] === undefined) {
+                restler.post(leadsURL, {data: application, headers: {"X-IBM-CloudInt-ApiKey": process.env.LEADS_API_KEY}}).on("complete", function(data) {
+                    next(null, data);
+                });
+            }
+            else {
+                restler.put(leadsURL + application.lead.LEAD_ID, {data: application, headers: {"X-IBM-CloudInt-ApiKey": process.env.LEADS_API_KEY}}).on("complete", function(data) {
+                    if (application.status === "pending") {
+                        noText = true;
+                    }
+                    next(null, data);
+                });
+            }
+        },
+        function (lead, next) {
+            application.lead = lead;
             db.insert(application, next);
         },
         function (body, headers, next) {
@@ -281,7 +299,7 @@ function insertApplication(application, response) {
         function (body, headers, next) {
             result = body;
 
-            if (result.status, result.phone) {
+            if (result.status && result.phone && noText === false) {
                 sendText(result.status, result.phone, next);
             }
             else {
