@@ -1,13 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import injectTapEventPlugin from "react-tap-event-plugin";
-import { Router, Route, hashHistory, IndexRedirect } from 'react-router';
+import { Router, Route, IndexRoute, hashHistory, IndexRedirect } from 'react-router';
 
 import App from '../components/App';
 import Admin from '../components/Admin';
 import ApplicationList from '../components/ApplicationList';
 import ApplicationStatus from '../components/ApplicationStatus';
 import ApplicationForm from '../components/ApplicationForm';
+
+import ApplicationPage from '../components/ApplicationPage';
+import ConfirmationPage from '../components/ConfirmationPage';
+import CoveragePage from '../components/CoveragePage';
+import SummaryPage from '../components/SummaryPage';
 import Home from '../components/Home';
 
 //Needed for React Developer Tools
@@ -23,7 +28,12 @@ ReactDOM.render(
           <IndexRedirect to="/home"/>
           <Route path="home" component={Home} />
           <Route path="/admin" component={Admin}/>
-          <Route path="/apply" component={ApplicationForm}/>
+          <Route path="/apply" component={ApplicationForm}>
+            <IndexRoute component={ApplicationPage} />
+            <Route path="coverage" component={CoveragePage} />
+            <Route path="summary" component={SummaryPage} />
+            <Route path="confirmation" component={ConfirmationPage} />
+          </Route>
           <Route path="/applications/:id" component={ApplicationStatus} />
       </Route>
   </Router>,
