@@ -34,14 +34,8 @@ app.get("/api/applications", function (request, response) {
     db.view("applications", "all", function(error, body) {
         if (!error) {
             //remove nested object
-<<<<<<< HEAD
-            var applications = [];
-            _.each(body.rows, function(application) {
-                applications.push(application.value); 
-=======
             let applications = body.rows.map((row) =>{
                 return addID(row.value);
->>>>>>> application-review
             });
             response.json(applications);
         }
@@ -54,7 +48,7 @@ app.get("/api/applications", function (request, response) {
 app.get("/api/applications/:id", function (request, response) {
     db.get(request.params.id, function(error, body) {
         if (!error) {
-            response.json(body);
+            response.json(addID(body));
         }
         else {
             response.send(error);
@@ -66,12 +60,6 @@ app.post("/api/applications", function (request, response) {
     //set initial application state
     request.body.status = "pending";
     request.body.submittedAt = new Date().toDateString();
-<<<<<<< HEAD
-    request.body.creditScore = getCreditScore();
-    request.body.riskScore = getRiskScore();
-    
-    insertApplication(request.body, response);
-=======
 
     db.insert(request.body, function (error, result) {
         if (error) {
@@ -84,15 +72,20 @@ app.post("/api/applications", function (request, response) {
             }
         }
     });
->>>>>>> application-review
 });
 
 app.put("/api/applications/:id", function (request, response) {
-    if (request.body.status === "approved") {
-        request.body.approvedAt = new Date().toDateString();
-    }
-
-    insertApplication(request.body, response);
+    db.insert(removeID(request.body), function (error, result) {
+        if (error) {
+            response.send(error);
+        }
+        else {
+            response.json(result);
+            if (request.body.status && request.body.phone) {
+                sendText(request.body.status,request.body.phone);
+            }
+        }
+    });
 });
 
 app.post("/api/charge", function (request, response) {
@@ -181,7 +174,7 @@ app.listen(port, function() {
   });
 });
 
-function sendText(status, phoneNumber, callback) {
+function sendText(status, phoneNumber) {
     //remove spaces and dashes and other stuff
     phoneNumber = phoneNumber.replace(/\s/g, "").replace("-", "").replace(")", "").replace("(", "");
 
@@ -207,12 +200,18 @@ function sendText(status, phoneNumber, callback) {
         body: message,
         to: phoneNumber,
         from: process.env.TWILIO_PHONE_NUMBER
-    }, callback);
+    }, function(err, message) {
+        if(err) {
+            console.error(err.message);
+        }
+    });
 }
 
 function seedDB(callback) {
+    // TODO :: define db
   db = cloudant.use(dbName);
 
+  // TODO :: define async
   async.waterfall([
     function (next) {
       let designDocs = [
@@ -235,47 +234,14 @@ function seedDB(callback) {
 ], callback);
 }
 
-function getCreditScore() {
-    return getRandomNumber(300, 850);
+function addID(obj) {
+    obj.id = obj._id;
+    delete obj._id;
+    return obj;
 }
 
-function getRiskScore() {
-    return getRandomNumber(0, 100);
-}
-
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function insertApplication(application, response) {
-    var result;
-    
-    async.waterfall([
-        function (next) {
-            db.insert(application, next);
-        },
-        function (body, headers, next) {
-            //this is actually id here, couch returns id on insert
-            db.get(body.id, next);
-        },
-        function (body, headers, next) {
-            result = body;
-
-            if (result.status, result.phone) {
-                sendText(result.status, result.phone, next);
-            }
-            else {
-                next(null, null);
-            }
-        }, function (message, next) {
-            next(null, result);
-        }
-    ], function(error) {
-        if (error) {
-            response.send(error);
-        }
-        else {
-            response.json(result);
-        }
-    })
+function removeID(obj) {
+    obj._id = obj.id;
+    delete obj.id;
+    return obj;
 }
