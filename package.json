@@ -22,6 +22,10 @@
     "Bable",
     "ES6"
   ],
+  "engines": {
+    "node": "5.1.0",
+    "npm": "3.3.12"
+ },
   "author": "https://github.com/Bluemix",
   "license": "MIT",
   "homepage": "",
