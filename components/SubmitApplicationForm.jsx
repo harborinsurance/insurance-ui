@@ -27,7 +27,7 @@ class SubmitApplicationForm extends Component {
         const fieldNames = [
             "firstName",
             "lastName",
-            "phoneNumber",
+            "phone",
             "email",
             "streetAddress",
             "streetAddressCont",
