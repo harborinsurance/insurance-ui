@@ -9,7 +9,7 @@ import mui, {
 
 class CoverageFields extends Component {
     handleChange(source, e, payload) {
-        let updateValues = [];
+        let updateValues = {};
         updateValues[source] = e.target.value;
         this.props.updateFields(updateValues);
     }

@@ -69,9 +69,12 @@ class ApplicationForm extends Component {
     }
 
     submit() {
+        console.log(this.state.fieldValues);
         axios.post('/api/applications', this.state.fieldValues).then((res) =>{
             // transition to "You're done!"
             this.setState({step:5});
+        }).catch((e) => {
+            console.error(e);
         });
     }
 

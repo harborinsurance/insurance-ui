@@ -22,7 +22,7 @@ class ProductFields extends Component {
     }
 
     handleChange(source, e, payload) {
-        let updateValues = [];
+        let updateValues = {};
         if (source === "product") {
             updateValues[source] = "renters";
         } else if (source === "zipCode") {

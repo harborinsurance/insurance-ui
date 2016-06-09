@@ -61,7 +61,7 @@ class ApplicationList extends Component {
 class ApplicationListItem extends Component {
     render() {
         return (
-            <TableRow hoverable={true} onMouseUp={() => { this.props.selectApplication(this.props._id); }}>
+            <TableRow hoverable={true} onMouseUp={() => { this.props.selectApplication(this.props._id); console.log(this.props)}}>
                 <TableRowColumn>{this.props.lastName}, {this.props.firstName}</TableRowColumn>
                 <TableRowColumn><div className={"status-"+this.props.status}>{this.props.status}</div></TableRowColumn>
                 <TableRowColumn>{numeral(this.props.coverage).format('$0,0.00')}</TableRowColumn>

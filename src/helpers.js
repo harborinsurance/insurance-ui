@@ -28,6 +28,13 @@ export function makeFakeApplications (count) {
             creditScore: faker.random.number(400) + 400
         };
 
+        application.policy = {
+            paid: false,
+            name: `${faker.company.catchPhraseAdjective()} Renters Insurance`,
+            description: faker.lorem.paragraph(),
+            cost: faker.random.number(250) + 50
+        };
+
         applications.push(application);
     }
     return applications;

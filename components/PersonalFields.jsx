@@ -5,7 +5,7 @@ import mui, {DatePicker, TextField, RaisedButton, Paper} from 'material-ui';
 class PersonalFields extends Component {
 
     handleChange (source, e, payload) {
-        let updateValues = [];
+        let updateValues = {};
         if (source === "dateOfBirth") {
             updateValues[source] = payload;
         } else {
@@ -15,7 +15,7 @@ class PersonalFields extends Component {
     }
 
     render () {
-        const nextDisabled = (!(this.props.fieldValues.firstName && this.props.fieldValues.lastName && this.props.fieldValues.dateOfBirth && this.props.fieldValues.phone && this.props.fieldValues.email));
+        const nextDisabled = (!(this.props.fieldValues.firstName && this.props.fieldValues.lastName && this.props.fieldValues.dateOfBirth && this.props.fieldValues.phoneNumber && this.props.fieldValues.email));
         return (
             <div style={this.props.containerStyle}>
                 <Paper style={this.props.paperStyle}>
@@ -25,7 +25,7 @@ class PersonalFields extends Component {
                     <br/>
                     <DatePicker ref="dateOfBirth" placeholder="Date of birth" defaultDate={new Date("2000")} onChange={this.handleChange.bind(this, "dateOfBirth")} value={this.props.fieldValues.dateOfBirth}/>
                     <br/>
-                    <TextField ref="phone" floatingLabelText="Phone" onChange={this.handleChange.bind(this, "phone")} value={this.props.fieldValues.phone} type="tel"/>
+                    <TextField ref="phoneNumber" floatingLabelText="Phone" onChange={this.handleChange.bind(this, "phoneNumber")} value={this.props.fieldValues.phoneNumber} type="tel"/>
                     <TextField ref="email" floatingLabelText="Email" onChange={this.handleChange.bind(this, "email")} value={this.props.fieldValues.email} type="email"/>
                 </Paper>
                 <RaisedButton className="prev" label="Back" secondary={true} onClick={this.props.prevStep} style={this.props.prevButtonStyle}/>
