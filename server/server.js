@@ -309,7 +309,7 @@ function insertApplication(application, response) {
         function (body, headers, next) {
             result = body;
             if (result.status && result.phone && noText === false) {
-                sendText(result.status, result.phone, next);
+                sendText(result, next);
             }
             else {
                 next(null, null);
