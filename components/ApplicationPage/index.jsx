@@ -15,47 +15,73 @@ class ApplicationPage extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="applicationForm">
-        <div>
-          <SelectField floatingLabelText="Product">
-            <MenuItem value={"autos"} disabled={true} primaryText="Autos"/>
-            <MenuItem value={"boat"} disabled={true} primaryText="Boat"/>
-            <MenuItem value={"renters"} disabled={false} primaryText="Renters"/>
-            <MenuItem value={"homeOwner"} disabled={true} primaryText="Home Owner"/>
-            <MenuItem value={"oversease"} disabled={true} primaryText="Overseas"/>
-            <MenuItem value={"pet"} disabled={true} primaryText="Pet"/>
-            <MenuItem value={"jewelry"} disabled={true} primaryText="Jewelry"/>
-            <MenuItem value={"rv"} disabled={true} primaryText="RV"/>
-          </SelectField>
-          <br/>
+        <div className="form-row">
 
-          <TextField onChange={this.props.handleChange} floatingLabelText="First name" />
-          <br/>
-          <TextField onChange={this.props.handleChange} floatingLabelText="Last name" />
-          <br />
-          <br />
-          <DatePicker onChange={this.props.handleChange} hintText="Date of birth (mm/dd/yyyy)" defaultDate={new Date("2000")} />
+          <div className="form-row__item">
+            <SelectField name="product" onChange={this.props.handleChange} floatingLabelText="Product">
+              <MenuItem value={"autos"} disabled={true} primaryText="Autos"/>
+              <MenuItem value={"boat"} disabled={true} primaryText="Boat"/>
+              <MenuItem value={"renters"} disabled={false} primaryText="Renters"/>
+              <MenuItem value={"homeOwner"} disabled={true} primaryText="Home Owner"/>
+              <MenuItem value={"oversease"} disabled={true} primaryText="Overseas"/>
+              <MenuItem value={"pet"} disabled={true} primaryText="Pet"/>
+              <MenuItem value={"jewelry"} disabled={true} primaryText="Jewelry"/>
+              <MenuItem value={"rv"} disabled={true} primaryText="RV"/>
+            </SelectField>
+          </div>
 
-          <TextField onChange={this.props.handleChange} floatingLabelText="Phone" type="tel"/>
-          <br />
-          <TextField onChange={this.props.handleChange} floatingLabelText="Email" type="email"/>
-          <br />
-          <TextField onChange={this.props.handleChange} floatingLabelText="Street address" />
-          <br />
-          <TextField onChange={this.props.handleChange} floatingLabelText="Street address cont." />
-          <br />
-          <TextField onChange={this.props.handleChange} floatingLabelText="City" />
-          <br />
-          <TextField onChange={this.props.handleChange} floatingLabelText="State" />
-          <br />
-          <TextField onChange={this.props.handleChange} floatingLabelText="Zip code" />
+          <div className="form-row__item">
+            <TextField name="zipCode" onChange={this.props.handleChange} floatingLabelText="Zip code" />
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-row__item">
+            <TextField name="firstName" onChange={this.props.handleChange} floatingLabelText="First name" />
+          </div>
+
+          <div className="form-row__item">
+            <TextField name="lastName" onChange={this.props.handleChange} floatingLabelText="Last name" />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-row__item">
+            <TextField name="phone" onChange={this.props.handleChange} floatingLabelText="Phone" type="tel"/>
+          </div>
+          <div className="form-row__item">
+            <TextField name="email" onChange={this.props.handleChange} floatingLabelText="Email" type="email"/>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-row__item">
+            <TextField name="streetAddress" onChange={this.props.handleChange} floatingLabelText="Street address" />
+          </div>
+
+          <div className="form-row__item">
+            <TextField name="streetAddressCont" onChange={this.props.handleChange} floatingLabelText="Street address cont." />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-row__item">
+            <TextField name="city" onChange={this.props.handleChange} floatingLabelText="City" />
+          </div>
+          <div className="form-row__item">
+            <TextField name="state" onChange={this.props.handleChange} floatingLabelText="State" />
+          </div>
+        </div>
+
+        <div className="form-row form-row--padded">
+          <div className="form-row__item">
+            <DatePicker name="dateOfBirth" onChange={this.props.handleChange} hintText="Date of birth (mm/dd/yyyy)" defaultDate={new Date("2000")} />
+          </div>
         </div>
       </div>
     )
   }
-
 };
 
 export default ApplicationPage;
