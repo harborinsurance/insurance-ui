@@ -32,8 +32,8 @@ ReactDOM.render(
             <IndexRoute component={ApplicationPage} />
             <Route path="coverage" component={CoveragePage} />
             <Route path="summary" component={SummaryPage} />
-            <Route path="confirmation" component={ConfirmationPage} />
           </Route>
+          <Route path="/confirmation" component={ConfirmationPage} />
           <Route path="/applications/:id" component={ApplicationStatus} />
       </Route>
   </Router>,
