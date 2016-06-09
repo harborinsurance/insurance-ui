@@ -279,6 +279,9 @@ function insertApplication(application, response) {
                     next(null, data);
                 });
             }
+            else if (application.lead === undefined || application.lead === null) {
+                next(null, null);
+            }
             else {
                 restler.put(leadsURL + application.lead.LEAD_ID, {data: application, headers: {"X-IBM-CloudInt-ApiKey": process.env.LEADS_API_KEY}}).on("complete", function(data) {
                     if (application.status === "pending") {
