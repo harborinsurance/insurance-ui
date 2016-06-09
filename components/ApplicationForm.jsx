@@ -78,7 +78,7 @@ class ApplicationForm extends Component {
       const { step } = this.state;
 
       return (
-        <Paper style={paperStyle}>
+        <Paper style={paperStyle} className="paper-override">
           <div>
             <Stepper activeStep={step}>
               <Step>
