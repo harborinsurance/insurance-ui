@@ -20,6 +20,7 @@ class ProductFields extends Component {
     }
 
     handleChange = (evt, index, value) => {
+        console.log(this)
         let updateValues = {};
         if (value === "product") {
             updateValues[value] = "renters";

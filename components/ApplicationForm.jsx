@@ -1,15 +1,19 @@
 import React, {Component, PropTypes} from 'react';
-
-import DatePicker from 'material-ui/DatePicker';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import RaisedButton from 'material-ui/RaisedButton';
-import Divider from 'material-ui/Divider';
-import MenuItem from 'material-ui/MenuItem';
-import Paper from 'material-ui/Paper';
-import LinearProgress from 'material-ui/LinearProgress';
-
-
+import mui, {
+    DatePicker,
+    TextField,
+    SelectField,
+    RaisedButton,
+    Divider,
+    MenuItem,
+    Paper,
+    LinearProgress,
+    AppBar,
+    Stepper,
+    Step,
+    StepLabel,
+    StepContent
+} from 'material-ui';
 import axios from 'axios';
 import ProductFields from '../components/ProductFields';
 import PersonalFields from '../components/PersonalFields';
@@ -29,7 +33,9 @@ const defaultStyle = {
 
 const paperStyle = {
     margin: 20,
-    padding: 20
+    padding: 20,
+    alignSelf: "center",
+    zDepth: 1
 };
 
 const nextButtonStyle = {
@@ -46,34 +52,35 @@ class ApplicationForm extends Component {
     constructor (props, context) {
         super(props, context);
         this.state = {
-            step: 0,
+            stepIndex: 0,
             fieldValues: {
             }
         };
     }
 
     updateFields(values) {
-        console.log(values);
         let newFieldValues = Object.assign({}, this.state.fieldValues, values);
         let newState = Object.assign({}, this.state, {fieldValues: newFieldValues});
+        console.log(newState)
         this.setState(newState);
     }
 
     nextStep() {
 
         let newStep = Math.min(this.state.step + 1, 4);
-        this.setState({step:newStep});
+        this.setState({stepIndex:newStep});
     }
 
     prevStep() {
         let newStep = Math.max(this.state.step - 1, 0);
-        this.setState({step:newStep});
+        this.setState({stepIndex:newStep});
     }
 
     submit() {
+        console.log(this.state.fieldValues);
         axios.post('/api/applications', this.state.fieldValues).then((res) =>{
             // transition to "You're done!"
-            this.setState({step:5});
+            this.setState({stepIndex:5});
         }).catch((e) => {
             console.error(e);
         });
@@ -81,36 +88,50 @@ class ApplicationForm extends Component {
 
     render () {
         let content;
-        switch(this.state.step) {
-            case 0:
-                content = <ProductFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues}  nextStep={this.nextStep.bind(this)} updateFields={this.updateFields.bind(this)}/>;
-                break;
-            case 1:
-                content = <PersonalFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)} updateFields={this.updateFields.bind(this)}/>;
-                break;
-            case 2:
-                content = <AddressFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)} updateFields={this.updateFields.bind(this)}/>;
-                break;
-            case 3:
-                content = <CoverageFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)}  updateFields={this.updateFields.bind(this)}/>;
-                break;
-            case 4:
-                content = <SubmitApplicationForm  paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} prevStep={this.prevStep.bind(this)}  submit={this.submit.bind(this)}/>;
-                break;
-            case 5:
-                content = <YourDone  paperStyle={paperStyle} containerStyle={containerStyle} />;
-                break;
-        }
+
+        const { stepIndex } = this.state;
+
         return (
-            <div>
-                <h1 style={defaultStyle}>Application</h1>
-                <LinearProgress mode="determinate" min={0} max={4} value={this.state.step}/>
-                {this.props.children}
-                {content}
+            <div style={{display: "flex", justifyContent: "spaceAround"}}>
+                <Paper style={{margin: "auto", marginTop: 40}}>
+                    <AppBar title="Application" showMenuIconButton={false}/>
+                    <Stepper activeStep={stepIndex} orientation="vertical">
+                        <Step>
+                            <StepLabel>Select Product</StepLabel>
+                            <StepContent>
+                                <ProductFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues}  nextStep={this.nextStep.bind(this)} updateFields={this.updateFields.bind(this)}/>
+                            </StepContent>
+                        </Step>
+                        <Step>
+                            <StepLabel>Enter Personal Information</StepLabel>
+                            <StepContent>
+                                <PersonalFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)} updateFields={this.updateFields.bind(this)}/>
+                            </StepContent>
+                        </Step>
+                        <Step>
+                            <StepLabel>Enter Address Information</StepLabel>
+                            <StepContent>
+                                <AddressFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)} updateFields={this.updateFields.bind(this)}/>
+                            </StepContent>
+                        </Step>
+                        <Step>
+                            <StepLabel>Enter Coverage Information</StepLabel>
+                            <StepContent>
+                                <CoverageFields paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} nextStep={this.nextStep.bind(this)} prevStep={this.prevStep.bind(this)}  updateFields={this.updateFields.bind(this)}/>
+                            </StepContent>
+                        </Step>
+                        <Step>
+                            <StepLabel>Review Application</StepLabel>
+                            <StepContent>
+                                <SubmitApplicationForm  paperStyle={paperStyle} containerStyle={containerStyle} prevButtonStyle={prevButtonStyle} nextButtonStyle={nextButtonStyle} fieldValues={this.state.fieldValues} prevStep={this.prevStep.bind(this)}  submit={this.submit.bind(this)}/>
+                            </StepContent>
+                        </Step>
+                    </Stepper>
+
+                </Paper>
             </div>
         );
     }
-
 }
 
 export default ApplicationForm;
