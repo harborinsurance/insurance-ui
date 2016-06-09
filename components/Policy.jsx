@@ -59,13 +59,13 @@ class PolicyPaymentForm extends Component {
             card: {
                 number: this.state.cardNumber,
                 exp_month: this.state.expirationDate.getMonth(),
-                exp_year: this.state.expirationDate.getYear(),
+                exp_year: this.state.expirationDate.getFullYear(),
                 cvc: this.secuirtyCode
             }
         };
 
         axios.post(`/api/applications/${this.props.applicationID}/charge`, payload).then((res) => {
-            this.setState({submitted: true});
+            this.setState({submitted: true, error: null});
         }).catch((e) => {
             console.log(e);
             this.setState({error: e});
