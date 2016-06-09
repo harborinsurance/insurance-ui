@@ -10,9 +10,17 @@ import Paper from 'material-ui/Paper';
 
 const CoveragePage = (props) => {
   return (
-  <div>
-  <p>Enter your desired coverage amount</p>
-    <TextField floatingLabelText="Desired coverage amount" />
+  <div className="coverageForm">
+    <div>
+    <p>Enter your desired coverage amount</p>
+      <TextField className="text-field" floatingLabelText="Desired coverage amount" />
+
+      <div className="ssn">
+        <h3 className="important">Important Notice</h3>
+        <p>For coverage amounts greater than $100,000.00 (USD) a credit check is required.</p>
+        <TextField floatingLabelText="Social security number" />
+      </div>
+    </div>
   </div>
   )
 };
