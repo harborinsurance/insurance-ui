@@ -29,7 +29,6 @@
   "license": "MIT",
   "homepage": "",
   "devDependencies": {
-    "node-sass": "^3.7.0",
     "nodemon": "^1.9.2"
   },
   "dependencies": {
@@ -37,6 +36,7 @@
     "css-loader": "^0.23.1",
     "node-sass": "^3.7.0",
     "nodemon": "^1.9.2",
+    "node-sass": "^3.7.0",
     "sass-loader": "^3.2.0",
     "style-loader": "^0.13.1",
     "async": "^2.0.0-rc.5",
