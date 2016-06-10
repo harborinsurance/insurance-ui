@@ -27,14 +27,17 @@ class ApplicationStatus extends Component {
     }
 
     componentDidMount() {
-        // axios.get(`/api/applications/${this.props.params.id}`).then((application) => {
-        //     this.setState({application: application.data});
-        // }).catch((e) => {
-        //     console.error(e);
+        axios.get(`/api/applications/${this.props.params.id}`).then((application) => {
+            this.setState({application: application.data});
+        }).catch((e) => {
+            console.error(e);
+            // populate with dummy data when server failure
+            // because demo.
+            console.log("NOTE :: server error.  populating 'state.application' with dummy data");
             let application = makeFakeApplications(1)[0];
             application.status = "approved";
             this.setState({application:application});
-        // });
+        });
     }
 
     render () {
