@@ -171,7 +171,7 @@ if (!isProduction) {
   });
 } else {
   app.use(express.static(__dirname + "/../static"));
-  app.get("*", function response(req, res) {
+  app.get("/", function response(req, res) {
     res.sendFile(path.join(__dirname, '../static/index.html'));
   });
 }
