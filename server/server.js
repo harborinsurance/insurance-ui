@@ -127,35 +127,7 @@ app.post("/api/applications/:id/charge", function (request, response) {
                next(null);
            });
         }, function (next) {
-            db.get(request.params.id, next);
-        }, function (body, headers, next) {
-            body.charge = charge;
-            body.paid = true;
-            db.insert(body,  next);
-        }, function (body, headers, next) {
-            db.get(request.params.id, next);
-        },
-        function (body, headers, next) {
-            application = body;
-            next(null);
-        }
-    ], function(error) {
-        if (error) {
-            response.send(error);
-        }
-        else {
-            response.json(application);
-        }
-    });
-});
-
-app.post("/api/applications/:id/issuePolicy", function (request, response) {
-    var charge,
-        application;
-
-    var policy = sanitizeApplication(_.clone(request.body));
-    async.waterfall([
-        function (next) {
+            var policy = sanitizeApplication(_.clone(request.body));
             var options = {
                 host: 'vhost070.bpm.ibmcloud.com',
                 port: 443,
@@ -172,6 +144,8 @@ app.post("/api/applications/:id/issuePolicy", function (request, response) {
         }, function (next) {
             db.get(request.params.id, next);
         }, function (body, headers, next) {
+            body.charge = charge;
+            body.paid = true;
             body.issued = true;
             db.insert(body,  next);
         }, function (body, headers, next) {
