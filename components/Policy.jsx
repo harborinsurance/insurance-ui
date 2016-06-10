@@ -110,7 +110,6 @@ class Policy extends Component {
                         <StepContent>
                             <h3>Policy: {this.props.name}</h3>
                             <p>{this.props.description}</p>
-                            <p><b>Cost:</b> ${this.props.cost}.00 / month</p>
                             <RaisedButton className="next" label="Next" primary={true} onClick={this.handleNext.bind(this)} />
                         </StepContent>
                     </Step>
@@ -125,8 +124,6 @@ class Policy extends Component {
                                 <TextField ref="expMonth" floatingLabelText="Expiration Month" type="number" onChange={this.handleChange.bind(this, "expMonth") } value={this.state.expMonth}/>
                                 <br />
                                 <TextField ref="expYear" floatingLabelText="Expiration Year" type="number" onChange={this.handleChange.bind(this, "expYear") } value={this.state.expYear}/>
-                                <br />
-                                <TextField floatingLabelText="Amount" value={`$ ${this.props.cost}.00 / month`} disabled={true}/>
                                 <br />
                                 <br />
                                 <div style={{display:"flex"}}>
