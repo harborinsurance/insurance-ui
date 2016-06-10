@@ -15,6 +15,7 @@ import SummaryPage from '../components/SummaryPage';
 
 import CoveragePage from '../components/CoveragePage';
 
+import Login from '../components/Login';
 import Home from '../components/Home';
 
 //Needed for React Developer Tools
@@ -29,6 +30,7 @@ ReactDOM.render(
       <Route path="/" component={App}>
           <IndexRedirect to="/home"/>
           <Route path="home" component={Home} />
+          <Route path="/login" component={Login} />
           <Route path="/admin" component={Admin}/>
           <Route path="/apply" component={ApplicationForm} />
           <Route path="/confirmation" component={ConfirmationPage} />
