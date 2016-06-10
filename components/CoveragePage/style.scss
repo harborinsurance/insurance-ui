@@ -8,11 +8,30 @@ p{
 }
 
 .ssn{
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.currency {
+  position: relative;
+
+  &:before {
+    position: absolute;
+    font-size: 12px;
+    bottom: 9px;
+    left: -10px;
+    content: '$'
+  }
 }
 
 .coverageForm{
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding-bottom: 2rem;
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+  }
 }
