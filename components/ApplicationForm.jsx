@@ -66,10 +66,15 @@ class ApplicationForm extends Component {
       window.removeEventListener('resize', this.updateDimensions);
     }
 
-    handleChange = (evt, value) => {
+    handleChange = (evt, value, select) => {
+      let propName = evt.target.name;
+
+      if (select) {
+        propName = select;
+      }
 
       const fieldValues = Object.assign(this.state.fieldValues, {
-        [evt.target.name]: value
+        [propName]: value
       })
 
       this.setState({
