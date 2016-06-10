@@ -126,14 +126,15 @@ class ApplicationForm extends Component {
     render () {
       const { step } = this.state;
       const { fieldValues } = this.state;
+      console.log(fieldValues);
       let stepContent;
 
       if (step === 0) {
-        stepContent = (<ApplicationPage handleChange={this.handleChange} />);
+        stepContent = (<ApplicationPage handleChange={this.handleChange} fieldValues={fieldValues} />);
       } else if (step === 1) {
-        stepContent = (<CoveragePage handleChange={this.handleChange} />);
+        stepContent = (<CoveragePage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />);
       } else if (step === 2) {
-        stepContent = (<SummaryPage handleChange={this.handleChange} />);
+        stepContent = (<SummaryPage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />);
       }
 
       let content = (this.state.width > 500) ? (
@@ -174,18 +175,18 @@ class ApplicationForm extends Component {
             <Step>
               <StepLabel>Application</StepLabel>
               <StepContent>
-                <ApplicationPage handleChange={this.handleChange} />
+                <ApplicationPage handleChange={this.handleChange} fieldValues={fieldValues} />
               </StepContent>
             </Step>
             <Step>
               <StepLabel>Coverage</StepLabel>
               <StepContent>
-                <CoveragePage handleChange={this.handleChange} />
+                <CoveragePage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />
               </StepContent>
             </Step>
             <Step>
               <StepLabel>
-                <SummaryPage handleChange={this.handleChange} />
+                <SummaryPage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />
               </StepLabel>
             </Step>
           </Stepper>

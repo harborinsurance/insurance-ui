@@ -16,7 +16,6 @@ class ApplicationPage extends Component {
 
   render() {
     const { fieldValues } = this.props;
-
     return (
       <div className="applicationForm">
         <div className="form-row">
