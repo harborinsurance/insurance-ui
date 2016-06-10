@@ -1,0 +1,29 @@
+.important{
+  color: #E53935;
+}
+
+p{
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.ssn{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.coverageForm{
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding-bottom: 2rem;
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+
+    &--hidden {
+      display: none;
+    }
+  }
+}
