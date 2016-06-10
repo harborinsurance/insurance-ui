@@ -1,19 +1,12 @@
-.applicationForm{
-  justify-content: center;
-}
-
-.paper-override{
-    border-radius: 14px !important;
-    border: 1pt #c8c8c8 solid !important;
-    box-shadow: none !important;
- }
-
-
-.application-form {
+//summary styles
+.summary-form{
   .form-row {
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
+    border-top: 1px solid #F0F1F2;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 
     &--padded {
       padding: 2rem 0;
@@ -24,7 +17,13 @@
     }
 
     &__item {
+      flex: 1;
+      max-width: 200px;
       padding: 0 2rem;
     }
-  }
+
+    .bold{
+      font-weight: 500;
+    }
+   }
 }

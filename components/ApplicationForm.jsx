@@ -49,7 +49,9 @@ class ApplicationForm extends Component {
           streetAddressCont: '',
           city: '',
           state: '',
-          dateOfBirth: ''
+          dateOfBirth: '',
+          coverage: '',
+          socialSecurityNumber: ''
         }
       };
     }
@@ -145,7 +147,7 @@ class ApplicationForm extends Component {
 
       let content = (this.state.width > 500) ? (
       <div>
-        <Stepper key="verticalStep" activeStep={step}>
+        <Stepper key="horizontalStep" activeStep={step}>
           <Step>
             <StepLabel>Application</StepLabel>
           </Step>
@@ -177,7 +179,7 @@ class ApplicationForm extends Component {
       </div>
       ): (
         <div>
-          <Stepper key="horizontalStep" activeStep={step} orientation="vertical">
+          <Stepper key="verticalStep" activeStep={step} orientation="vertical">
             <Step>
               <StepLabel>Application</StepLabel>
               <StepContent>
@@ -191,9 +193,10 @@ class ApplicationForm extends Component {
               </StepContent>
             </Step>
             <Step>
-              <StepLabel>
+              <StepLabel>Summary</StepLabel>
+              <StepContent>
                 <SummaryPage handleChange={this.handleChange} fieldValues={this.state.fieldValues} />
-              </StepLabel>
+              </StepContent>
             </Step>
           </Stepper>
 
