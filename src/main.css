@@ -20,31 +20,21 @@ body {
 }
 
 .home {
-    display: table;
-    height: 750px;
-    position: relative;
-    width: 100%;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  width: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .text-vcenter {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-    color: white;
-    text-shadow: 4px 4px 4px #000000;
-}
-
-.floating-text {
-    margin-left: auto;
-    margin-right: auto;
-    width: 600px;
-    max-width: 100%;
-    margin-bottom: 0px;
-    position: relative;
+  color: #fff;
+  text-align: center;
 }
 
 .text-vcenter h1 {
