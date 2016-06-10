@@ -17,7 +17,7 @@ class ApplicationPage extends Component {
   render() {
     const { fieldValues } = this.props;
     return (
-      <div className="applicationForm">
+      <div className="application-form">
         <div className="form-row">
 
           <div className="form-row__item">
@@ -62,7 +62,7 @@ class ApplicationPage extends Component {
         <div className="form-row">
           <div className="form-row__item">
             <TextField name="phone" onChange={this.props.handleChange} floatingLabelText="Phone" type="tel"
-              value={fieldValues.phonee}
+              value={fieldValues.phone}
             />
           </div>
           <div className="form-row__item">

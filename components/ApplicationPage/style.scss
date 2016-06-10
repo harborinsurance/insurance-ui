@@ -8,25 +8,28 @@
     box-shadow: none !important;
  }
 
- .form-row {
-   display: flex;
-   justify-content: flex-start;
-   flex-direction: column;
-   border-top: 1px solid #F0F1F2;
-   padding-top: 1rem;
-   padding-bottom: 1rem;
 
-   &--padded {
-     padding: 2rem 0;
-   }
+.application-form {
+  .form-row {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    border-top: 1px solid #F0F1F2;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 
-   @media (min-width: 550px) {
-     flex-direction: row;
-   }
+    &--padded {
+      padding: 2rem 0;
+    }
 
-   &__item {
-     max-width: 200px;
-     flex: 1;
-     padding: 0 2rem;
-   }
+    @media (min-width: 550px) {
+      flex-direction: row;
+    }
+
+    &__item {
+      max-width: 200px;
+      flex: 1;
+      padding: 0 2rem;
+    }
   }
+}

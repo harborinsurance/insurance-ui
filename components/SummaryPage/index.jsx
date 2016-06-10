@@ -13,8 +13,7 @@ class SummaryPage extends Component {
 
   render() {
     const { fieldValues } = this.props;
-
-    // fieldValues.fistName,.. etc
+    console.log(fieldValues);
 
     return (
       <div className="SummaryForm">
