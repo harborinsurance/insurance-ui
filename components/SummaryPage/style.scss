@@ -1,0 +1,23 @@
+//summary styles
+
+.form-row {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+
+  &--padded {
+    padding: 2rem 0;
+  }
+
+  @media (min-width: 550px) {
+    flex-direction: row;
+  }
+
+  &__item {
+    padding: 0 2rem;
+  }
+
+  .bold{
+    font-weight: 500;
+  }
+ }

@@ -12,6 +12,9 @@
    display: flex;
    justify-content: flex-start;
    flex-direction: column;
+   border-top: 1px solid #F0F1F2;
+   padding-top: 1rem;
+   padding-bottom: 1rem;
 
    &--padded {
      padding: 2rem 0;
@@ -22,6 +25,8 @@
    }
 
    &__item {
+     max-width: 200px;
+     flex: 1;
      padding: 0 2rem;
    }
   }
