@@ -1,13 +1,16 @@
 ---
-declared-services:
-  cloudant:
-    label: cloudantNoSQLDB
-    plan: Shared
 applications:
 - name: harborinsurance
-  command: npm start
-  path: .
-  instances: 3
-  memory: 1G
+  instances: 1
+  memory: 512M
+  env:
+    STRIPE_API_KEY: __STRIPE_API_KEY
+    CREDIT_API_KEY: __CREDIT_API_KEY
+    LEADS_API_KEY: __LEADS_API_KEY
+    TWILIO_ACCOUNT_SID: __TWILIO_ACCOUNT_SID
+    TWILIO_ACCOUNT_SECRET: __TWILIO_ACCOUNT_SECRET
+    TWILIO_PHONE_NUMBER: __TWILIO_PHONE_NUMBER
+    BPM_USERNAME: __BPM_USERNAME
+    BPM_PASSWORD: __BPM_PASSWORD
   services:
   - cloudant
