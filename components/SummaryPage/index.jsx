@@ -16,6 +16,9 @@ class SummaryPage extends Component {
 
     // fieldValues.fistName,.. etc
 
+    const date = new Date(fieldValues.dateOfBirth);
+    const dateString = `${date.getMonth()}/${date.getDate()}/${date.getYear()}`;
+
     return (
       <div className="summary-form">
           <div className="form-row">
@@ -65,7 +68,7 @@ class SummaryPage extends Component {
 
           <div className="form-row">
             <div className="form-row__item bold">Date of Birth</div>
-            <div className="form-row__item">{fieldValues.dateOfBirth} </div>
+            <div className="form-row__item">{dateString} </div>
           </div>
 
 
