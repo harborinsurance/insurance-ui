@@ -15,12 +15,13 @@ class ApplicationPage extends Component {
   }
 
   render() {
+    const { fieldValues } = this.props;
     return (
       <div className="applicationForm">
         <div className="form-row">
 
           <div className="form-row__item">
-            <SelectField name="product" onChange={this.props.handleChange} floatingLabelText="Product">
+            <SelectField name="product" value={fieldValues.product} onChange={this.props.handleChange} floatingLabelText="Product">
               <MenuItem value={"autos"} disabled={true} primaryText="Autos"/>
               <MenuItem value={"boat"} disabled={true} primaryText="Boat"/>
               <MenuItem value={"renters"} disabled={false} primaryText="Renters"/>
@@ -33,50 +34,94 @@ class ApplicationPage extends Component {
           </div>
 
           <div className="form-row__item">
-            <TextField name="zipCode" onChange={this.props.handleChange} floatingLabelText="Zip code" />
+            <TextField
+              name="zipCode"
+              onChange={this.props.handleChange}
+              floatingLabelText="Zip code"
+              value={fieldValues.zipCode}
+            />
           </div>
         </div>
         <div className="form-row">
           <div className="form-row__item">
-            <TextField name="firstName" onChange={this.props.handleChange} floatingLabelText="First name" />
+            <TextField
+              name="firstName"
+              onChange={this.props.handleChange}
+              floatingLabelText="First name"
+              value={fieldValues.firstName}
+            />
           </div>
 
           <div className="form-row__item">
-            <TextField name="lastName" onChange={this.props.handleChange} floatingLabelText="Last name" />
-          </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-row__item">
-            <TextField name="phone" onChange={this.props.handleChange} floatingLabelText="Phone" type="tel"/>
-          </div>
-          <div className="form-row__item">
-            <TextField name="email" onChange={this.props.handleChange} floatingLabelText="Email" type="email"/>
-          </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-row__item">
-            <TextField name="streetAddress" onChange={this.props.handleChange} floatingLabelText="Street address" />
-          </div>
-
-          <div className="form-row__item">
-            <TextField name="streetAddressCont" onChange={this.props.handleChange} floatingLabelText="Street address cont." />
+            <TextField name="lastName" onChange={this.props.handleChange} floatingLabelText="Last name" value={fieldValues.lastName}/>
           </div>
         </div>
 
         <div className="form-row">
           <div className="form-row__item">
-            <TextField name="city" onChange={this.props.handleChange} floatingLabelText="City" />
+            <TextField name="phone" onChange={this.props.handleChange} floatingLabelText="Phone" type="tel"
+              value={fieldValues.phonee}
+            />
           </div>
           <div className="form-row__item">
-            <TextField name="state" onChange={this.props.handleChange} floatingLabelText="State" />
+            <TextField
+              name="email"
+              onChange={this.props.handleChange}
+              floatingLabelText="Email"
+              type="email"
+              value={fieldValues.email}
+            />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-row__item">
+            <TextField
+              name="streetAddress"
+              onChange={this.props.handleChange}
+              floatingLabelText="Street address"
+              value={fieldValues.streetAddress}
+            />
+          </div>
+
+          <div className="form-row__item">
+            <TextField
+              name="streetAddressCont"
+              onChange={this.props.handleChange}
+              floatingLabelText="Street address cont."
+              value={fieldValues.streetAddressCont}
+            />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-row__item">
+            <TextField
+              name="city"
+              onChange={this.props.handleChange}
+              floatingLabelText="City"
+              value={fieldValues.city}
+            />
+          </div>
+          <div className="form-row__item">
+            <TextField
+              name="state"
+              onChange={this.props.handleChange}
+              floatingLabelText="State"
+              value={fieldValues.state}
+            />
           </div>
         </div>
 
         <div className="form-row form-row--padded">
           <div className="form-row__item">
-            <DatePicker name="dateOfBirth" onChange={this.props.handleChange} hintText="Date of birth (mm/dd/yyyy)" defaultDate={new Date("2000")} />
+            <DatePicker
+              name="dateOfBirth"
+              onChange={this.props.handleChange}
+              hintText="Date of birth (mm/dd/yyyy)"
+              defaultDate={new Date("2000")}
+              value={fieldValues.dateOfBirth}
+            />
           </div>
         </div>
       </div>
