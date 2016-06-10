@@ -95,7 +95,6 @@ class ApplicationForm extends Component {
       // otherwise, submit the form
 
       const { step } = this.state;
-      console.log(step);
       if (step === 2) {
 
         axios.post('/api/applications', this.state.fieldValues)
