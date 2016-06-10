@@ -57,6 +57,12 @@ class Admin extends Component {
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
+                // populate with dummy data when server failure
+                // because demo.
+                console.log("NOTE :: server error.  populating 'state.applications' with dummy data");
+                this.setState({
+                    applications: makeFakeApplications(40)
+                });
             }.bind(this)
         });
     }

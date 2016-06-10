@@ -5,6 +5,7 @@ let express = require("express"),
     app = express(),
     dotenv = require("dotenv"),
     cfenv = require("cfenv"),
+    https = require("https"),
     Cloudant = require("cloudant"),
     _ = require("underscore"),
     bodyParser = require("body-parser"),
@@ -126,10 +127,26 @@ app.post("/api/applications/:id/charge", function (request, response) {
                next(null);
            });
         }, function (next) {
+            var policy = sanitizeApplication(_.clone(request.body));
+            var options = {
+                host: 'vhost070.bpm.ibmcloud.com',
+                port: 443,
+                path: '/bpm/dev/rest/bpm/wle/v1/process?action=start&bpdId=25.08fcf31f-c386-4e17-bdf9-ff3fe4f2f4a3&snapshotId=2064.2ff0644f-da93-4b2e-af2e-78f1209c34b9&branchId=2063.83d468d6-0324-4f13-911d-949107a7457a&processAppId=2066.d30f0fc0-340e-459d-9825-6e7612476adb&params=' + encodeURIComponent(JSON.stringify(policy)),
+                auth: process.env.BPM_USERNAME + ":" + process.env.BPM_PASSWORD,
+                method: 'POST'
+            };
+            var req = https.request(options, function(res) {
+                console.log('STATUS: ' + res.statusCode);
+            });
+            req.end(function(){
+                next(null);
+            });
+        }, function (next) {
             db.get(request.params.id, next);
         }, function (body, headers, next) {
             body.charge = charge;
             body.paid = true;
+            body.issued = true;
             db.insert(body,  next);
         }, function (body, headers, next) {
             db.get(request.params.id, next);
@@ -171,7 +188,7 @@ if (!isProduction) {
   });
 } else {
   app.use(express.static(__dirname + "/../static"));
-  app.get("*", function response(req, res) {
+  app.get("/", function response(req, res) {
     res.sendFile(path.join(__dirname, '../static/index.html'));
   });
 }
@@ -325,4 +342,20 @@ function insertApplication(application, response) {
             response.json(result);
         }
     });
+}
+
+//ensure only the correct keys are on the data, if there are extra it will fail for BPM
+function sanitizeApplication(application) {
+    var keys = [
+        "dateOfBirth", "zipCode", "lastName", "firstName", "phone", "email", "streetAddress", "city", "state",
+            "zip_code", "coverage", "status", "submittedAt", "creditScore", "riskScore", "approvedAt"
+    ];
+    var policy = {};
+
+    policy["policy"] = {};
+
+    _.each(keys, function(key) {
+        policy["policy"][key] = application[key];
+    });
+    return policy;
 }
