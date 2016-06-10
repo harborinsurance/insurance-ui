@@ -127,7 +127,19 @@ app.post("/api/applications/:id/charge", function (request, response) {
                next(null);
            });
         }, function (next) {
-            var policy = sanitizeApplication(_.clone(request.body));
+            db.get(request.params.id, next);
+        }, function (body, headers, next) {
+            body.charge = charge;
+            body.paid = true;
+            body.issued = true;
+            db.insert(body,  next);
+        }, function (body, headers, next) {
+            db.get(request.params.id, next);
+        },
+        function (body, headers, next) {
+            application = body;
+
+            var policy = sanitizeApplication(_.clone(application));
             var options = {
                 host: 'vhost070.bpm.ibmcloud.com',
                 port: 443,
@@ -141,19 +153,6 @@ app.post("/api/applications/:id/charge", function (request, response) {
             req.end(function(){
                 next(null);
             });
-        }, function (next) {
-            db.get(request.params.id, next);
-        }, function (body, headers, next) {
-            body.charge = charge;
-            body.paid = true;
-            body.issued = true;
-            db.insert(body,  next);
-        }, function (body, headers, next) {
-            db.get(request.params.id, next);
-        },
-        function (body, headers, next) {
-            application = body;
-            next(null);
         }
     ], function(error) {
         if (error) {
