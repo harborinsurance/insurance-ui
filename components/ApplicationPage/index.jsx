@@ -21,15 +21,17 @@ class ApplicationPage extends Component {
         <div className="form-row">
 
           <div className="form-row__item">
-            <SelectField name="product" value={fieldValues.product} onChange={this.props.handleChange} floatingLabelText="Product">
-              <MenuItem value={"autos"} disabled={true} primaryText="Autos"/>
-              <MenuItem value={"boat"} disabled={true} primaryText="Boat"/>
-              <MenuItem value={"renters"} disabled={false} primaryText="Renters"/>
-              <MenuItem value={"homeOwner"} disabled={true} primaryText="Home Owner"/>
-              <MenuItem value={"oversease"} disabled={true} primaryText="Overseas"/>
-              <MenuItem value={"pet"} disabled={true} primaryText="Pet"/>
-              <MenuItem value={"jewelry"} disabled={true} primaryText="Jewelry"/>
-              <MenuItem value={"rv"} disabled={true} primaryText="RV"/>
+            <SelectField name="product" value={fieldValues.product} onChange={(evt, div, value) => {
+              this.props.handleChange(evt, value, 'product');
+            }} floatingLabelText="Product">
+              <MenuItem value="autos" disabled={true} primaryText="Autos"/>
+              <MenuItem value="boat" disabled={true} primaryText="Boat"/>
+              <MenuItem value="renters" disabled={false} primaryText="Renters"/>
+              <MenuItem value="homeOwner" disabled={true} primaryText="Home Owner"/>
+              <MenuItem value="oversease" disabled={true} primaryText="Overseas"/>
+              <MenuItem value="pet" disabled={true} primaryText="Pet"/>
+              <MenuItem value="jewelry" disabled={true} primaryText="Jewelry"/>
+              <MenuItem value="rv" disabled={true} primaryText="RV"/>
             </SelectField>
           </div>
 
@@ -117,7 +119,9 @@ class ApplicationPage extends Component {
           <div className="form-row__item">
             <DatePicker
               name="dateOfBirth"
-              onChange={this.props.handleChange}
+              onChange={(evt, value) => {
+                this.props.handleChange(evt, value, 'dateOfBirth');
+              }}
               hintText="Date of birth (mm/dd/yyyy)"
               defaultDate={new Date("2000")}
               value={fieldValues.dateOfBirth}

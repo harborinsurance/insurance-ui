@@ -66,10 +66,17 @@ class ApplicationForm extends Component {
       window.removeEventListener('resize', this.updateDimensions);
     }
 
-    handleChange = (evt, value) => {
+    handleChange = (evt, value, select) => {
+      let propName;
+
+      if (select) {
+        propName = select;
+      } else {
+        propName = evt.target.name;
+      }
 
       const fieldValues = Object.assign(this.state.fieldValues, {
-        [evt.target.name]: value
+        [propName]: value
       })
 
       this.setState({
@@ -88,8 +95,8 @@ class ApplicationForm extends Component {
       // otherwise, submit the form
 
       const { step } = this.state;
-
       if (step === 2) {
+
         axios.post('/api/applications', this.state.fieldValues)
           .then(res => {
             this.context.router.push('/confirmation');
@@ -97,7 +104,7 @@ class ApplicationForm extends Component {
           .catch(err => console.log(err));
       }
 
-      if (step < 3) {
+      if (step < 2) {
         this.setState({
           step: step + 1,
           finished: step >= 2
@@ -126,7 +133,6 @@ class ApplicationForm extends Component {
     render () {
       const { step } = this.state;
       const { fieldValues } = this.state;
-      console.log(fieldValues);
       let stepContent;
 
       if (step === 0) {
