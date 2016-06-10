@@ -67,10 +67,12 @@ class ApplicationForm extends Component {
     }
 
     handleChange = (evt, value, select) => {
-      let propName = evt.target.name;
+      let propName;
 
       if (select) {
         propName = select;
+      } else {
+        propName = evt.target.name;
       }
 
       const fieldValues = Object.assign(this.state.fieldValues, {

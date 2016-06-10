@@ -119,7 +119,9 @@ class ApplicationPage extends Component {
           <div className="form-row__item">
             <DatePicker
               name="dateOfBirth"
-              onChange={this.props.handleChange}
+              onChange={(evt, value) => {
+                this.props.handleChange(evt, value, 'dateOfBirth');
+              }}
               hintText="Date of birth (mm/dd/yyyy)"
               defaultDate={new Date("2000")}
               value={fieldValues.dateOfBirth}
